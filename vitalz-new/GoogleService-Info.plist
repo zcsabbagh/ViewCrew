@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyDkOWoPhMZw0CCgqicUjrKi2u5B3Jl92UU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>761622374257</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.zane.vitalz-new</string>
+	<key>PROJECT_ID</key>
+	<string>candid2024-9f0fc</string>
+	<key>STORAGE_BUCKET</key>
+	<string>candid2024-9f0fc.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:761622374257:ios:7ec9641e8b5623573738d0</string>
+</dict>
+</plist>
