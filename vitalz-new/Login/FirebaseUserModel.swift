@@ -38,17 +38,17 @@ final class FirebaseCreateUserModel: ObservableObject {
         var updatedUser = newUser
 
         do {
-            // let token = try await fcmMessaging.token()
-            // updatedUser.fcmToken = token
-            // print("FCM registration token: \(token)")
+             let token = try await fcmMessaging.token()
+             updatedUser.fcmToken = token
+             print("FCM registration token: \(token)")
             
-            // do {
-            //     try await fcmMessaging.subscribe(toTopic: "reminders")
-            // } catch {
-            //     throw error
-            // }
+             do {
+                 try await fcmMessaging.subscribe(toTopic: "reminders")
+             } catch {
+                 throw error
+             }
             
-            // let tokenData = TokenData(fcmToken: token, userID: updatedUser.userID)
+             let tokenData = TokenData(fcmToken: token, userID: updatedUser.userID)
             
             // Add the user document and get the auto-generated ID
             let newDocumentReference = try await db.collection("users").addDocument(from: updatedUser)

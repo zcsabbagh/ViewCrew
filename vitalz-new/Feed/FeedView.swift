@@ -30,20 +30,18 @@ struct Feed: View {
                             print("Selected post: \(newPost?.postID)")
                             print("Selected post ID: ")
                         }
+                        .gesture(
+                            TapGesture(count: 2)
+                                .onEnded {
+                                    handleEmojiSelection("❤️")
+                                }
+                        )
                     
                     EmojiScroll(selectedEmoji: $selectedEmoji)
                         .zIndex(1)
                         .padding(.top, 600)
                         .onChange(of: selectedEmoji) { newEmoji in
-                            if !newEmoji.isEmpty {
-                                showEmojiShower = true
-                                viewModel.addReaction(to: selectedPost?.postID ?? "test", emoji: selectedEmoji)
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                                    if let emojiShowerVC = (UIApplication.shared.windows.first?.rootViewController?.presentedViewController as? EmojiShowerViewController) {
-                                        emojiShowerVC.fadeOutEmojiShower()
-                                    }
-                                }
-                            }
+                            handleEmojiSelection(newEmoji)
                         }
                 }
                 .padding(.bottom, 50)
@@ -73,6 +71,20 @@ struct Feed: View {
         }
         .alert("Thank you! Post reported.", isPresented: $showReportConfirmation) {
             Button("OK", role: .cancel) {}
+        }
+    }
+
+    private func handleEmojiSelection(_ emoji: String) {
+        if !emoji.isEmpty {
+            showEmojiShower = true
+            viewModel.addReaction(to: selectedPost?.postID ?? "test", emoji: emoji)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                if let emojiShowerVC = (UIApplication.shared.windows.first?.rootViewController?.presentedViewController as? EmojiShowerViewController) {
+                    emojiShowerVC.fadeOutEmojiShower()
+                }
+                showEmojiShower = false
+                selectedEmoji = ""
+            }
         }
     }
 }
