@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2F016E3D2C3D17F900D55038"
-               BuildableName = "vitalz-new.app"
-               BlueprintName = "vitalz-new"
-               ReferencedContainer = "container:vitalz-new.xcodeproj">
+               BuildableName = "ViewCrew.app"
+               BlueprintName = "ViewCrew"
+               ReferencedContainer = "container:ViewCrew.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -44,9 +44,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2F016E3D2C3D17F900D55038"
-            BuildableName = "vitalz-new.app"
-            BlueprintName = "vitalz-new"
-            ReferencedContainer = "container:vitalz-new.xcodeproj">
+            BuildableName = "ViewCrew.app"
+            BlueprintName = "ViewCrew"
+            ReferencedContainer = "container:ViewCrew.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <EnvironmentVariables>
@@ -83,9 +83,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2F016E3D2C3D17F900D55038"
-            BuildableName = "vitalz-new.app"
-            BlueprintName = "vitalz-new"
-            ReferencedContainer = "container:vitalz-new.xcodeproj">
+            BuildableName = "ViewCrew.app"
+            BlueprintName = "ViewCrew"
+            ReferencedContainer = "container:ViewCrew.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

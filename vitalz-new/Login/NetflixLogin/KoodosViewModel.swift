@@ -8,13 +8,13 @@
 import SwiftUI
 
 class KoodosViewModel: ObservableObject {
-    @AppStorage("netflixCountry") var country: String?
-    @AppStorage("netflixProfileId") var profileId: String?
-    @AppStorage("netflixId") var netflixId: String?
-    @AppStorage("secureNetflixId") var secureNetflixId: String?
-    @AppStorage("netflixEmail") var email: String?
-    @AppStorage("netflixPassword") var password: String?
-    @AppStorage("netflixAuthURL") var authURL: String?
+    @AppStorage("netflix_country") var country: String?
+    @AppStorage("netflix_profileId") var profileId: String?
+    @AppStorage("netflix_netflixId") var netflixId: String?
+    @AppStorage("netflix_secureNetflixId") var secureNetflixId: String?
+    @AppStorage("netflix_email") var email: String?
+    @AppStorage("netflix_password") var password: String?
+    @AppStorage("netflix_authURL") var authURL: String?
     @Published var signInReady: Bool = false
 
     func fetchCountry(completion: @escaping (String) -> Void) {

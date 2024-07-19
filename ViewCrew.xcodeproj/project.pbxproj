@@ -128,7 +128,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2F016E3E2C3D17F900D55038 /* vitalz-new.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "vitalz-new.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2F016E3E2C3D17F900D55038 /* ViewCrew.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ViewCrew.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F016E412C3D17F900D55038 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		2F016E432C3D17F900D55038 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		2F016E452C3D17FA00D55038 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -259,7 +259,7 @@
 		2F016E3F2C3D17F900D55038 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2F016E3E2C3D17F900D55038 /* vitalz-new.app */,
+				2F016E3E2C3D17F900D55038 /* ViewCrew.app */,
 				2FBD7FC22C48D2610031FF8E /* StocksWidget2Extension.appex */,
 			);
 			name = Products;
@@ -526,9 +526,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		2F016E3D2C3D17F900D55038 /* vitalz-new */ = {
+		2F016E3D2C3D17F900D55038 /* ViewCrew */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2F016E512C3D17FA00D55038 /* Build configuration list for PBXNativeTarget "vitalz-new" */;
+			buildConfigurationList = 2F016E512C3D17FA00D55038 /* Build configuration list for PBXNativeTarget "ViewCrew" */;
 			buildPhases = (
 				2F016E3A2C3D17F900D55038 /* Sources */,
 				2F016E3B2C3D17F900D55038 /* Frameworks */,
@@ -540,7 +540,7 @@
 			dependencies = (
 				2FBD7FD02C48D2620031FF8E /* PBXTargetDependency */,
 			);
-			name = "vitalz-new";
+			name = ViewCrew;
 			packageProductDependencies = (
 				2F016E7A2C3D19FC00D55038 /* SDWebImageSwiftUI */,
 				2F016E812C3D295800D55038 /* FirebaseAuth */,
@@ -552,7 +552,7 @@
 				2F8BCD862C3DA59C004177B5 /* VTabView */,
 			);
 			productName = "vitalz-new";
-			productReference = 2F016E3E2C3D17F900D55038 /* vitalz-new.app */;
+			productReference = 2F016E3E2C3D17F900D55038 /* ViewCrew.app */;
 			productType = "com.apple.product-type.application";
 		};
 		2FBD7FC12C48D2610031FF8E /* StocksWidget2Extension */ = {
@@ -593,7 +593,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 2F016E392C3D17F800D55038 /* Build configuration list for PBXProject "vitalz-new" */;
+			buildConfigurationList = 2F016E392C3D17F800D55038 /* Build configuration list for PBXProject "ViewCrew" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -611,7 +611,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2F016E3D2C3D17F900D55038 /* vitalz-new */,
+				2F016E3D2C3D17F900D55038 /* ViewCrew */,
 				2FBD7FC12C48D2610031FF8E /* StocksWidget2Extension */,
 			);
 		};
@@ -982,7 +982,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2F016E392C3D17F800D55038 /* Build configuration list for PBXProject "vitalz-new" */ = {
+		2F016E392C3D17F800D55038 /* Build configuration list for PBXProject "ViewCrew" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2F016E4F2C3D17FA00D55038 /* Debug */,
@@ -991,7 +991,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2F016E512C3D17FA00D55038 /* Build configuration list for PBXNativeTarget "vitalz-new" */ = {
+		2F016E512C3D17FA00D55038 /* Build configuration list for PBXNativeTarget "ViewCrew" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2F016E522C3D17FA00D55038 /* Debug */,

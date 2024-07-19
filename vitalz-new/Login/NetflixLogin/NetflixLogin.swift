@@ -105,25 +105,6 @@ struct NetflixLoginView: View {
         task.resume()
     }
 
-    func requestContactsAccess() {
-        let store = CNContactStore()
-        store.requestAccess(for: .contacts) { granted, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    print("Error requesting access to contacts: \(error)")
-                    isContactAccessGranted = false
-                } else {
-                    print("Access to contacts granted: \(granted)")
-                    isContactAccessGranted = granted
-                    if granted == true {
-                        Task {
-                            await contactUploadViewModel.fetchAndProcessContactNumbers(userID: UserDefaults.standard.string(forKey: "userID") ?? "test")
-                        }
-                       
-                    }
-                }
-            }
-        }
-    }
+    
 
 }

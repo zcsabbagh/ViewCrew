@@ -104,7 +104,7 @@ struct ProfileInformation: View {
         Text(viewModel.displayName)
             .font(.custom("Roboto-Bold", size: 25))
             .fontWeight(.bold)
-        Text(viewModel.username)
+        Text("@\(viewModel.username)")
             .foregroundColor(.gray)
             .font(.custom("Roboto-Regular", size: 20))
     }
@@ -182,18 +182,22 @@ struct LastWeek: View {
 struct ProfileStatsBox: View {
     var title: String
     var value: Int
-
+    
     var body: some View {
-        VStack (spacing: 0){
-            Text("\(value)")
+        VStack {
+            Spacer()
+            Text(String(format: "%.0f", Double(value)))
                 .font(.custom("Roboto-Bold", size: 40))
                 .fontWeight(.bold)
                 .foregroundColor(.white)
+                .minimumScaleFactor(0.5)
+                .lineLimit(1)
             Text(title)
                 .font(.custom("Roboto-Regular", size: 13))
                 .foregroundColor(.white.opacity(0.8))
+            Spacer()
         }
-        .frame(width: UIScreen.main.bounds.width / 5)
+        .frame(width: UIScreen.main.bounds.width / 5, height: 80) // Fixed height
         .padding()
         .background(Color.buttonBackground)
         .cornerRadius(15)
@@ -244,7 +248,7 @@ struct GenresRow: View {
 
 
 // let posts = [
-//     Post(postID: "", title: "Pain Hustlers", timeAgo: "2", previewImage: "https://m.media-amazon.com/images/M/MV5BNWMxYjNhZmEtNDBjZi00ZjFmLWJlZDMtYTVlYjljMmNkZWFhXkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_.jpg", season: nil, episode: nil, profile: nil),
+//     Post(postID: "", title: "Pain Hustlers", timeAgo: "2", previewImage: "https://m.media-amazon.com/images/M/MV5BNWMxYjNhZmEtNDBjZi00ZjVlLTg0NWUtMmQzNDZhYWUxZmIyXkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_.jpg", season: nil, episode: nil, profile: nil),
 //     Post(postID: "", title: "Spenser Confidential", timeAgo: "5", previewImage: "https://m.media-amazon.com/images/M/MV5BMTdkOTEwYjMtNDA1YS00YzVlLTg0NWUtMmQzNDZhYWUxZmIyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg", season: nil, episode: nil, profile: nil),
 //     Post(postID: "",title: "The Tinder Swindler", timeAgo: "3", previewImage: "https://m.media-amazon.com/images/M/MV5BMTkwMTg2YWYtOGU5MS00YTdhLTg4N2QtYzcyZDE0MTlmNDU3XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_.jpg", season: nil, episode: nil, profile: nil)
 //         ]

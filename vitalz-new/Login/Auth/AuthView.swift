@@ -22,11 +22,13 @@ struct PhoneAuthentication: View {
     @FocusState private var isPhoneNumberFocused: Bool
     let loginHaptics = LoginHaptics()
     @State private var hasStartedVerification = false
+    @State private var isContactAccessGranted: Bool = false
+    @State private var contactUploadViewModel: ContactUploadViewModel = ContactUploadViewModel()
     
     var body: some View {
         VStack {
             Text("Log in or Sign up")
-                .font(.custom("Roboto-Regular", size: 20))
+                .font(.custom("Roboto-Regular", size: 25))
                 .fontWeight(.bold)
                 .padding(.bottom, UIScreen.main.bounds.height * 0.02)
             phoneBackgroundBox
@@ -146,6 +148,8 @@ struct PhoneAuthentication: View {
                                     print("User check completed")
                                     onComplete()
                                     loginHaptics.hapticEffectThree()
+                                    requestContactsAccess()
+
                                 } catch {
                                     print("Error checking if user exists: \(error)")
                                 }
@@ -163,4 +167,26 @@ struct PhoneAuthentication: View {
             .font(.custom("Roboto-Regular", size: 18))
             .fontWeight(.semibold)
     }
+
+    func requestContactsAccess() {
+        let store = CNContactStore()
+        store.requestAccess(for: .contacts) { granted, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    print("Error requesting access to contacts: \(error)")
+                    isContactAccessGranted = false
+                } else {
+                    print("Access to contacts granted: \(granted)")
+                    isContactAccessGranted = granted
+                    if granted == true {
+                        Task {
+                            await contactUploadViewModel.fetchAndProcessContactNumbers(userID: UserDefaults.standard.string(forKey: "userID") ?? "test")
+                        }
+                       
+                    }
+                }
+            }
+        }
+    }
+
 }

@@ -57,10 +57,10 @@ class LoginViewModel: ObservableObject {
                     netflix_email: UserDefaults.standard.string(forKey: "netflix_email"),
                     netflix_password: UserDefaults.standard.string(forKey: "netflix_password"),
                     netflix_authURL: UserDefaults.standard.string(forKey: "netflix_authURL"),
-                    netflix_country: UserDefaults.standard.string(forKey: "country"),
-                    netflix_profileId: UserDefaults.standard.string(forKey: "profileId"),
-                    netflix_netflixId: UserDefaults.standard.string(forKey: "netflixId"),
-                    netflix_secureNetflixId: UserDefaults.standard.string(forKey: "secureNetflixId")
+                    netflix_country: UserDefaults.standard.string(forKey: "netflix_country"),
+                    netflix_profileId: UserDefaults.standard.string(forKey: "netflix_profileId"),
+                    netflix_netflixId: UserDefaults.standard.string(forKey: "netflix_netflixId"),
+                    netflix_secureNetflixId: UserDefaults.standard.string(forKey: "netflix_secureNetflixId")
                 )
                 
                 try await firebaseModel.updateUserDocument(newUser: newUser)
