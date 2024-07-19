@@ -250,7 +250,7 @@
 			isa = PBXGroup;
 			children = (
 				2F016E402C3D17F900D55038 /* ViewCrew */,
-				2FBD7FC52C48D2610031FF8E /* StreamingWidget */,
+				2FBD7FC52C48D2610031FF8E /* StocksWidget2 */,
 				2F016E592C3D181500D55038 /* Frameworks */,
 				2F016E3F2C3D17F900D55038 /* Products */,
 			);
@@ -432,7 +432,7 @@
 			path = Haptics;
 			sourceTree = "<group>";
 		};
-		2FBD7FC52C48D2610031FF8E /* StreamingWidget */ = {
+		2FBD7FC52C48D2610031FF8E /* StocksWidget2 */ = {
 			isa = PBXGroup;
 			children = (
 				2FBD7FC62C48D2610031FF8E /* WidgetBundle.swift */,
@@ -444,7 +444,7 @@
 				2FBD7FCC2C48D2620031FF8E /* Assets.xcassets */,
 				2FBD7FCE2C48D2620031FF8E /* Info.plist */,
 			);
-			path = StreamingWidget;
+			path = StocksWidget2;
 			sourceTree = "<group>";
 		};
 		2FBD7FE42C4A65D30031FF8E /* Roboto */ = {
@@ -869,13 +869,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"vitalz-new/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"ViewCrew/Preview Content\"";
 				DEVELOPMENT_TEAM = 5A345X4X73;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "vitalz-new/Info.plist";
+				INFOPLIST_FILE = ViewCrew/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INFOPLIST_KEY_NSContactsUsageDescription = "Vitals needs access to your contacts to help you find friends";
+				INFOPLIST_KEY_NSContactsUsageDescription = "ViewCrew needs access to your contacts to help you find friends";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -901,13 +901,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"vitalz-new/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"ViewCrew/Preview Content\"";
 				DEVELOPMENT_TEAM = 5A345X4X73;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "vitalz-new/Info.plist";
+				INFOPLIST_FILE = ViewCrew/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INFOPLIST_KEY_NSContactsUsageDescription = "Vitals needs access to your contacts to help you find friends";
+				INFOPLIST_KEY_NSContactsUsageDescription = "ViewCrew needs access to your contacts to help you find friends";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
