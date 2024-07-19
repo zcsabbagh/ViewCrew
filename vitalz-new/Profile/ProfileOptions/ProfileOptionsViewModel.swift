@@ -18,7 +18,7 @@ class ProfileOptionsViewModel: ObservableObject {
     
     func signOut() {
         do {
-            try Auth.auth().signOut()
+            UserDefaults.standard.removeObject(forKey: "userID")
             UserDefaults.standard.set(false, forKey: "isLoggedIn")
             UserDefaults.standard.set(LoginState.authentication.rawValue, forKey: "lastLoginState")
         } catch let signOutError as NSError {
@@ -30,8 +30,7 @@ class ProfileOptionsViewModel: ObservableObject {
     /* deletes user and removes from all their friends' friends list */
     func deleteAccount() {
        
-        guard let user = Auth.auth().currentUser else { return }
-        let userId = user.uid
+        let userId = UserDefaults.standard.string(forKey: "userID") ?? "test"
         
         let db = Firestore.firestore()
         
@@ -57,20 +56,12 @@ class ProfileOptionsViewModel: ObservableObject {
                     }
                 }
                 
-                // Delete user authentication
-                user.delete { error in
-                    if let error = error {
-                        print("Error deleting user: \(error)")
-                    } else {
-                        do {
-                            try Auth.auth().signOut()
-                            UserDefaults.standard.set(false, forKey: "isLoggedIn")
-                            UserDefaults.standard.set(LoginState.authentication.rawValue, forKey: "lastLoginState")
-                        } catch {
-                            print("Error signing out after account deletion: \(error)")
-                        }
-                    }
-                }
+
+                UserDefaults.standard.removeObject(forKey: "userID")
+                UserDefaults.standard.set(false, forKey: "isLoggedIn")
+                UserDefaults.standard.set(LoginState.authentication.rawValue, forKey: "lastLoginState")
+            
+                
             }
         }
     }

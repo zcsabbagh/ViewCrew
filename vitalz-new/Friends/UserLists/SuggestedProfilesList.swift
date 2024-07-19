@@ -18,9 +18,8 @@ struct AddContactsListView: View {
     var body: some View {
         LazyVStack {
             Text("SUGGESTIONS")
-                .font(.subheadline)
+                .font(.custom("Roboto-Regular", size: 15))
                 .foregroundColor(.gray)
-                .fontWeight(.light)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 5)
             if searchText != "" {
@@ -117,10 +116,10 @@ struct AddContact: View {
             // Name and Friends Info
             VStack(alignment: .leading, spacing: 6) {
                 Text(person.name)
-                    .font(.headline)
+                    .font(.custom("Roboto-Medium", size: 17))
                     .foregroundColor(.white)
                 Text("\(person.friends.count) \(person.friends.count == 1 ? "FRIEND" : "FRIENDS") ON VITAL")
-                    .font(.caption)
+                    .font(.custom("Roboto-Regular", size: 10))
                     .foregroundColor(.gray)
             }
             .padding(.leading, 8)

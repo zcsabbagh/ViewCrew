@@ -80,7 +80,7 @@ class ContactUploadViewModel: ObservableObject {
         DispatchQueue.main.async { [weak self] in
             print("Should call checkAndCreate")
             self?.strippedContactList = processedNumbers
-            self?.checkAndCreateContactDocuments(userID: Auth.auth().currentUser?.uid ?? "") {
+            self?.checkAndCreateContactDocuments(userID: userID) {
                 self?.checkPhoneNumberExistenceInUsersCollection() {
                     self?.sortStrippedToFirebaseDict() {
                         Task {
@@ -264,7 +264,7 @@ class ContactUploadViewModel: ObservableObject {
         var suggestions: [String] = []
         var mutualFriendsCount: [String: Int] = [:]
         let db = Firestore.firestore()
-        let userID = Auth.auth().currentUser?.uid ?? "test"
+        let userID = UserDefaults.standard.string(forKey: "userID") ?? "test"
         // Fetch current user's friends, contact list, and blocked users
         db.collection("users").document(userID).getDocument { [weak self] (documentSnapshot, error) in
             guard let self = self, let userData = documentSnapshot?.data(), error == nil else { return }

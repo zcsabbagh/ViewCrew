@@ -21,7 +21,7 @@ struct ProfileView: View {
             RecentlyWatched(posts: viewModel.recentWatches)
             
             // Last week statistics box
-            LastWeek(stats: viewModel.lastWeekStats)
+            LastWeek(viewModel: viewModel)
             
             // Scroll of user's genres
             GenresScroll(viewModel: viewModel)
@@ -47,6 +47,7 @@ struct ProfileTopPanel: View {
     var body: some View {
         HStack {
             Button(action: {
+                HapticFeedbackGenerator.shared.generateHapticMedium()
                 // Share action
             }) {
                 Image(systemName: "square.and.arrow.up")
@@ -60,6 +61,7 @@ struct ProfileTopPanel: View {
             Spacer()
             Button(action: {
                 showingProfileOptions = true
+                HapticFeedbackGenerator.shared.generateHapticMedium()
             }) {
                 Image(systemName: "gearshape.fill")
                     .resizable()
@@ -83,31 +85,29 @@ struct ProfileInformation: View {
     @ObservedObject var viewModel: ProfileViewModel
 
     var body: some View {
+        VStack {
         HStack (spacing: 10) {
-            AsyncImage(url: URL(string: viewModel.profilePicture)) { image in
-                image.resizable()
-                    .aspectRatio(contentMode: .fill)
-            } placeholder: {
-                ProgressView()
-            }
-            .frame(width: 60, height: 60)
-            .cornerRadius(16)
-            .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color.white, lineWidth: 1)
-            )
-            
-            VStack {
-                Text(viewModel.displayName)
-                    .font(.title)
-                    .fontWeight(.bold)
-                Text(viewModel.username)
-                    .foregroundColor(.gray)
-                
-            }
+            WebImage(url: URL(string: viewModel.profilePicture))
+                .resizable()
+                .indicator(.activity) // Show activity indicator while loading
+                .transition(.fade(duration: 0.5)) // Fade transition with duration
+                .scaledToFill()
+                .frame(width: 60, height: 60)
+                .cornerRadius(16)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(Color.white, lineWidth: 1)
+                )
             .padding(.leading, 5)
             
         }
+        Text(viewModel.displayName)
+            .font(.custom("Roboto-Bold", size: 25))
+            .fontWeight(.bold)
+        Text(viewModel.username)
+            .foregroundColor(.gray)
+            .font(.custom("Roboto-Regular", size: 20))
+    }
         .padding()
     }
 
@@ -119,7 +119,7 @@ struct RecentlyWatched: View {
     var body: some View {
         VStack (spacing: -13) {
             Text("recently watched")
-                .font(.system(size: UIFont.preferredFont(forTextStyle: .largeTitle).pointSize * 1.3))
+                .font(.custom("Roboto-Bold", size: 45))
                 .foregroundColor(Color.red.opacity(0.8))
                 .fontWeight(.bold)
             ScrollView(.horizontal, showsIndicators: false) {
@@ -141,27 +141,18 @@ struct ProfileMovie: View {
 
     var body: some View {
         VStack {
-            AsyncImage(url: URL(string: movie.previewImage ?? "")) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 150, height: 200)
-                    .background(Color.white)
-                    .cornerRadius(25)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 25)
-                            .stroke(Color.buttonBackground, lineWidth: 0.5)
-                    )
-            } placeholder: {
-                ProgressView()
-                    .frame(width: 150, height: 200)
-                    .background(Color.white)
-                    .cornerRadius(25)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 25)
-                            .stroke(Color.buttonBackground, lineWidth: 0.5)
-                    )
-            }
+            WebImage(url: URL(string: movie.previewImage ?? ""))
+                .resizable()
+                .indicator(.activity) // Show activity indicator while loading
+                .transition(.fade(duration: 0.5)) // Fade transition with duration
+                .scaledToFill()
+                .frame(width: 150, height: 200)
+                .background(Color.white)
+                .cornerRadius(25)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 25)
+                        .stroke(Color.buttonBackground, lineWidth: 0.5)
+                )
         }
             
     }
@@ -170,18 +161,18 @@ struct ProfileMovie: View {
 
 
 struct LastWeek: View {
-    var stats: [Int]
+    @ObservedObject var viewModel: ProfileViewModel
 
     var body: some View {
         VStack (spacing: 10) {
             Text("LAST WEEK")
-                .font(.title2)
+                .font(.custom("Roboto-Bold", size: 25))
                 .foregroundColor(.gray)
                 .fontWeight(.bold)
             HStack {
-                ProfileStatsBox(title: "min watched", value: stats[0])
-                ProfileStatsBox(title: "episodes", value: stats[1])
-                ProfileStatsBox(title: "movies", value: stats[2])
+                ProfileStatsBox(title: "min watched", value: viewModel.lastWeekStats[0])
+                ProfileStatsBox(title: "episodes", value: viewModel.lastWeekStats[1])
+                ProfileStatsBox(title: "movies", value: viewModel.lastWeekStats[2])
             }
         }
         .padding()
@@ -195,11 +186,11 @@ struct ProfileStatsBox: View {
     var body: some View {
         VStack (spacing: 0){
             Text("\(value)")
-                .font(.largeTitle)
+                .font(.custom("Roboto-Bold", size: 40))
                 .fontWeight(.bold)
                 .foregroundColor(.white)
             Text(title)
-                .font(.caption)
+                .font(.custom("Roboto-Regular", size: 13))
                 .foregroundColor(.white.opacity(0.8))
         }
         .frame(width: UIScreen.main.bounds.width / 5)
@@ -257,4 +248,3 @@ struct GenresRow: View {
 //     Post(postID: "", title: "Spenser Confidential", timeAgo: "5", previewImage: "https://m.media-amazon.com/images/M/MV5BMTdkOTEwYjMtNDA1YS00YzVlLTg0NWUtMmQzNDZhYWUxZmIyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg", season: nil, episode: nil, profile: nil),
 //     Post(postID: "",title: "The Tinder Swindler", timeAgo: "3", previewImage: "https://m.media-amazon.com/images/M/MV5BMTkwMTg2YWYtOGU5MS00YTdhLTg4N2QtYzcyZDE0MTlmNDU3XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_.jpg", season: nil, episode: nil, profile: nil)
 //         ]
-

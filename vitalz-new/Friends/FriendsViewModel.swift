@@ -48,24 +48,35 @@ class NewNewFriendsViewModel: ObservableObject {
     @Published var allRequests: [String] = []
     @Published var friendsToRemove: [String] = []
     
+    @Published var friendUserIDs: [String] = []
+    @Published var friendDisplayNames: [String] = []
     
     @Published var incomingRequests: [PersonToAdd] = []
     
-    @State private var REQUEST_LIMIT: Int = 50 // max num of results to show
+    private let REQUEST_LIMIT: Int = 50 // max num of results to show
     
     init() {
+        // Load friendUserIDs and friendDisplayNames from UserDefaults
+        self.friendUserIDs = UserDefaults.standard.array(forKey: "friendUserIDs") as? [String] ?? []
+        self.friendDisplayNames = UserDefaults.standard.array(forKey: "friendDisplayNames") as? [String] ?? []
         
         /* get user's info */
         // modify this next line in case it can't find auth
-        self.userID = Auth.auth().currentUser?.uid ?? "XwpBrxfjzaksc6hUJZPz"
-        createUserFromUserID(Auth.auth().currentUser?.uid ?? "XwpBrxfjzaksc6hUJZPz") { personToAdd in
+        // set self.userID to the userID value of userdefaults
+        self.userID = UserDefaults.standard.string(forKey: "userID") ?? "XwpBrxfjzaksc6hUJZPz"
+        createUserFromUserID(self.userID) { personToAdd in
             if let personToAdd = personToAdd {
                 self.userProfile = personToAdd
                 self.generateFriendSuggestions()
                 self.generateContactSuggestions()
                 self.createUsersFromUserIDs(self.userProfile.friends) { friendProfiles in
                     self.friendProfiles = friendProfiles
+                    self.friendUserIDs = friendProfiles.map { $0.userID ?? "" }
+                    self.friendDisplayNames = friendProfiles.map { $0.name }
                     
+                    // Save updated friendUserIDs and friendDisplayNames to UserDefaults
+                    UserDefaults.standard.set(self.friendUserIDs, forKey: "friendUserIDs")
+                    UserDefaults.standard.set(self.friendDisplayNames, forKey: "friendDisplayNames")
                 }
             }
         }
@@ -81,7 +92,7 @@ class NewNewFriendsViewModel: ObservableObject {
      */
     
     func removeFriends() {
-        let currentUserID = Auth.auth().currentUser?.uid ?? "BYu4pymRieSFI567fZm5ZR6eh5c2"
+        let currentUserID = self.userID
         let db = Firestore.firestore()
         let userQuery = db.collection("users").whereField("userID", isEqualTo: currentUserID)
         
@@ -205,6 +216,7 @@ class NewNewFriendsViewModel: ObservableObject {
         db.collection("users").whereField("userID", isEqualTo: userID).getDocuments { (querySnapshot, error) in
             if let querySnapshot = querySnapshot, !querySnapshot.documents.isEmpty {
                 let friends = querySnapshot.documents.first?.data()["friends"] as? [String] ?? []
+                let friendUserIds = friends
                 completion(friends)
             } else {
                 print("Document does not exist or error fetching friends for userID: \(userID)")
@@ -672,7 +684,7 @@ class NewNewFriendsViewModel: ObservableObject {
     
     /* function to find document IDs of all users that are blocked or blockedBy user */
     func findBlockedUsers() {
-        let currentUserID = Auth.auth().currentUser?.uid ?? "BYu4pymRieSFI567fZm5ZR6eh5c2"
+        let currentUserID = self.userID
         let db = Firestore.firestore()
         
         db.collection("users").document(currentUserID).getDocument { (document, error) in
@@ -691,7 +703,7 @@ class NewNewFriendsViewModel: ObservableObject {
     
     /* function to mutually block users */
     func blockUser(otherUserID: String) {
-        let currentUserID = Auth.auth().currentUser?.uid ?? "BYu4pymRieSFI567fZm5ZR6eh5c2"
+        let currentUserID = self.userID
         let db = Firestore.firestore()
         
         // Add current user to the 'blockedBy' array of the other user
@@ -742,7 +754,7 @@ class NewNewFriendsViewModel: ObservableObject {
     
     /* function to remove a user from another user's friends list */
     func unfriendUser(otherUserID: String) {
-        let currentUserID = Auth.auth().currentUser?.uid ?? "BYu4pymRieSFI567fZm5ZR6eh5c2"
+        let currentUserID = self.userID
         let db = Firestore.firestore()
         
         // Remove current user from the 'friends' array of the other user

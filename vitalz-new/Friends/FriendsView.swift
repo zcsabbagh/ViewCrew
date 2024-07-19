@@ -98,7 +98,7 @@ public struct FriendView: View {
                     isContactAccessGranted = granted
                     if granted == true {
                         Task {
-                            await contactUploadViewModel.fetchAndProcessContactNumbers(userID: Auth.auth().currentUser?.uid ?? "")
+                            await contactUploadViewModel.fetchAndProcessContactNumbers(userID: UserDefaults.standard.string(forKey: "userID") ?? "test")
                         }
                        
                     }
@@ -109,7 +109,7 @@ public struct FriendView: View {
     
     public var friendsTitle: some View {
         Text("Friends")
-            .font(.title)
+            .font(.custom("Roboto-Bold", size: 25))
             .padding(.top, 10)
             .foregroundColor(.white)
             .fontWeight(.bold)
@@ -139,6 +139,7 @@ struct SettingsAlertView: View {
                 Image(systemName: "exclamationmark.triangle.fill")
                     .foregroundColor(.red)
                 Text("Change in Settings")
+                    .font(.custom("Roboto-Regular", size: 17))
                     .underline()
                     .foregroundColor(.red)
                     .font(.headline)
@@ -146,6 +147,7 @@ struct SettingsAlertView: View {
             .padding(.top, 10)
             
             Text("Sync your contacts to know which of your friends are already here.")
+                .font(.custom("Roboto-Regular", size: 12))
                 .foregroundColor(.black)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 10)
@@ -153,8 +155,10 @@ struct SettingsAlertView: View {
             
             Button(action: {
                 UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                HapticFeedbackGenerator.shared.generateHapticLight()
             }) {
                 Text("Allow contacts")
+                    .font(.custom("Roboto-Regular", size: 12))
                     .foregroundColor(.black)
                     .padding()
                     .background(Color.white)
@@ -199,13 +203,15 @@ struct ClassySearchBar: View {
                             .padding(.leading, 10)
                         if searchText.isEmpty {
                             Text("Search")
-                            .foregroundColor(.white)
+                                .font(.custom("Roboto-Regular", size: 15))
+                                .foregroundColor(.white)
                         }
 
                         Spacer()
                         if !searchText.isEmpty {
                             Button(action: {
                                 self.searchText = ""
+                                HapticFeedbackGenerator.shared.generateHapticLight()
                             }) {
                                 Image(systemName: "xmark.circle.fill")
                                     .foregroundColor(Color.gray)

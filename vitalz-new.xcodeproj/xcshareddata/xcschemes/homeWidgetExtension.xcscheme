@@ -17,7 +17,7 @@
                BlueprintIdentifier = "2F016E572C3D181500D55038"
                BuildableName = "homeWidgetExtension.appex"
                BlueprintName = "homeWidgetExtension"
-               ReferencedContainer = "container:vitalz-new.xcodeproj">
+               ReferencedContainer = "container:netbuds.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -31,7 +31,7 @@
                BlueprintIdentifier = "2F016E3D2C3D17F900D55038"
                BuildableName = "vitalz-new.app"
                BlueprintName = "vitalz-new"
-               ReferencedContainer = "container:vitalz-new.xcodeproj">
+               ReferencedContainer = "container:netbuds.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -62,7 +62,7 @@
             BlueprintIdentifier = "2F016E3D2C3D17F900D55038"
             BuildableName = "vitalz-new.app"
             BlueprintName = "vitalz-new"
-            ReferencedContainer = "container:vitalz-new.xcodeproj">
+            ReferencedContainer = "container:netbuds.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <EnvironmentVariables>
@@ -98,7 +98,7 @@
             BlueprintIdentifier = "2F016E3D2C3D17F900D55038"
             BuildableName = "vitalz-new.app"
             BlueprintName = "vitalz-new"
-            ReferencedContainer = "container:vitalz-new.xcodeproj">
+            ReferencedContainer = "container:netbuds.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -83,6 +83,8 @@ struct Provider: AppIntentTimelineProvider {
             previewImage: postData.previewImage,
             season: postData.season,
             episode: postData.episode,
+            date: postData.date,
+            bookmark: postData.bookmark,
             profile: postData.profile.map { Profile(username: $0.username, name: $0.name, profileImage: $0.profileImage) }
         )
     }
@@ -95,6 +97,8 @@ struct Provider: AppIntentTimelineProvider {
         let previewImage: String?
         let season: String?
         let episode: String?
+        let date: String?
+        let bookmark: Int?
         let profile: ProfileResponse?
     }
 

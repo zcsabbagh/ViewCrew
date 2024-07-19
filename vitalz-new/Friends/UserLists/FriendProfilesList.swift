@@ -19,9 +19,8 @@ struct FriendsListView: View {
 
             if viewModel.friendProfiles.count > 0 || viewModel.matchedFriends.count > 0 {
                 Text("FRIENDS")
-                    .font(.subheadline)
+                    .font(.custom("Roboto-Regular", size: 15))
                     .foregroundColor(.gray)
-                    .fontWeight(.light)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.leading, 5)
             }
@@ -96,11 +95,11 @@ struct Friend: View {
             // Name and Friends Info
             VStack(alignment: .leading, spacing: 6) {
                 Text(person.name)
-                    .font(.title3)
+                    .font(.custom("Roboto-Medium", size: 17))
                     .foregroundColor(.white)
                     .fontWeight(.semibold)
                 Text(person.username ?? person.name.lowercased())
-                    .font(.subheadline)
+                    .font(.custom("Roboto-Light", size: 12))
                     .foregroundColor(.gray)
                     .fontWeight(.light)
             }
@@ -112,7 +111,7 @@ struct Friend: View {
                 showActionSheet = true
             }) {
                 Image(systemName: "ellipsis")
-                    .font(.system(size: 15))
+                    .font(.custom("Roboto-Regular", size: 15))
                     .foregroundColor(.white)
                     .padding(10)
                     .background(Color.buttonBackground)
@@ -121,15 +120,19 @@ struct Friend: View {
             }
             .actionSheet(isPresented: $showActionSheet) {
                 ActionSheet(
-                    title: Text("Options"),
+                    title: Text("Options")
+                        .font(.custom("Roboto-Regular", size: 17)),
                     buttons: [
-                        .default(Text("Unfriend")) {
+                        .default(Text("Unfriend")
+                            .font(.custom("Roboto-Regular", size: 17))) {
                             viewModel.unfriendUser(otherUserID: person.userID ?? "")
                         },
-                        .destructive(Text("Block")) {
+                        .destructive(Text("Block")
+                            .font(.custom("Roboto-Regular", size: 17))) {
                             viewModel.blockUser(otherUserID: person.userID ?? "")
                         },
-                        .cancel()
+                        .cancel(Text("Cancel")
+                            .font(.custom("Roboto-Regular", size: 17)))
                     ]
                 )
             }

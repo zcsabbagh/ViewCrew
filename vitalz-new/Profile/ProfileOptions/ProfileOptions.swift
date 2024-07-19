@@ -20,6 +20,7 @@ struct ProfileOptions: View {
                 Section(header: Text("DANGER ZONE")) {
                     Button(action: {
                         showLogOutAlert = true
+                        HapticFeedbackGenerator.shared.generateHapticMedium()
                     }) {
                         HStack {
                             Image(systemName: "rectangle.portrait.and.arrow.right")
@@ -32,6 +33,7 @@ struct ProfileOptions: View {
                             message: Text("Are you sure you want to log out?"),
                             primaryButton: .destructive(Text("Log Out")) {
                                 viewModel.signOut()
+                                HapticFeedbackGenerator.shared.generateHapticMedium()
                             },
                             secondaryButton: .cancel()
                         )
@@ -39,6 +41,7 @@ struct ProfileOptions: View {
                     
                     Button(action: {
                         showDeleteAccountAlert = true
+                        HapticFeedbackGenerator.shared.generateHapticHeavy()
                     }) {
                         HStack {
                             Image(systemName: "trash")

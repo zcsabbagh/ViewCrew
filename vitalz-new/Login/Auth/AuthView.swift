@@ -26,7 +26,7 @@ struct PhoneAuthentication: View {
     var body: some View {
         VStack {
             Text("Log in or Sign up")
-                .font(.title)
+                .font(.custom("Roboto-Regular", size: 20))
                 .fontWeight(.bold)
                 .padding(.bottom, UIScreen.main.bounds.height * 0.02)
             phoneBackgroundBox
@@ -37,6 +37,7 @@ struct PhoneAuthentication: View {
         .padding(.vertical, UIScreen.main.bounds.height * 0.1)
         .onAppear {
             isPhoneNumberFocused = true
+            HapticFeedbackGenerator.shared.generateHapticMedium()
         }
     }
 
@@ -59,10 +60,10 @@ struct PhoneAuthentication: View {
                 
                 if phoneNumber.isEmpty {
                     Text("10-digit number")
+                        .font(.custom("Roboto-Regular", size: 18))
                         .foregroundColor(.gray.opacity(0.5))
                         .fontWeight(.light)
                         .frame(maxWidth: .infinity)
-                        .font(.title2)
                         .multilineTextAlignment(.center)
                 }
                 phoneNumberField
@@ -81,10 +82,10 @@ struct PhoneAuthentication: View {
                 
                 if verificationCode.isEmpty {
                     Text("4-digit code")
+                        .font(.custom("Roboto-Regular", size: 18))
                         .foregroundColor(phoneNumber == "" ? Color.clear : Color.gray.opacity(0.5))
                         .fontWeight(.light)
                         .frame(maxWidth: .infinity)
-                        .font(.title2)
                         .multilineTextAlignment(.center) // Center the text
                 }
                 verificationCodeField
@@ -97,6 +98,7 @@ struct PhoneAuthentication: View {
 
     var phoneNumberField: some View {
         TextField("", text: $phoneNumber)
+            .font(.custom("Roboto-Regular", size: 18))
             .keyboardType(.numberPad)
             .focused($isPhoneNumberFocused)
             .textContentType(.telephoneNumber)
@@ -115,7 +117,7 @@ struct PhoneAuthentication: View {
             }
             .padding()
             .textFieldStyle(PlainTextFieldStyle())
-            .font(.title2)
+            .font(.custom("Roboto-Regular", size: 18))
             .fontWeight(.semibold)
     }
     
@@ -158,7 +160,7 @@ struct PhoneAuthentication: View {
             }
             .padding()
             .textFieldStyle(PlainTextFieldStyle())
-            .font(.title2)
+            .font(.custom("Roboto-Regular", size: 18))
             .fontWeight(.semibold)
     }
 }

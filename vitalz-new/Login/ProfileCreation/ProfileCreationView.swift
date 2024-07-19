@@ -40,15 +40,18 @@ struct ProfileCreationView: View {
         .sheet(isPresented: $isImagePickerPresented) {
             ImagePicker(selectedImage: $selectedImage)
                 .onChange(of: selectedImage) { _ in
-                    viewModel.uploadImage(image: selectedImage!)
+                    // viewModel.uploadImage(image: selectedImage!)
                 }
+        }
+        .onAppear {
+            HapticFeedbackGenerator.shared.generateHapticMedium()
         }
     }
 
     var createProfileButton: some View {
         Button(action: {
-            viewModel.createUser()
             loginHaptics.hapticEffectThree()
+            viewModel.uploadImage(image: selectedImage!)
         }) {
             Text("create profile")
                 .font(.title2)

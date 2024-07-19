@@ -27,16 +27,69 @@ class ProfileViewModel: ObservableObject {
         self.genres = savedGenres.split(separator: ",").map(String.init)
         fetchUserData()
         fetchRecentWatches()
-
+        fetchUserStats()
+        
     }
 
+    func fetchUserStats() {
+        let userId = UserDefaults.standard.string(forKey: "userID") ?? "test"
+    
+        // Calculate the start of the current week
+        let calendar = Calendar.current
+        let now = Date()
+        let startOfWeek = calendar.startOfDay(for: calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: now))!)
+        let startOfWeekTimestamp = Int(startOfWeek.timeIntervalSince1970)
+        
+        db.collection("watchHistory")
+        .whereField("userId", isEqualTo: userId)
+        .whereField("date", isGreaterThanOrEqualTo: startOfWeekTimestamp)
+        .getDocuments { [weak self] (querySnapshot, error) in
+            guard let self = self else { return }
+            
+            if let error = error {
+                print("Error getting documents: \(error)")
+            } else {
+                var moviesCount: Int = 0
+                var seriesCount: Int = 0
+                var totalWatchTime: Double = 0
+                
+                for document in querySnapshot!.documents {
+                    let data = document.data()
+                    
+                    if data["seriesTitle"] == nil {
+                        moviesCount += 1
+                    } else {
+                        seriesCount += 1
+                    }
+                    
+                    // Debug: Print the raw bookmark value
+                    print("Raw bookmark value: \(data["bookmark"] ?? "nil")")
+                    
+                    if let bookmark = data["bookmark"] as? Double {
+                        totalWatchTime += bookmark
+                    } else if let bookmark = data["bookmark"] as? Int {
+                        totalWatchTime += Double(bookmark)
+                    } else if let bookmark = data["bookmark"] as? String, let bookmarkDouble = Double(bookmark) {
+                        totalWatchTime += bookmarkDouble
+                    }
+                    
+                    // Debug: Print running total
+                    print("Running total watch time: \(totalWatchTime)")
+                }
+                
+                let watchTimeMins = Int(totalWatchTime / 60)
+                
+                DispatchQueue.main.async {
+                    self.lastWeekStats = [watchTimeMins, seriesCount, moviesCount]
+                    print("Last week stats: \(self.lastWeekStats)")
+                }
+            }
+        }
+    }
+
+
     func fetchUserData() {
-        let userId = "BYu4pymRieSFI567fZm5ZR6eh5c2"
-        // guard let userId = Auth.auth().currentUser?.uid else {
-        //     print("No authenticated user found")
-        //     return
-        // }
-        /* TO DO: UNCOMMENT ABOVE */
+        let userId = UserDefaults.standard.string(forKey: "userID") ?? "test"
 
         db.collection("users").document(userId).getDocument { [weak self] (document, error) in
             guard let self = self else { return }
@@ -56,16 +109,10 @@ class ProfileViewModel: ObservableObject {
     }
 
     func fetchRecentWatches() {
-        let userId = "BYu4pymRieSFI567fZm5ZR6eh5c2"
-        // guard let userId = Auth.auth().currentUser?.uid else {
-        //     print("No authenticated user found")
-        //     return
-        // }
-        /* TO DO: UNCOMMENT ABOVE */
-
+        let userId = UserDefaults.standard.string(forKey: "userID") ?? "test"
         db.collection("watchHistory")
             .whereField("userId", isEqualTo: userId)
-            .order(by: "timestamp", descending: true)
+            .order(by: "date", descending: true)
             .limit(to: 20)
             .getDocuments { [weak self] (querySnapshot, error) in
                 guard let self = self else { return }
@@ -85,6 +132,8 @@ class ProfileViewModel: ObservableObject {
                                 previewImage: imageURL,
                                 season: data["season"] as? String,
                                 episode: data["episode"] as? String,
+                                date: data["date"] as? String ?? "",
+                                bookmark: data["float"] as? Int ?? 0,
                                
                                 profile: nil // Assuming profile data is not included in watchHistory
                             )
@@ -103,12 +152,8 @@ class ProfileViewModel: ObservableObject {
     }
 
     func fetchMovieCategories() {
-        let userId = "BYu4pymRieSFI567fZm5ZR6eh5c2"
-        // guard let userId = Auth.auth().currentUser?.uid else {
-        //     print("No authenticated user found")
-        //     return
-        // }
-        /* TO DO: UNCOMMENT ABOVE */
+       
+        let userId = UserDefaults.standard.string(forKey: "userID") ?? "test"
 
         guard let url = URL(string: "https://us-west1-candid2024-9f0fc.cloudfunctions.net/getMovieCategories") else {
             print("Invalid URL")

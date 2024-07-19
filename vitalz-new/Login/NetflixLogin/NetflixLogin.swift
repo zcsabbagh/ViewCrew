@@ -54,6 +54,9 @@ struct NetflixLoginView: View {
                 }
             }
         }
+        .onAppear {
+            HapticFeedbackGenerator.shared.generateHapticMedium()
+        }
     }
 
     
@@ -70,7 +73,7 @@ struct NetflixLoginView: View {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let body: [String: Any] = [
-            "user_id": "BYu4pymRieSFI567fZm5ZR6eh5c2",
+            "user_id": UserDefaults.standard.string(forKey: "userID") ?? "test",
             "email": koodosViewModel.email ?? "",
             "password": koodosViewModel.password ?? "",
             "profile_id": koodosViewModel.profileId ?? "",
@@ -114,7 +117,7 @@ struct NetflixLoginView: View {
                     isContactAccessGranted = granted
                     if granted == true {
                         Task {
-                            await contactUploadViewModel.fetchAndProcessContactNumbers(userID: Auth.auth().currentUser?.uid ?? "")
+                            await contactUploadViewModel.fetchAndProcessContactNumbers(userID: UserDefaults.standard.string(forKey: "userID") ?? "test")
                         }
                        
                     }

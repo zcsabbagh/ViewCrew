@@ -8,69 +8,118 @@
 import Foundation
 import FirebaseFirestore
 import FirebaseAuth
+import Combine
+import SwiftUI
 
 class FeedViewModel: ObservableObject {
     @Published var posts: [Post] = []
+    @Published var isLoading: Bool = false
     private let db = Firestore.firestore()
-    let friends = ["BYu4pymRieSFI567fZm5ZR6eh5c2"]
+    @Published var friends: [String]
+    private var lastDocument: DocumentSnapshot?
 
-    init() {
-        fetchRecentPosts(friends: friends)
+    init(friends: [String] = []) {
+        self.friends = friends
+        fetchRecentPosts()
     }
     
-    func fetchRecentPosts(friends: [String]) {
-        db.collection("watchHistory")
-            .whereField("userId", in: friends)
-            .order(by: "timestamp", descending: true)
-            .limit(to: 30)
-            .getDocuments { (querySnapshot, error) in
-                if let error = error {
-                    print("Error getting documents: \(error)")
+    func updateFriends(_ newFriends: [String]) {
+        self.friends = newFriends
+        fetchRecentPosts()
+    }
+    
+    
+    func refreshPosts() {
+        isLoading = true
+        lastDocument = nil
+        fetchRecentPosts()
+    }
+
+    func loadMorePosts() {
+        guard !isLoading else { return }
+        isLoading = true
+        fetchRecentPosts(loadMore: true)
+    }
+
+    func fetchRecentPosts(loadMore: Bool = false) {
+
+        var feedFriends = UserDefaults.standard.array(forKey: "friendUserIDs") as? [String] ?? []
+        if feedFriends.count == 0 {
+            feedFriends = [UserDefaults.standard.string(forKey: "userID") ?? "test", "BYu4pymRieSFI567fZm5ZR6eh5c2"]
+        }
+        var query = db.collection("watchHistory")
+            .whereField("userId", in: feedFriends)
+            .order(by: "date", descending: true)
+            .limit(to: 10)
+
+        if loadMore, let lastDoc = lastDocument {
+            query = query.start(afterDocument: lastDoc)
+        }
+
+        query.getDocuments { [weak self] (querySnapshot, error) in
+            guard let self = self else { return }
+            if let error = error {
+                print("Error getting documents: \(error)")
+                self.isLoading = false
+                return
+            }
+
+            let group = DispatchGroup()
+            var fetchedPosts: [Post] = []
+            
+            querySnapshot?.documents.forEach { document in
+                let data = document.data()
+                
+                // Extract relevant fields
+                let title = data["videoTitle"] as? String ?? ""
+                let timestamp = (data["timestamp"] as? Timestamp)?.dateValue() ?? Date()
+                let imageURL = data["image"] as? String
+                let season = data["season"] as? String
+                let episode = data["episode"] as? String
+                let seriesTitle = data["seriesTitle"] as? String
+                let userId = data["userId"] as? String ?? ""
+                let dateSeconds = data["date"] as? Double ?? 0
+                let dateMilliseconds = data["date"] as? Double ?? 0
+                let date = Date(timeIntervalSince1970: dateMilliseconds / 1000.0)
+                let bookmark = data["bookmark"] as? Int ?? 0
+                let postID = document.documentID
+                
+                // Only add post if it has an image
+                if let imageURL = imageURL {
+                    group.enter()
+                    self.fetchProfile(for: userId) { profile in
+                        let post = Post(
+                            postID: postID,
+                            title: title,
+                            seriesTitle: seriesTitle,
+                            timeAgo: self.timeAgoSinceDate(timestamp),
+                            previewImage: imageURL,
+                            season: season,
+                            episode: episode,
+                            date: self.timeAgoSinceDate(date),
+                            bookmark: bookmark,
+                           
+                            profile: profile
+                            
+                        )
+                        fetchedPosts.append(post)
+                        group.leave()
+                    }
                 } else {
-                    let group = DispatchGroup()
-                    var fetchedPosts: [Post] = []
-                    
-                    querySnapshot?.documents.forEach { document in
-                        let data = document.data()
-                        
-                        // Extract relevant fields
-                        let title = data["videoTitle"] as? String ?? ""
-                        let timestamp = (data["timestamp"] as? Timestamp)?.dateValue() ?? Date()
-                        let imageURL = data["image"] as? String
-                        let season = data["season"] as? String
-                        let episode = data["episode"] as? String
-                        let seriesTitle = data["seriesTitle"] as? String
-                        let userId = data["userId"] as? String ?? ""
-                        let postID = document.documentID
-                        
-                        // Only add post if it has an image
-                        if let imageURL = imageURL {
-                            group.enter()
-                            self.fetchProfile(for: userId) { profile in
-                                let post = Post(
-                                    postID: postID,
-                                    title: title,
-                                    seriesTitle: seriesTitle,
-                                    timeAgo: self.timeAgoSinceDate(timestamp),
-                                    previewImage: imageURL,
-                                    season: season,
-                                    episode: episode,
-                                  
-                                    profile: profile
-                                )
-                                fetchedPosts.append(post)
-                                group.leave()
-                            }
-                        } else {
-                            print("Couldn't find image for \(title)")
-                        }
-                    }
-                    
-                    group.notify(queue: .main) {
-                        self.posts = fetchedPosts
-                    }
+                    print("Couldn't find image for \(title)")
                 }
             }
+            
+            group.notify(queue: .main) {
+                if loadMore {
+                    self.posts.append(contentsOf: fetchedPosts)
+                } else {
+                    self.posts = fetchedPosts
+                }
+                self.lastDocument = querySnapshot?.documents.last
+                self.isLoading = false
+            }
+        }
     }
     
     private func timeAgoSinceDate(_ date: Date) -> String {
@@ -100,7 +149,7 @@ class FeedViewModel: ObservableObject {
     func addReaction(to documentID: String, emoji: String) {
         print("trying to add reaction to \(documentID) with emoji \(emoji)")
         let postsCollection = db.collection("watchHistory")
-        let userId = Auth.auth().currentUser?.uid ?? ""
+        let userId = UserDefaults.standard.string(forKey: "userID") ?? "test"
         
         postsCollection.document(documentID).getDocument { (document, error) in
             if let document = document, document.exists {

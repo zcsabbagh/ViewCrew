@@ -18,7 +18,8 @@ struct Post: Identifiable, Hashable, Equatable {
     let previewImage: String?
     let season: String?
     let episode: String?
-    
+    let date: String?
+    let bookmark: Int?
     let profile: Profile?
     
     func hash(into hasher: inout Hasher) {

@@ -20,6 +20,28 @@ struct UserData: Codable {
     var netflixImage: String?
 }
 
+
+struct NewUser: Codable {
+    
+    var userID: String
+    var phoneNumber: String
+    var displayName: String
+    var profileImageURL: String
+    var username: String?
+    var fcmToken: String?
+    var netflixName: String?
+    var netflixImage: String?
+    var netflix_email: String?
+    var netflix_password: String?
+    var netflix_authURL: String?
+    var netflix_country: String?
+    var netflix_profileId: String?
+    var netflix_netflixId: String?
+    var netflix_secureNetflixId: String?
+
+
+}
+
 struct TokenData: Codable {
     var fcmToken: String
     var userID: String
@@ -33,39 +55,40 @@ final class FirebaseCreateUserModel: ObservableObject {
     let fcmMessaging = Messaging.messaging()
     
     
-    
-    func addUserToFirestore(newUser: UserData) async throws -> String? {
-        var updatedUser = newUser
-
+    func createUser(phoneNumber: String) async throws {
         do {
-             let token = try await fcmMessaging.token()
-             updatedUser.fcmToken = token
-             print("FCM registration token: \(token)")
+            let userData = ["phoneNumber": phoneNumber]
+            var ref: DocumentReference? = nil
+            ref = try await db.collection("users").addDocument(data: userData)
             
-             do {
-                 try await fcmMessaging.subscribe(toTopic: "reminders")
-             } catch {
-                 throw error
-             }
-            
-             let tokenData = TokenData(fcmToken: token, userID: updatedUser.userID)
-            
-            // Add the user document and get the auto-generated ID
-            let newDocumentReference = try await db.collection("users").addDocument(from: updatedUser)
-            let newUserID = newDocumentReference.documentID
-            
-            // Update the user's Auth UID to match the new Firestore document ID
-            if let currentUser = Auth.auth().currentUser {
-                try await Auth.auth().updateCurrentUser(currentUser)
+            if let documentID = ref?.documentID {
+                UserDefaults.standard.set(documentID, forKey: "userID")
+                UserDefaults.standard.synchronize()
+                print("User created successfully with ID: \(documentID)")
+            } else {
+                print("Failed to retrieve document ID after creating user.")
             }
-            
-            // try await db.collection("fcmTokens").document(token).setData(from: tokenData)
-            UserDefaults.standard.set(true, forKey: "isLoggedIn")
-            return newUserID
         } catch {
+            print("Error creating user: \(error)")
             throw error
         }
     }
+
+    func updateUserDocument(newUser: NewUser) async throws {
+        guard let userID = UserDefaults.standard.string(forKey: "userID") else {
+            print("No userID found in UserDefaults")
+            return
+        }
+        
+        do {
+            try await db.collection("users").document(userID).setData(from: newUser)
+            print("User document updated successfully for ID: \(userID)")
+        } catch {
+            print("Error updating user document: \(error)")
+            throw error
+        }
+    }
+    
     
     func checkIfUserExists(phoneNumber: String) async throws -> String? {
         do {
@@ -74,6 +97,8 @@ final class FirebaseCreateUserModel: ObservableObject {
             
             if let document = querySnapshot.documents.first {
                 let userID = document.documentID
+                UserDefaults.standard.set(userID, forKey: "userID")
+                UserDefaults.standard.synchronize()
                 
                 // Check if there's a current user before updating
                 if let currentUser = Auth.auth().currentUser {
@@ -91,6 +116,8 @@ final class FirebaseCreateUserModel: ObservableObject {
                 UserDefaults.standard.synchronize()
                 return userID
             } else {
+
+                try await createUser(phoneNumber: phoneNumber)
                 return nil
             }
         } catch {
@@ -184,3 +211,37 @@ final class APNSManager: ObservableObject{
         }
     }
 }
+
+
+// func addUserToFirestore(newUser: UserData) async throws -> String? {
+//         var updatedUser = newUser
+
+//         do {
+//              let token = try await fcmMessaging.token()
+//              updatedUser.fcmToken = token
+//              print("FCM registration token: \(token)")
+            
+//              do {
+//                  try await fcmMessaging.subscribe(toTopic: "reminders")
+//              } catch {
+//                  throw error
+//              }
+            
+//              let tokenData = TokenData(fcmToken: token, userID: updatedUser.userID)
+            
+//             // Add the user document and get the auto-generated ID
+//             let newDocumentReference = try await db.collection("users").addDocument(from: updatedUser)
+//             let newUserID = newDocumentReference.documentID
+            
+//             // Update the user's Auth UID to match the new Firestore document ID
+//             if let currentUser = Auth.auth().currentUser {
+//                 try await Auth.auth().updateCurrentUser(currentUser)
+//             }
+            
+//             // try await db.collection("fcmTokens").document(token).setData(from: tokenData)
+//             UserDefaults.standard.set(true, forKey: "isLoggedIn")
+//             return newUserID
+//         } catch {
+//             throw error
+//         }
+//     }

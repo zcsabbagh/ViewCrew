@@ -15,9 +15,8 @@ struct ShareButtons: View {
         
         VStack {
             Text("SHARE VIA")
-                .font(.subheadline)
+                .font(.custom("Roboto-Regular", size: 14))
                 .foregroundColor(.gray)
-                .fontWeight(.light)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 5)
 
@@ -65,6 +64,7 @@ struct ShareButtons: View {
     
     // WhatsApp Sharing
     private func shareOnWhatsApp() {
+        HapticFeedbackGenerator.shared.generateHapticLight()
         let urlString = "whatsapp://send?text=\(shareLink)"
         if let url = URL(string: urlString) {
             UIApplication.shared.open(url)
@@ -73,6 +73,7 @@ struct ShareButtons: View {
     
     // Messenger Sharing
     private func shareOnMessenger() {
+        HapticFeedbackGenerator.shared.generateHapticLight()
         let urlString = "fb-messenger://share/?link=\(shareLink)"
         if let url = URL(string: urlString) {
             UIApplication.shared.open(url)
@@ -81,6 +82,7 @@ struct ShareButtons: View {
     
     // iMessage Sharing
     private func shareOniMessage() {
+        HapticFeedbackGenerator.shared.generateHapticLight()
         let urlString = "sms:&body=\(shareLink)"
         if let url = URL(string: urlString) {
             UIApplication.shared.open(url)
@@ -89,6 +91,7 @@ struct ShareButtons: View {
     
     // Telegram Sharing
     private func shareOnTelegram() {
+        HapticFeedbackGenerator.shared.generateHapticLight()
         let encodedLink = shareLink.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         let urlString = "tg://msg?text=\(encodedLink)"
         if let url = URL(string: urlString) {
@@ -98,6 +101,7 @@ struct ShareButtons: View {
     
     // Instagram Sharing
     private func shareOnInstagram() {
+        HapticFeedbackGenerator.shared.generateHapticLight()
         let urlString = "instagram://app"
         if let url = URL(string: urlString) {
             UIApplication.shared.open(url, options: [.universalLinksOnly: false]) { success in
@@ -112,6 +116,7 @@ struct ShareButtons: View {
     
     // Snapchat Sharing
     private func shareOnSnapchat() {
+        HapticFeedbackGenerator.shared.generateHapticLight()
         let urlString = "snapchat://?attachText=\(shareLink)"
         if let url = URL(string: urlString) {
             UIApplication.shared.open(url)
