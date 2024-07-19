@@ -249,8 +249,8 @@
 		2F016E352C3D17F800D55038 = {
 			isa = PBXGroup;
 			children = (
-				2F016E402C3D17F900D55038 /* vitalz-new */,
-				2FBD7FC52C48D2610031FF8E /* StocksWidget2 */,
+				2F016E402C3D17F900D55038 /* ViewCrew */,
+				2FBD7FC52C48D2610031FF8E /* StreamingWidget */,
 				2F016E592C3D181500D55038 /* Frameworks */,
 				2F016E3F2C3D17F900D55038 /* Products */,
 			);
@@ -265,7 +265,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		2F016E402C3D17F900D55038 /* vitalz-new */ = {
+		2F016E402C3D17F900D55038 /* ViewCrew */ = {
 			isa = PBXGroup;
 			children = (
 				2FBD80052C4A72990031FF8E /* Roboto_Condensed */,
@@ -284,7 +284,7 @@
 				2F016E452C3D17FA00D55038 /* Assets.xcassets */,
 				2F016E472C3D17FA00D55038 /* Preview Content */,
 			);
-			path = "vitalz-new";
+			path = ViewCrew;
 			sourceTree = "<group>";
 		};
 		2F016E472C3D17FA00D55038 /* Preview Content */ = {
@@ -432,7 +432,7 @@
 			path = Haptics;
 			sourceTree = "<group>";
 		};
-		2FBD7FC52C48D2610031FF8E /* StocksWidget2 */ = {
+		2FBD7FC52C48D2610031FF8E /* StreamingWidget */ = {
 			isa = PBXGroup;
 			children = (
 				2FBD7FC62C48D2610031FF8E /* WidgetBundle.swift */,
@@ -444,7 +444,7 @@
 				2FBD7FCC2C48D2620031FF8E /* Assets.xcassets */,
 				2FBD7FCE2C48D2620031FF8E /* Info.plist */,
 			);
-			path = StocksWidget2;
+			path = StreamingWidget;
 			sourceTree = "<group>";
 		};
 		2FBD7FE42C4A65D30031FF8E /* Roboto */ = {
