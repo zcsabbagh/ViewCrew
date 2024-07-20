@@ -24,6 +24,7 @@ class LoginViewModel: ObservableObject {
     
 
     let firebaseModel = FirebaseCreateUserModel()
+    let contactsFirestore = ContactsFirestoreChecker()
 
     func uploadImage(image: UIImage) {
         Task {
@@ -71,6 +72,24 @@ class LoginViewModel: ObservableObject {
                 print("User updated successfully.")
                 UserDefaults.standard.set(true, forKey: "isLoggedIn")
                 amplitude.track(eventType: "Sign Up")
+
+                
+                /* send a notification to all contacts in Firebase */
+                contactsFirestore.checkContactsInFirestore(userPhoneNumber: self.phoneNumber) { fetchedContacts in
+
+                    print(fetchedContacts, "FetchedContacts")
+                    do {
+                        if let currentUserID = Auth.auth().currentUser?.uid {
+                            Task {
+                                try await FirebaseNotificationGenerator.shared.sendContactJoinedNotification(fromUserDisplayName: self.displayName, fromUserId: currentUserID, toUsers: fetchedContacts)
+                            }
+                        }
+                    } catch {
+                        print("Error sending contacted joined notification: \(error)")
+                    }
+                }
+
+                
             } catch {
                 print("Error updating user: \(error)")
             }

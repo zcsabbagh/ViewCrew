@@ -32,14 +32,33 @@ final class FirebaseNotificationGenerator{
     
     func sendAcceptFriendRequestNotification(fromUser: String, toUser: String) async throws {
         do {
-            let _ = try await functions.httpsCallable("acceptFriendRequestNotification").call([
+            let result = try await functions.httpsCallable("acceptFriendRequestNotification").call([
                 "messageRecipientId": toUser,
                 "messageSenderId": fromUser
             ])
+            
+            if let data = result.data as? [String: Any],
+            let success = data["success"] as? Bool,
+            let message = data["message"] as? String {
+                if success {
+                    print("Notification sent successfully: \(message)")
+                } else {
+                    print("Notification failed: \(message)")
+                }
+            } else {
+                print("Unexpected response format")
+            }
         } catch {
+            print("Error sending notification: \(error.localizedDescription)")
+            if let functionsError = error as? NSError {
+                print("Error domain: \(functionsError.domain)")
+                print("Error code: \(functionsError.code)")
+                if let details = functionsError.userInfo["details"] as? String {
+                    print("Error details: \(details)")
+                }
+            }
             throw error
         }
-
     }
 
     func sendContactJoinedNotification(fromUserDisplayName: String, fromUserId: String, toUsers: [String]) async throws {
@@ -199,4 +218,3 @@ final class FirebaseNotificationGenerator{
     }
     
 }
-

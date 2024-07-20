@@ -26,7 +26,12 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
         UNUserNotificationCenter.current().requestAuthorization(
             options: authOptions,
-            completionHandler: { _, _ in }
+            completionHandler: { granted, error in
+                print("Notification authorization granted: \(granted)")
+                if let error = error {
+                    print("Notification authorization error: \(error)")
+                }
+            }
         )
         application.registerForRemoteNotifications()
         
@@ -41,14 +46,34 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         Messaging.messaging().apnsToken = deviceToken
+        print("Registered for remote notifications with token: \(deviceToken.map { String(format: "%02.2hhx", $0) }.joined())")
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("Failed to register for remote notifications: \(error)")
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print("Will present notification: \(notification.request.content)")
+        completionHandler([.banner, .sound, .badge])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print("Did receive notification response: \(response.notification.request.content)")
+        completionHandler()
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        print("Received remote notification: \(userInfo)")
+        completionHandler(.newData)
     }
 }
 
 extension AppDelegate: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         print("Firebase registration token: \(String(describing: fcmToken))")
-        // Here you would typically send this token to your server
         if let token = fcmToken {
+            print("Updating FCM token in Firestore")
             FirebaseCreateUserModel().updateFCMToken(token)
         }
     }
@@ -125,7 +150,8 @@ struct CustomTabBar: View {
                 UITabBarItem.appearance().badgeColor = .systemPink
                 UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.systemPink]
                 print("Length of incomingRequests: \(friendsViewModel.incomingRequests.count)")
-
+                
+                
             }
             .onChange(of: friendsViewModel.userProfile.friends) { newFriends in
                 feedViewModel.updateFriends(newFriends)

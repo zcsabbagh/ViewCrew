@@ -62,8 +62,7 @@ class ProfileViewModel: ObservableObject {
                         seriesCount += 1
                     }
                     
-                    // Debug: Print the raw bookmark value
-                    print("Raw bookmark value: \(data["bookmark"] ?? "nil")")
+                
                     
                     if let bookmark = data["bookmark"] as? Double {
                         totalWatchTime += bookmark
@@ -73,8 +72,7 @@ class ProfileViewModel: ObservableObject {
                         totalWatchTime += bookmarkDouble
                     }
                     
-                    // Debug: Print running total
-                    print("Running total watch time: \(totalWatchTime)")
+                   
                 }
                 
                 let watchTimeMins = Int(totalWatchTime / 60)
