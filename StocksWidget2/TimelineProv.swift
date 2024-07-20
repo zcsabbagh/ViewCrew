@@ -52,9 +52,9 @@ struct Provider: AppIntentTimelineProvider {
         var profileImageData: Data? = nil
         
         
-        if let profileImageURL = post.profileImageURL.flatMap({ URL(string: $0) }) {
-            profileImageData = try? await fetchImageData(from: profileImageURL)
-        }
+        // if let profileImageURL = post.profileImageURL.flatMap({ URL(string: $0) }) {
+        //     profileImageData = try? await fetchImageData(from: profileImageURL)
+        // }
         
         if let previewImageURL = post.previewImage.flatMap({ URL(string: $0) }) {
             previewImageData = try? await fetchImageData(from: previewImageURL)
