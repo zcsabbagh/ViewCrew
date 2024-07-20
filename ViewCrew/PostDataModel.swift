@@ -20,6 +20,7 @@ struct Post: Identifiable, Hashable, Equatable {
     let episode: String?
     let date: String?
     let bookmark: Int?
+    let profileImageURL: String?
     let profile: Profile?
     
     func hash(into hasher: inout Hasher) {

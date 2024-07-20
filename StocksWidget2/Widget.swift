@@ -35,9 +35,9 @@ extension ConfigurationAppIntent {
     }
 }
 
-#Preview(as: .systemSmall) {
-    StocksWidget2()
-} timeline: {
-    SimpleEntry(date: .now, configuration: .smiley, post: nil, previewImageData: nil, profileImageData: nil)
-    SimpleEntry(date: .now, configuration: .starEyes, post: nil, previewImageData: nil, profileImageData: nil)
-}
+//#Preview(as: .systemSmall) {
+//    StocksWidget2()
+//} timeline: {
+//    SimpleEntry(date: .now, configuration: .smiley, post: nil, previewImageData: nil, profileImageData: nil)
+//    SimpleEntry(date: .now, configuration: .starEyes, post: nil, previewImageData: nil, profileImageData: nil)
+//}

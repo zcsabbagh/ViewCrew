@@ -21,13 +21,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct vitalz_newApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
-    @StateObject var friendsViewModel = NewNewFriendsViewModel()
 
-   
     var body: some Scene {
         WindowGroup {
             if isLoggedIn {
-                CustomTabBar(friendsViewModel: friendsViewModel)
+                CustomTabBar()
+                    .defaultAppStorage(UserDefaults(suiteName: "group.viewcrew.ShareDefaults")!)
                     .preferredColorScheme(.dark)
             } else {
                 LoginMaster()
@@ -39,13 +38,14 @@ struct vitalz_newApp: App {
 
 struct CustomTabBar: View {
     @State private var selectedTab = 0
-    @ObservedObject var friendsViewModel: NewNewFriendsViewModel
+    @StateObject var friendsViewModel = NewNewFriendsViewModel()
     @StateObject private var feedViewModel: FeedViewModel
     @StateObject private var profileViewModel: ProfileViewModel
     
-    init(friendsViewModel: NewNewFriendsViewModel) {
-        self.friendsViewModel = friendsViewModel
-        self._feedViewModel = StateObject(wrappedValue: FeedViewModel(friends: friendsViewModel.userProfile.friends))
+    init() {
+        let friendsVM = NewNewFriendsViewModel()
+        self._friendsViewModel = StateObject(wrappedValue: friendsVM)
+        self._feedViewModel = StateObject(wrappedValue: FeedViewModel(friends: friendsVM.userProfile.friends))
         self._profileViewModel = StateObject(wrappedValue: ProfileViewModel())
         UITabBar.appearance().barTintColor = UIColor.black
     }

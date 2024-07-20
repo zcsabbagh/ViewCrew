@@ -11,8 +11,21 @@ import Combine
 
 
 class AuthenticationViewModel: ObservableObject {
+
+    // Test phone numbers and verification codes
+    private let testNumbers = [
+        "+11111111111": "1111",
+        "+12222222222": "2222",
+        "+13333333333": "3333"
+    ]
     
     func sendCode(phoneNumber: String) {
+        // Check if it's a test number
+        if testNumbers.keys.contains(phoneNumber) {
+            print("Test code sent successfully")
+            return
+        }
+        
         let url = URL(string: "https://api.ding.live/v1/authentication")!
         var request = URLRequest(url: url)
         var CUSTOMER_UUID = ProcessInfo.processInfo.environment["PRELUDE_CUSTOMER_UUID"]
@@ -46,6 +59,14 @@ class AuthenticationViewModel: ObservableObject {
     
     func verifyCode(verificationCode: String, completion: @escaping (Bool) -> Void) {
         print("verifyCode called with code: \(verificationCode)")
+        
+        // Check if it's a test number and code
+        if let testCode = testNumbers.first(where: { $0.value == verificationCode })?.key {
+            print("Test verification successful")
+            completion(true)
+            return
+        }
+        
         let url = URL(string: "https://api.ding.live/v1/check")!
         var request = URLRequest(url: url)
         var CUSTOMER_UUID = ProcessInfo.processInfo.environment["PRELUDE_CUSTOMER_UUID"]
@@ -86,4 +107,3 @@ class AuthenticationViewModel: ObservableObject {
         task.resume()
     }
 }
-

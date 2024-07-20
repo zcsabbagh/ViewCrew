@@ -8,11 +8,3 @@
 import WidgetKit
 import SwiftUI
 
-struct SimpleEntry: TimelineEntry {
-    let date: Date
-    let configuration: ConfigurationAppIntent
-    let post: Post?
-    let previewImageData: Data?
-    let profileImageData: Data?
-//    let user: Profile?
-}

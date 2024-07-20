@@ -48,6 +48,7 @@ class NewNewFriendsViewModel: ObservableObject {
     @Published var allRequests: [String] = []
     @Published var friendsToRemove: [String] = []
     
+     private let sharedDefaults: UserDefaults
     @Published var friendUserIDs: [String] = []
     @Published var friendDisplayNames: [String] = []
     
@@ -57,6 +58,9 @@ class NewNewFriendsViewModel: ObservableObject {
     
     init() {
         // Load friendUserIDs and friendDisplayNames from UserDefaults
+        self.sharedDefaults = UserDefaults(suiteName: "group.viewcrew.ShareDefaults")!
+
+        // Load friendUserIDs and friendDisplayNames from sharedDefaults
         self.friendUserIDs = UserDefaults.standard.array(forKey: "friendUserIDs") as? [String] ?? []
         self.friendDisplayNames = UserDefaults.standard.array(forKey: "friendDisplayNames") as? [String] ?? []
         
@@ -76,7 +80,14 @@ class NewNewFriendsViewModel: ObservableObject {
                     
                     // Save updated friendUserIDs and friendDisplayNames to UserDefaults
                     UserDefaults.standard.set(self.friendUserIDs, forKey: "friendUserIDs")
-                    UserDefaults.standard.set(self.friendDisplayNames, forKey: "friendDisplayNames")
+                    // also save to shared defaults
+                    self.sharedDefaults.set(self.friendUserIDs, forKey: "friendIDs")
+                    if let friendIDs = self.sharedDefaults.stringArray(forKey: "friendIDs") {
+                        print("SharedDefaults friendIDs: \(friendIDs)")
+                    } else {
+                        print("No friendIDs found in SharedDefaults")
+                    }
+                    self.sharedDefaults.set(self.friendDisplayNames, forKey: "friendDisplayNames")
                 }
             }
         }

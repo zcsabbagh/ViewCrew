@@ -134,6 +134,7 @@ class ProfileViewModel: ObservableObject {
                                 episode: data["episode"] as? String,
                                 date: data["date"] as? String ?? "",
                                 bookmark: data["float"] as? Int ?? 0,
+                                profileImageURL: nil,
                                
                                 profile: nil // Assuming profile data is not included in watchHistory
                             )

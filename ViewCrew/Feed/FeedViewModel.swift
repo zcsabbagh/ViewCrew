@@ -98,6 +98,7 @@ class FeedViewModel: ObservableObject {
                             episode: episode,
                             date: self.timeAgoSinceDate(date),
                             bookmark: bookmark,
+                            profileImageURL: nil,
                            
                             profile: profile
                             
