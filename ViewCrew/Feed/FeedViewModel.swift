@@ -43,7 +43,7 @@ class FeedViewModel: ObservableObject {
 
     func fetchRecentPosts(loadMore: Bool = false) {
 
-        var feedFriends = UserDefaults.standard.array(forKey: "friendUserIDs") as? [String] ?? []
+        var feedFriends = friends
         if feedFriends.count == 0 {
             feedFriends = [UserDefaults.standard.string(forKey: "userID") ?? "test", "BYu4pymRieSFI567fZm5ZR6eh5c2"]
         }

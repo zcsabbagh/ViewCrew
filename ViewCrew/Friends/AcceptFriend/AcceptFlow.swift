@@ -30,7 +30,7 @@ struct IncomingFriendRequestView: View {
            
            if !accepted {
                AcceptView(person: person, accepted: $accepted, viewModel: viewModel)
-           } else if accepted && !suggestedFriends.isEmpty {
+           } else if accepted {
                 NewFriendView(person: person, viewModel: viewModel)
                 // SuggestMoreView(person: person, suggestedFriends: suggestedFriends, viewModel: viewModel)
            }
