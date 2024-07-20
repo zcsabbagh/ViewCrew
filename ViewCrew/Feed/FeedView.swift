@@ -17,7 +17,7 @@ struct Feed: View {
     @ObservedObject var friendsViewModel: NewNewFriendsViewModel
     @State private var selectedEmoji: String = ""
     @State private var showEmojiShower = false
-    @State private var selectedPost: Post?
+    @State private var selectedPostType: PostType?
     @State private var showReportMenu: Bool = false
     @State private var showReportConfirmation: Bool = false
     @State private var refreshing: Bool = false
@@ -36,16 +36,17 @@ struct Feed: View {
                 }
 
                 ZStack {
-                    VerticalCarouselView(posts: viewModel.posts, selectedPost: $selectedPost, showReportMenu: $showReportMenu, onRefresh: {
+                    VerticalCarouselView(posts: viewModel.posts, selectedPostType: $selectedPostType, showReportMenu: $showReportMenu, onRefresh: {
                         refreshing = true
                         refreshPosts()
                     }, onLoadMore: {
                         loadMorePosts()
                     })
                         .padding(.bottom, 50)
-                        .onChange(of: selectedPost) { newPost in
-                            print("Selected post: \(newPost?.postID)")
-                            print("Selected post ID: ")
+                        .onChange(of: selectedPostType) { newPostType in
+                            if case let .Default(post) = newPostType {
+                                print("Selected post: \(post.postID)")
+                            }
                         }
                         .gesture(
                             TapGesture(count: 2)
@@ -64,8 +65,8 @@ struct Feed: View {
                 .padding(.bottom, 50)
             }
             .background(Color.appBackground)
-            .onChange(of: selectedPost) { newPost in
-                if let post = newPost {
+            .onChange(of: selectedPostType) { newPostType in
+                if case let .Default(post) = newPostType {
                     print("Current post on screen in Feed: \(post.postID)")
                     // Perform any actions needed when the current post changes
                 }
@@ -105,7 +106,9 @@ struct Feed: View {
     private func handleEmojiSelection(_ emoji: String) {
         if !emoji.isEmpty {
             showEmojiShower = true
-            viewModel.addReaction(to: selectedPost?.postID ?? "test", emoji: emoji)
+            if case let .Default(post) = selectedPostType {
+                viewModel.addReaction(to: post.postID, emoji: emoji)
+            }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
                 if let emojiShowerVC = (UIApplication.shared.windows.first?.rootViewController?.presentedViewController as? EmojiShowerViewController) {
                     emojiShowerVC.fadeOutEmojiShower()
@@ -140,28 +143,30 @@ struct EmojiShowerView: UIViewControllerRepresentable {
 }
 
 struct VerticalCarouselView: View {
-    let posts: [Post]
-    @Binding var selectedPost: Post?
+    let posts: [PostType]
+    @Binding var selectedPostType: PostType?
     @Binding var showReportMenu: Bool
     let onRefresh: () -> Void
     let onLoadMore: () -> Void
     @State private var draggedOffset: CGFloat = 0
 
     var body: some View {
-        VTabView(selection: $selectedPost) {
-            ForEach(posts) { post in
-                VStack (spacing: 5) {
-                    MovieView(post: post, showReportMenu: $showReportMenu)
+        VTabView(selection: $selectedPostType) {
+            ForEach(posts, id: \.self) { postType in
+                VStack(spacing: 5) {
+                    MovieView(postType: postType, showReportMenu: $showReportMenu)
                 }
-                .tag(post as Post?)
+                .tag(postType as PostType?)
             }
         }
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         .background(Color.appBackground)
-        .onChange(of: selectedPost) { newValue in
-            if let newPost = newValue {
-                print("Current post on screen: \(newPost.postID)")
-                if newPost == posts[max(0, posts.count - 2)] {
+        .onChange(of: selectedPostType) { newValue in
+            if let newPostType = newValue {
+                if case let .Default(post) = newPostType {
+                    print("Current post on screen: \(post.postID)")
+                }
+                if newPostType == posts[max(0, posts.count - 2)] {
                     onLoadMore()
                 }
             }
@@ -170,17 +175,15 @@ struct VerticalCarouselView: View {
 }
 
 struct MovieView: View {
-    let post: Post
+    let postType: PostType
     @Binding var showReportMenu: Bool
     
     var body: some View {
         VStack(spacing: 2) {
-            
             ZStack {
                 movieImage
                 HStack {
                     profileImage
-                        
                     name
                     time
                     reportButton
@@ -194,15 +197,13 @@ struct MovieView: View {
                     .padding(.leading, 70)
                     .padding(.top, -60)
                 Spacer()
-                    
             }
         }
     }
     
-
     var profileImage: some View {
         Group {
-            if let profileImage = post.profile?.profileImage {
+            if case let .Default(post) = postType, let profileImage = post.profile?.profileImage {
                 WebImage(url: URL(string: profileImage))
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -214,34 +215,35 @@ struct MovieView: View {
                     .cornerRadius(16)
                     .padding(.top, 40)
             }
-            
         }
-
     }
     
     var name: some View {
         Group {
-            Text("\(post.profile?.username ?? "")")
-                .font(.custom("Roboto-Regular", size: 17))
-                .foregroundColor(.white)
-                .fontWeight(.semibold)
+            if case let .Default(post) = postType {
+                Text("\(post.profile?.username ?? "")")
+                    .font(.custom("Roboto-Regular", size: 17))
+                    .foregroundColor(.white)
+                    .fontWeight(.semibold)
+            }
         }
     }
     
     var time: some View {
         Group {
-            Text(post.date ?? "")
-                .font(.custom("Roboto-Regular", size: 12))
-                .foregroundColor(.gray)
-                .fontWeight(.light)
-                .padding(.trailing)
+            if case let .Default(post) = postType {
+                Text(post.date ?? "")
+                    .font(.custom("Roboto-Regular", size: 12))
+                    .foregroundColor(.gray)
+                    .fontWeight(.light)
+                    .padding(.trailing)
+            }
         }
     }
     
-    
     var movieImage: some View {
         Group {
-            if let imageUrl = post.previewImage {
+            if case let .Default(post) = postType, let imageUrl = post.previewImage {
                 WebImage(url: URL(string: imageUrl))
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -257,7 +259,7 @@ struct MovieView: View {
     
     var title: some View {
         Group {
-            if let season = post.season, let episode = post.episode {
+            if case let .Default(post) = postType, let season = post.season, let episode = post.episode {
                 Text("Season \(season): Episode \(episode)")
                     .font(.custom("Roboto-Regular", size: 17))
                     .foregroundColor(.white)

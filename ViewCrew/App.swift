@@ -8,12 +8,49 @@
 import SwiftUI
 import FirebaseCore
 import CoreData
+import AmplitudeSwift
+import UserNotifications
+import FirebaseMessaging
 
-class AppDelegate: NSObject, UIApplicationDelegate {
+class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+    let amplitude = Amplitude(configuration: Configuration(
+        apiKey: "f8da5e324708d7407ecad7b329e154c4"
+    ))
+    
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
+        
+        // Set up notifications
+        UNUserNotificationCenter.current().delegate = self
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(
+            options: authOptions,
+            completionHandler: { _, _ in }
+        )
+        application.registerForRemoteNotifications()
+        
+        Messaging.messaging().delegate = self
+        
+        amplitude.track(
+            eventType: "App Open",
+            eventProperties: ["my event prop key": "my event prop value"]
+        )
         return true
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        Messaging.messaging().apnsToken = deviceToken
+    }
+}
+
+extension AppDelegate: MessagingDelegate {
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        print("Firebase registration token: \(String(describing: fcmToken))")
+        // Here you would typically send this token to your server
+        if let token = fcmToken {
+            FirebaseCreateUserModel().updateFCMToken(token)
+        }
     }
 }
 
@@ -88,6 +125,7 @@ struct CustomTabBar: View {
                 UITabBarItem.appearance().badgeColor = .systemPink
                 UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.systemPink]
                 print("Length of incomingRequests: \(friendsViewModel.incomingRequests.count)")
+
             }
             .onChange(of: friendsViewModel.userProfile.friends) { newFriends in
                 feedViewModel.updateFriends(newFriends)

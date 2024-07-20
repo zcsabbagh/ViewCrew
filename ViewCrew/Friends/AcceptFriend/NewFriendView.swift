@@ -80,10 +80,13 @@ struct NewFriendView: View {
         }
         .edgesIgnoringSafeArea(.all)
         .onAppear {
-            loginHaptics.hapticEffectFive()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            loginHaptics.hapticEffectFour()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
                 viewModel.incomingRequests.removeFirst()
             }
+        }
+        .onTapGesture {
+            viewModel.incomingRequests.removeFirst()
         }
     }
     

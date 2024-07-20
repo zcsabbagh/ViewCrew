@@ -38,12 +38,7 @@ struct IncomingFriendRequestView: View {
         }
 
         /* if request is accepted but there are no suggestions to make, dismiss view */
-        .onChange(of: accepted) { newValue in
-            if newValue && suggestedFriends.isEmpty {
-                print("request is accepted but there are no suggestions to make, dismiss view")
-                viewModel.incomingRequests.removeFirst()
-            }
-        }
+
 
         /* get the friend profiles of this person */
         .onAppear {

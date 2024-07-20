@@ -176,6 +176,21 @@ final class FirebaseCreateUserModel: ObservableObject {
         return nil
     }
     
+    func updateFCMToken(_ token: String) {
+        guard let userID = UserDefaults.standard.string(forKey: "userID") else {
+            print("No userID found in UserDefaults")
+            return
+        }
+        
+        Task {
+            do {
+                try await db.collection("users").document(userID).updateData(["fcmToken": token])
+                print("FCM token updated successfully for user: \(userID)")
+            } catch {
+                print("Error updating FCM token: \(error)")
+            }
+        }
+    }
 }
 
 

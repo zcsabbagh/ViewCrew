@@ -10,13 +10,19 @@ import FirebaseFirestore
 import FirebaseAuth
 import Combine
 import SwiftUI
+import AmplitudeSwift
 
 class FeedViewModel: ObservableObject {
-    @Published var posts: [Post] = []
+    @Published var posts: [PostType] = []
     @Published var isLoading: Bool = false
     private let db = Firestore.firestore()
     @Published var friends: [String]
     private var lastDocument: DocumentSnapshot?
+
+    let amplitude = Amplitude(configuration: Configuration(
+        apiKey: "f8da5e324708d7407ecad7b329e154c4"
+    ))
+    
 
     init(friends: [String] = []) {
         self.friends = friends
@@ -65,7 +71,7 @@ class FeedViewModel: ObservableObject {
             }
 
             let group = DispatchGroup()
-            var fetchedPosts: [Post] = []
+            var fetchedPosts: [PostType] = []
             
             querySnapshot?.documents.forEach { document in
                 let data = document.data()
@@ -99,11 +105,9 @@ class FeedViewModel: ObservableObject {
                             date: self.timeAgoSinceDate(date),
                             bookmark: bookmark,
                             profileImageURL: nil,
-                           
                             profile: profile
-                            
                         )
-                        fetchedPosts.append(post)
+                        fetchedPosts.append(.Default(post))
                         group.leave()
                     }
                 } else {
@@ -123,6 +127,9 @@ class FeedViewModel: ObservableObject {
         }
     }
     
+
+    
+
     private func timeAgoSinceDate(_ date: Date) -> String {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .full
@@ -151,6 +158,11 @@ class FeedViewModel: ObservableObject {
         print("trying to add reaction to \(documentID) with emoji \(emoji)")
         let postsCollection = db.collection("watchHistory")
         let userId = UserDefaults.standard.string(forKey: "userID") ?? "test"
+
+        amplitude.track(
+            eventType: "Reaction Added",
+            eventProperties: ["emoji": emoji, "documentID": documentID]
+        )
         
         postsCollection.document(documentID).getDocument { (document, error) in
             if let document = document, document.exists {

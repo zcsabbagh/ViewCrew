@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 import FirebaseAuth
+import AmplitudeSwift
 
 class LoginViewModel: ObservableObject {
     @AppStorage("loginState") var loginState: LoginState = .authentication
@@ -16,6 +17,9 @@ class LoginViewModel: ObservableObject {
     @AppStorage("profileImageURL") var profileImageURL: String = ""
     @AppStorage("username") var username: String = ""
     @AppStorage("userID") var userID: String = ""
+    let amplitude = Amplitude(configuration: Configuration(
+        apiKey: "f8da5e324708d7407ecad7b329e154c4"
+    ))
     
     
 
@@ -66,6 +70,7 @@ class LoginViewModel: ObservableObject {
                 try await firebaseModel.updateUserDocument(newUser: newUser)
                 print("User updated successfully.")
                 UserDefaults.standard.set(true, forKey: "isLoggedIn")
+                amplitude.track(eventType: "Sign Up")
             } catch {
                 print("Error updating user: \(error)")
             }

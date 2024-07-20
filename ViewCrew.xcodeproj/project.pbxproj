@@ -101,6 +101,8 @@
 		2FBD80312C4A729A0031FF8E /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2FBD801B2C4A729A0031FF8E /* OFL.txt */; };
 		2FBD80322C4A729A0031FF8E /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2FBD801C2C4A729A0031FF8E /* README.txt */; };
 		2FBD80342C4A7A6F0031FF8E /* NewFriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBD80332C4A7A6F0031FF8E /* NewFriendView.swift */; };
+		2FBD80952C4BCE9A0031FF8E /* AmplitudeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2FBD80942C4BCE9A0031FF8E /* AmplitudeSwift */; };
+		2FBD80972C4BCEA40031FF8E /* AmplitudeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2FBD80962C4BCEA40031FF8E /* AmplitudeSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -224,6 +226,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2FBD80952C4BCE9A0031FF8E /* AmplitudeSwift in Frameworks */,
 				2F8BCD872C3DA59C004177B5 /* VTabView in Frameworks */,
 				2F016E8A2C3D295800D55038 /* FirebaseMessaging in Frameworks */,
 				2F016E7B2C3D19FC00D55038 /* SDWebImageSwiftUI in Frameworks */,
@@ -239,6 +242,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2FBD80972C4BCEA40031FF8E /* AmplitudeSwift in Frameworks */,
 				2FBD7FE02C492EA30031FF8E /* SDWebImageSwiftUI in Frameworks */,
 				2FBD7FC42C48D2610031FF8E /* SwiftUI.framework in Frameworks */,
 				2FBD7FC32C48D2610031FF8E /* WidgetKit.framework in Frameworks */,
@@ -554,6 +558,7 @@
 				2F016E892C3D295800D55038 /* FirebaseMessaging */,
 				2F016E8B2C3D295800D55038 /* FirebaseStorage */,
 				2F8BCD862C3DA59C004177B5 /* VTabView */,
+				2FBD80942C4BCE9A0031FF8E /* AmplitudeSwift */,
 			);
 			productName = "vitalz-new";
 			productReference = 2F016E3E2C3D17F900D55038 /* ViewCrew.app */;
@@ -574,6 +579,7 @@
 			name = StocksWidget2Extension;
 			packageProductDependencies = (
 				2FBD7FDF2C492EA30031FF8E /* SDWebImageSwiftUI */,
+				2FBD80962C4BCEA40031FF8E /* AmplitudeSwift */,
 			);
 			productName = StocksWidget2Extension;
 			productReference = 2FBD7FC22C48D2610031FF8E /* StocksWidget2Extension.appex */;
@@ -610,6 +616,7 @@
 				2F016E772C3D19EF00D55038 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 				2F016E802C3D295800D55038 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				2F8BCD852C3DA59C004177B5 /* XCRemoteSwiftPackageReference "swiftui-vertical-tab-view" */,
+				2FBD80932C4BCE9A0031FF8E /* XCRemoteSwiftPackageReference "Amplitude-Swift" */,
 			);
 			productRefGroup = 2F016E3F2C3D17F900D55038 /* Products */;
 			projectDirPath = "";
@@ -1056,6 +1063,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		2FBD80932C4BCE9A0031FF8E /* XCRemoteSwiftPackageReference "Amplitude-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/amplitude/Amplitude-Swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1103,6 +1118,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2F016E772C3D19EF00D55038 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
 			productName = SDWebImageSwiftUI;
+		};
+		2FBD80942C4BCE9A0031FF8E /* AmplitudeSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2FBD80932C4BCE9A0031FF8E /* XCRemoteSwiftPackageReference "Amplitude-Swift" */;
+			productName = AmplitudeSwift;
+		};
+		2FBD80962C4BCEA40031FF8E /* AmplitudeSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2FBD80932C4BCE9A0031FF8E /* XCRemoteSwiftPackageReference "Amplitude-Swift" */;
+			productName = AmplitudeSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 
