@@ -20,17 +20,18 @@ struct StocksWidget2EntryView : View {
 
     var body: some View {
         if let post = entry.post {
-            VStack(alignment: .leading, spacing: 4 * scaleFactor) {
+            VStack(alignment: .leading, spacing: 2 * scaleFactor) {
                 HStack {
                     seriesImage
                     VStack {
-                        profilePicture
                         netflixIcon
+                        profilePicture
+                       
                     }
                 }
                 seriesTitle
             }
-            .padding(5 * scaleFactor)
+            .padding(10 * scaleFactor)
         } else {
             Text("Can't find any posts")
                 .font(.caption)
@@ -44,13 +45,13 @@ struct StocksWidget2EntryView : View {
                 Image(uiImage: uiImage)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 100 * scaleFactor, height: 100 * scaleFactor)
+                    .frame(width: 90 * scaleFactor, height: 90 * scaleFactor)
                     .cornerRadius(8 * scaleFactor)
             } else {
                 Image(systemName: "photo")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 100 * scaleFactor, height: 100 * scaleFactor)
+                    .frame(width: 90 * scaleFactor, height: 90 * scaleFactor)
                     .foregroundColor(.gray)
             }
         }
@@ -62,12 +63,12 @@ struct StocksWidget2EntryView : View {
                 Image(uiImage: uiImage)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 35 * scaleFactor, height: 35 * scaleFactor)
+                    .frame(width: 30 * scaleFactor, height: 30 * scaleFactor)
                     .clipShape(Circle())
             } else {
                 Image(systemName: "person.circle")
                     .resizable()
-                    .frame(width: 35 * scaleFactor, height: 35 * scaleFactor)
+                    .frame(width: 30 * scaleFactor, height: 30 * scaleFactor)
                     .foregroundColor(.gray)
             }
         }
@@ -76,28 +77,28 @@ struct StocksWidget2EntryView : View {
     private var netflixIcon: some View {
         Image("netflixWidgetIcon")
             .resizable()
-            .frame(width: 35 * scaleFactor, height: 35 * scaleFactor)
+            .frame(width: 30 * scaleFactor, height: 30 * scaleFactor)
             .clipShape(Circle())
     }
 
     private var seriesTitle: some View {
 
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: -5) {
             
             if let seriesTitle = entry.post?.seriesTitle {
             
                 Text(seriesTitle)
-                    .font(.headline.weight(.medium))
+                    .font(.subheadline.weight(.medium))
                     .foregroundColor(.primary)
                     .scaleEffect(scaleFactor)
                 Text(entry.post?.title ?? "")
-                    .font(.footnote.weight(.light))
-                    .foregroundColor(.secondary)
+                    .font(.footnote.weight(.medium))
+                    .foregroundColor(.primary.opacity(0.8))
                     .scaleEffect(scaleFactor)
 
             } else {
                 Text(entry.post?.title ?? "")
-                    .font(.headline.weight(.medium))
+                    .font(.subheadline.weight(.medium))
                     .foregroundColor(.primary)
                     .scaleEffect(scaleFactor)
             }

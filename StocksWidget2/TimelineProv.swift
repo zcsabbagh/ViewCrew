@@ -51,19 +51,40 @@ struct Provider: AppIntentTimelineProvider {
         var previewImageData: Data? = nil
         var profileImageData: Data? = nil
         
+//        if let previewImageURL = post.previewImage.flatMap({ URL(string: $0) }) {
+//            previewImageData = getProfileImageFromSharedContainer(for: previewImageURL.absoluteString)
+//        }
         
-        // if let profileImageURL = post.profileImageURL.flatMap({ URL(string: $0) }) {
-        //     profileImageData = try? await fetchImageData(from: profileImageURL)
-        // }
+        if let profileImageURL = post.profileImageURL.flatMap({ URL(string: $0) }) {
+            profileImageData = getProfileImageFromSharedContainer(for: profileImageURL.absoluteString)
+        }
         
-        if let previewImageURL = post.previewImage.flatMap({ URL(string: $0) }) {
+        
+        // If the images aren't in the shared container, fetch them
+        if previewImageData == nil, let previewImageURL = post.previewImage.flatMap({ URL(string: $0) }) {
             previewImageData = try? await fetchImageData(from: previewImageURL)
         }
+        
+//        if profileImageData == nil, let profileImageURL = post.profileImageURL.flatMap({ URL(string: $0) }) {
+//            profileImageData = try? await fetchImageData(from: profileImageURL)
+//        }
 
         print("Preview Image Data: \(previewImageData?.count ?? 0) bytes")
         print("Profile Image Data: \(profileImageData?.count ?? 0) bytes")
         
         return (post, previewImageData, profileImageData)
+    }
+
+    func getProfileImageFromSharedContainer(for imageURL: String) -> Data? {
+        let filename = (imageURL as NSString).lastPathComponent
+        guard let sharedContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.viewcrew.ShareDefaults") else {
+            print("Failed to get shared container URL")
+            return nil
+        }
+        
+        let fileURL = sharedContainer.appendingPathComponent(filename)
+        
+        return try? Data(contentsOf: fileURL)
     }
 
     func getFriends() -> [String] {

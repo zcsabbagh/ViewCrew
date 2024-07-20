@@ -10,6 +10,7 @@ import SwiftUI
 import FirebaseAuth
 import FirebaseFirestore
 import Contacts
+import UIKit
 
 /* 
 
@@ -88,6 +89,7 @@ class NewNewFriendsViewModel: ObservableObject {
                         print("No friendIDs found in SharedDefaults")
                     }
                     self.sharedDefaults.set(self.friendDisplayNames, forKey: "friendDisplayNames")
+                    self.saveFriendProfileImages(friendProfiles)
                 }
             }
         }
@@ -96,6 +98,89 @@ class NewNewFriendsViewModel: ObservableObject {
         findAllRequests()
         listenForFriendRequestsAndChanges()
         
+    }
+
+    /* Saves images to Shared Defaults so we can access in Widget - NOT SURE IF WORKING */
+    func saveFriendProfileImages(_ friendProfiles: [PersonToAdd]) {
+        let group = DispatchGroup()
+        
+        for friend in friendProfiles {
+            if let imageURL = friend.contactImageURL, let url = URL(string: imageURL) {
+                print("Attempting to save image for URL: \(imageURL)")
+                group.enter()
+                URLSession.shared.dataTask(with: url) { data, response, error in
+                    defer { group.leave() }
+                    if let data = data, let image = UIImage(data: data) {
+                        let resizedImage = self.resizeImage(image, targetSize: CGSize(width: 100, height: 100))
+                        if let resizedData = resizedImage.pngData() {
+                            let filename = self.getFilenameFromURL(imageURL)
+                            if let savedURL = self.saveImageToSharedContainer(resizedData, filename: filename) {
+                                print("Successfully saved resized image for URL: \(imageURL) at \(savedURL)")
+                            } else {
+                                print("Failed to save resized image for URL: \(imageURL)")
+                            }
+                        } else {
+                            print("Failed to convert resized image to PNG data for URL: \(imageURL)")
+                        }
+                    } else {
+                        print("Failed to download or create image from data for URL: \(imageURL)")
+                        if let error = error {
+                            print("Error: \(error.localizedDescription)")
+                        }
+                    }
+                }.resume()
+            } else {
+                print("Invalid or missing image URL for friend: \(friend.name)")
+            }
+        }
+        
+        group.notify(queue: .main) {
+            print("Finished processing all friend profile images")
+        }
+    }
+
+    func getFilenameFromURL(_ url: String) -> String {
+        return (url as NSString).lastPathComponent
+    }
+
+    func saveImageToSharedContainer(_ imageData: Data, filename: String) -> URL? {
+        guard let sharedContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.viewcrew.ShareDefaults") else {
+            print("Failed to get shared container URL")
+            return nil
+        }
+        
+        let fileURL = sharedContainer.appendingPathComponent(filename)
+        
+        do {
+            try imageData.write(to: fileURL)
+            return fileURL
+        } catch {
+            print("Error saving image to shared container: \(error)")
+            return nil
+        }
+    }
+
+    func resizeImage(_ image: UIImage, targetSize: CGSize) -> UIImage {
+        let size = image.size
+        
+        let widthRatio  = targetSize.width  / size.width
+        let heightRatio = targetSize.height / size.height
+        
+        var newSize: CGSize
+        if widthRatio > heightRatio {
+            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+        } else {
+            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
+        }
+        
+        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+        
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        image.draw(in: rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage ?? image
     }
     
     /*
