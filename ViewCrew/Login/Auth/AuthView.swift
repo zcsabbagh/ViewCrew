@@ -106,11 +106,12 @@ struct PhoneAuthentication: View {
             .textContentType(.telephoneNumber)
             .onChange(of: phoneNumber) { newValue in
                 let filtered = newValue.filter { "0123456789".contains($0) }
-                if filtered != newValue {
-                    self.phoneNumber = filtered
+                let last10Digits = String(filtered.suffix(10))
+                if last10Digits != phoneNumber {
+                    self.phoneNumber = last10Digits
                 }
-                if filtered.count == 10 {
-                    let formattedNumber = "+1" + filtered
+                if last10Digits.count == 10 {
+                    let formattedNumber = "+1" + last10Digits
                     viewModel.sendCode(phoneNumber: formattedNumber)
                     loginViewModel.phoneNumber = formattedNumber
                     loginHaptics.hapticEffectTwo()

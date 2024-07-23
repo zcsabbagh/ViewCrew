@@ -56,7 +56,7 @@
 		2FBD7FC92C48D2610031FF8E /* Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBD7FC82C48D2610031FF8E /* Widget.swift */; };
 		2FBD7FCB2C48D2610031FF8E /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBD7FCA2C48D2610031FF8E /* AppIntent.swift */; };
 		2FBD7FCD2C48D2620031FF8E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FBD7FCC2C48D2620031FF8E /* Assets.xcassets */; };
-		2FBD7FD12C48D2620031FF8E /* StocksWidget2Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2FBD7FC22C48D2610031FF8E /* StocksWidget2Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2FBD7FD12C48D2620031FF8E /* HomeWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2FBD7FC22C48D2610031FF8E /* HomeWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2FBD7FD92C4920310031FF8E /* TimelineProv.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBD7FD82C4920310031FF8E /* TimelineProv.swift */; };
 		2FBD7FDB2C49205C0031FF8E /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBD7FDA2C49205C0031FF8E /* Entry.swift */; };
 		2FBD7FDD2C4920750031FF8E /* WidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBD7FDC2C4920740031FF8E /* WidgetView.swift */; };
@@ -126,7 +126,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				2FBD7FD12C48D2620031FF8E /* StocksWidget2Extension.appex in Embed Foundation Extensions */,
+				2FBD7FD12C48D2620031FF8E /* HomeWidget.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -172,7 +172,7 @@
 		2FBD7F872C4794980031FF8E /* PostDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDataModel.swift; sourceTree = "<group>"; };
 		2FBD7F8A2C47A0500031FF8E /* EmojiShowerEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiShowerEffect.swift; sourceTree = "<group>"; };
 		2FBD7F8C2C47CEB10031FF8E /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
-		2FBD7FC22C48D2610031FF8E /* StocksWidget2Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StocksWidget2Extension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		2FBD7FC22C48D2610031FF8E /* HomeWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HomeWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FBD7FC62C48D2610031FF8E /* WidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetBundle.swift; sourceTree = "<group>"; };
 		2FBD7FC82C48D2610031FF8E /* Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Widget.swift; sourceTree = "<group>"; };
 		2FBD7FCA2C48D2610031FF8E /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
@@ -275,7 +275,7 @@
 			isa = PBXGroup;
 			children = (
 				2F016E3E2C3D17F900D55038 /* ViewCrew.app */,
-				2FBD7FC22C48D2610031FF8E /* StocksWidget2Extension.appex */,
+				2FBD7FC22C48D2610031FF8E /* HomeWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -575,9 +575,9 @@
 			productReference = 2F016E3E2C3D17F900D55038 /* ViewCrew.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2FBD7FC12C48D2610031FF8E /* StocksWidget2Extension */ = {
+		2FBD7FC12C48D2610031FF8E /* HomeWidget */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2FBD7FD22C48D2620031FF8E /* Build configuration list for PBXNativeTarget "StocksWidget2Extension" */;
+			buildConfigurationList = 2FBD7FD22C48D2620031FF8E /* Build configuration list for PBXNativeTarget "HomeWidget" */;
 			buildPhases = (
 				2FBD7FBE2C48D2610031FF8E /* Sources */,
 				2FBD7FBF2C48D2610031FF8E /* Frameworks */,
@@ -587,14 +587,14 @@
 			);
 			dependencies = (
 			);
-			name = StocksWidget2Extension;
+			name = HomeWidget;
 			packageProductDependencies = (
 				2FBD7FDF2C492EA30031FF8E /* SDWebImageSwiftUI */,
 				2FBD80962C4BCEA40031FF8E /* AmplitudeSwift */,
 				2FBD809C2C4BE91B0031FF8E /* FirebaseMessaging */,
 			);
 			productName = StocksWidget2Extension;
-			productReference = 2FBD7FC22C48D2610031FF8E /* StocksWidget2Extension.appex */;
+			productReference = 2FBD7FC22C48D2610031FF8E /* HomeWidget.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -635,7 +635,7 @@
 			projectRoot = "";
 			targets = (
 				2F016E3D2C3D17F900D55038 /* ViewCrew */,
-				2FBD7FC12C48D2610031FF8E /* StocksWidget2Extension */,
+				2FBD7FC12C48D2610031FF8E /* HomeWidget */,
 			);
 		};
 /* End PBXProject section */
@@ -760,7 +760,7 @@
 /* Begin PBXTargetDependency section */
 		2FBD7FD02C48D2620031FF8E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2FBD7FC12C48D2610031FF8E /* StocksWidget2Extension */;
+			target = 2FBD7FC12C48D2610031FF8E /* HomeWidget */;
 			targetProxy = 2FBD7FCF2C48D2620031FF8E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -893,24 +893,25 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ViewCrew/ViewCrew.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"ViewCrew/Preview Content\"";
-				DEVELOPMENT_TEAM = 5A345X4X73;
+				DEVELOPMENT_TEAM = A56PK9K878;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ViewCrew/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INFOPLIST_KEY_NSContactsUsageDescription = "ViewCrew needs access to your contacts to help you find friends";
+				INFOPLIST_KEY_CFBundleDisplayName = "View Crew streaming widget";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				INFOPLIST_KEY_NSContactsUsageDescription = "ViewCrew needs access to contacts to help you find friends on the app";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.zane.vitalz-new";
+				PRODUCT_BUNDLE_IDENTIFIER = com.zane.viewcrew;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -929,24 +930,25 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ViewCrew/ViewCrew.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"ViewCrew/Preview Content\"";
-				DEVELOPMENT_TEAM = 5A345X4X73;
+				DEVELOPMENT_TEAM = A56PK9K878;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ViewCrew/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INFOPLIST_KEY_NSContactsUsageDescription = "ViewCrew needs access to your contacts to help you find friends";
+				INFOPLIST_KEY_CFBundleDisplayName = "View Crew streaming widget";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				INFOPLIST_KEY_NSContactsUsageDescription = "ViewCrew needs access to contacts to help you find friends on the app";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.zane.vitalz-new";
+				PRODUCT_BUNDLE_IDENTIFIER = com.zane.viewcrew;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -965,10 +967,10 @@
 				CODE_SIGN_ENTITLEMENTS = StocksWidget2Extension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5A345X4X73;
+				DEVELOPMENT_TEAM = A56PK9K878;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StocksWidget2/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = StocksWidget2;
+				INFOPLIST_KEY_CFBundleDisplayName = "ViewCrew-HomeWidget";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -976,7 +978,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.zane.vitalz-new.StocksWidget2";
+				PRODUCT_BUNDLE_IDENTIFIER = com.zane.viewcrew.homewidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -996,10 +998,10 @@
 				CODE_SIGN_ENTITLEMENTS = StocksWidget2Extension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5A345X4X73;
+				DEVELOPMENT_TEAM = A56PK9K878;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StocksWidget2/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = StocksWidget2;
+				INFOPLIST_KEY_CFBundleDisplayName = "ViewCrew-HomeWidget";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1007,7 +1009,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.zane.vitalz-new.StocksWidget2";
+				PRODUCT_BUNDLE_IDENTIFIER = com.zane.viewcrew.homewidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1040,7 +1042,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2FBD7FD22C48D2620031FF8E /* Build configuration list for PBXNativeTarget "StocksWidget2Extension" */ = {
+		2FBD7FD22C48D2620031FF8E /* Build configuration list for PBXNativeTarget "HomeWidget" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2FBD7FD32C48D2620031FF8E /* Debug */,

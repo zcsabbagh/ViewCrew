@@ -126,7 +126,7 @@ final class FirebaseCreateUserModel: ObservableObject {
     }
     
     func createUsername(inputtedUserName: String) async throws -> String {
-        var modifiedUserName = inputtedUserName.replacingOccurrences(of: " ", with: "")
+        var modifiedUserName = inputtedUserName.replacingOccurrences(of: " ", with: "").lowercased()
         var isUnique = false
         var hasAddedDot = false
         

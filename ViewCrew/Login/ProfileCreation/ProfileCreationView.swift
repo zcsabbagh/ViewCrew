@@ -32,6 +32,10 @@ struct ProfileCreationView: View {
 
             createProfileButton
             .padding(.bottom, UIScreen.main.bounds.height * 0.02)
+
+            Spacer()
+            termsAndConditionsButton
+             .padding(.bottom, UIScreen.main.bounds.height * 0.02)
             
 
         }
@@ -46,6 +50,23 @@ struct ProfileCreationView: View {
         .onAppear {
             HapticFeedbackGenerator.shared.generateHapticMedium()
         }
+    }
+
+    var termsAndConditionsButton: some View {
+        Button(action: {
+            if let url = URL(string: "https://drive.google.com/file/d/1--EZBy0awKLe2iJB-hl7ghUUsTsdOtCL/view?usp=sharing") {
+                UIApplication.shared.open(url)
+            }
+        }) {
+            Text("By creating a profile, you're agreeing to our ")
+                .font(.system(size: 10))
+                .foregroundColor(.gray) +
+            Text("terms & conditions")
+                .font(.system(size: 10))
+                .foregroundColor(.white)
+                .underline()
+        }
+        .padding(.bottom, 10)
     }
 
     var createProfileButton: some View {
