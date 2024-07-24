@@ -1,0 +1,4 @@
+functions-framework==3.5.0
+google-cloud-firestore==2.9.0
+requests==2.31.0
+google-cloud-error-reporting==1.9.1
