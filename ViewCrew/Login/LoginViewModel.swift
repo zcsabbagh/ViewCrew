@@ -102,6 +102,9 @@ class LoginViewModel: ObservableObject {
             do {
                 if let userID = try await firebaseModel.checkIfUserExists(phoneNumber: self.phoneNumber) {
                     print("User exists with ID: \(userID)")
+                    // set the userDefaults key for userID to the userID
+                    UserDefaults.standard.set(userID, forKey: "userID")
+                    print("set user defaults to \(userID)")
                 } else {
                     print("User does not exist")
                 }

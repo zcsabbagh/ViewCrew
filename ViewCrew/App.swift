@@ -88,7 +88,7 @@ struct vitalz_newApp: App {
         WindowGroup {
             if isLoggedIn {
                 CustomTabBar()
-                    .defaultAppStorage(UserDefaults(suiteName: "group.viewcrew.ShareDefaults")!)
+                    .defaultAppStorage(UserDefaults(suiteName: "group.zane.ShareDefaults")!)
                     .preferredColorScheme(.dark)
             } else {
                 LoginMaster()
@@ -128,6 +128,7 @@ struct CustomTabBar: View {
                     .onTapGesture { HapticFeedbackGenerator.shared.generateHapticMedium() }
                 
                 FriendView(viewModel: friendsViewModel)
+                
                     .tabItem {
                         Image(systemName: "person.2")
                     }

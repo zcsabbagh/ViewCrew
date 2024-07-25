@@ -80,7 +80,7 @@ public struct FriendView: View {
             print("Message Composer was dismissed")
         }) {
             MessageComposerViewFriends(
-                bodyMessage: "I need friends [on Vitalz]. Please help.\n\nHere's a link:\nhttps://apps.apple.com/us/app/vitalz-share-more/id6503488338",
+                bodyMessage: "I need friends [on View Crew]. Please help.\n\nHere's a link:\nhttps://apps.apple.com/us/app/view-crew-streaming-widget/id6569239199",
                 recipients: $messageRecepients
             )
         }
@@ -184,7 +184,8 @@ struct SettingsAlertView: View {
 
 struct ClassySearchBar: View {
     @Binding var searchText: String
-
+    @State private var isFocused: Bool = false
+    @FocusState private var isTextFieldFocused: Bool
 
     var body: some View {
         HStack {
@@ -196,21 +197,24 @@ struct ClassySearchBar: View {
                 .cornerRadius(10)
                 .disableAutocorrection(true)
                 .frame(maxWidth: .infinity)
+                .focused($isTextFieldFocused)
                 .overlay(
                     HStack {
                         Image(systemName: "magnifyingglass")
                             .foregroundColor(.white)
                             .padding(.leading, 10)
-                        if searchText.isEmpty {
+                        if searchText.isEmpty && !isFocused {
                             Text("Search")
                                 .font(.custom("Roboto-Regular", size: 15))
                                 .foregroundColor(.white)
                         }
 
                         Spacer()
-                        if !searchText.isEmpty {
+                        if !searchText.isEmpty || isFocused {
                             Button(action: {
                                 self.searchText = ""
+                                self.isTextFieldFocused = false
+                                self.isFocused = false
                                 HapticFeedbackGenerator.shared.generateHapticLight()
                             }) {
                                 Image(systemName: "xmark.circle.fill")
@@ -220,6 +224,9 @@ struct ClassySearchBar: View {
                         }
                     }
                 )
+                .onChange(of: isTextFieldFocused) { newValue in
+                    isFocused = newValue
+                }
         }
         .padding(.vertical, 5)
     }

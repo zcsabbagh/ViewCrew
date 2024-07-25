@@ -77,7 +77,7 @@ struct Provider: AppIntentTimelineProvider {
 
     func getProfileImageFromSharedContainer(for imageURL: String) -> Data? {
         let filename = (imageURL as NSString).lastPathComponent
-        guard let sharedContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.viewcrew.ShareDefaults") else {
+        guard let sharedContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.zane.ShareDefaults") else {
             print("Failed to get shared container URL")
             return nil
         }
@@ -88,7 +88,7 @@ struct Provider: AppIntentTimelineProvider {
     }
 
     func getFriends() -> [String] {
-        let defaults = UserDefaults(suiteName: "group.viewcrew.ShareDefaults")
+        let defaults = UserDefaults(suiteName: "group.zane.ShareDefaults")
         return defaults?.stringArray(forKey: "friendIDs") ?? []
     }
 
@@ -135,7 +135,12 @@ struct Provider: AppIntentTimelineProvider {
             date: postData.date,
             bookmark: postData.bookmark,
             profileImageURL: postData.profileImageURL,
-            profile: postData.profile.map { Profile(username: $0.username, name: $0.name, profileImage: $0.profileImage) }
+            profile: postData.profile.map { Profile(username: $0.username, name: $0.name, profileImage: $0.profileImage) },
+            post_type: "default",
+            years_ago: nil,
+            matchedUsers: nil,
+            percentageWatched: nil,
+            numberEpisodes: nil
         )
     }
 

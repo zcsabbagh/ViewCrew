@@ -11,36 +11,49 @@ import Combine
 
 enum PostType: Hashable, Equatable {
     case Default(Post)
-    case Repeated(Post, numEpisodes: String)
-    case Twins(Post, twin: Profile)
-    case Trending(Post, friends: [Profile])
+    case Repeated(Post)
+    case Twins(Post)
+    case Trending(Post)
+    case Liked(Post)
+    case NotLiked(Post)
+    case Throwback(Post)
+    
+    var post: Post {
+        switch self {
+        case .Default(let post),
+             .Repeated(let post),
+             .Twins(let post),
+             .Trending(let post),
+             .Liked(let post),
+             .NotLiked(let post),
+             .Throwback(let post):
+            return post
+        }
+    }
     
     func hash(into hasher: inout Hasher) {
         switch self {
-        case .Default(let post):
+        case .Default(let post),
+             .Repeated(let post),
+             .Twins(let post),
+             .Trending(let post),
+             .Liked(let post),
+             .NotLiked(let post),
+             .Throwback(let post):
             hasher.combine(post)
-        case .Repeated(let post, let numEpisodes):
-            hasher.combine(post)
-            hasher.combine(numEpisodes)
-        case .Twins(let post, let twin):
-            hasher.combine(post)
-            hasher.combine(twin)
-        case .Trending(let post, let friends):
-            hasher.combine(post)
-            hasher.combine(friends)
         }
     }
     
     static func == (lhs: PostType, rhs: PostType) -> Bool {
         switch (lhs, rhs) {
-        case (.Default(let post1), .Default(let post2)):
+        case (.Default(let post1), .Default(let post2)),
+             (.Repeated(let post1), .Repeated(let post2)),
+             (.Twins(let post1), .Twins(let post2)),
+             (.Trending(let post1), .Trending(let post2)),
+             (.Liked(let post1), .Liked(let post2)),
+             (.NotLiked(let post1), .NotLiked(let post2)),
+             (.Throwback(let post1), .Throwback(let post2)):
             return post1 == post2
-        case (.Repeated(let post1, let num1), .Repeated(let post2, let num2)):
-            return post1 == post2 && num1 == num2
-        case (.Twins(let post1, let twin1), .Twins(let post2, let twin2)):
-            return post1 == post2 && twin1 == twin2
-        case (.Trending(let post1, let friends1), .Trending(let post2, let friends2)):
-            return post1 == post2 && friends1 == friends2
         default:
             return false
         }
@@ -60,7 +73,14 @@ struct Post: Identifiable, Hashable, Equatable {
     let bookmark: Int?
     let profileImageURL: String?
     let profile: Profile?
-    
+    let post_type: String
+
+    // Additional parameters for different post types
+    let years_ago: Int?
+    let matchedUsers: [String]?
+    let percentageWatched: Int?
+    let numberEpisodes: Int?
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }

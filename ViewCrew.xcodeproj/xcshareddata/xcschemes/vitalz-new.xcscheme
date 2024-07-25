@@ -49,28 +49,6 @@
             ReferencedContainer = "container:ViewCrew.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = "PRELUDE_CUSTOMER_UUID"
-            value = "8178c751-c838-42fd-b2c9-a86671fefe27"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "PRELUDE_AUTH_UUID"
-            value = "3c90c3cc-0d44-4b50-8888-8dd25736052a"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "PRELUDE_X_API"
-            value = "Ta2lRo5C0K2JABXpMWJRi80LSOpGZcnW5QbxqJT2"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "DATA_MOVER_API_KEY"
-            value = "51262ab7-428e-4473-aa6e-41993c9f99c3"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
