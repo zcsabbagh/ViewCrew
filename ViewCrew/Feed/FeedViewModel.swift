@@ -27,25 +27,25 @@ class FeedViewModel: ObservableObject {
     init(friends: [String] = []) {
         self.friends = friends
         fetchProfilePosts()
-        // fetchRecentPosts()
+        fetchRecentPosts()
     }
     
     func updateFriends(_ newFriends: [String]) {
         self.friends = newFriends
-        // fetchRecentPosts()
+        fetchRecentPosts()
     }
     
     
     func refreshPosts() {
         isLoading = true
         lastDocument = nil
-        // fetchRecentPosts()
+        fetchRecentPosts()
     }
 
     func loadMorePosts() {
         guard !isLoading else { return }
         isLoading = true
-        // fetchRecentPosts(loadMore: true)
+        fetchRecentPosts(loadMore: true)
     }
 
     

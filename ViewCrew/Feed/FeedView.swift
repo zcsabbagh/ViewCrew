@@ -94,7 +94,7 @@ struct Feed: View {
             viewModel.updateFriends(newUserProfile.friends)
         }
         .onChange(of: viewModel.friends) { _ in
-            // viewModel.fetchRecentPosts()
+            viewModel.fetchRecentPosts()
         }
     }
 
