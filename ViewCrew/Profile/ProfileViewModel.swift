@@ -133,8 +133,14 @@ class ProfileViewModel: ObservableObject {
                                 date: data["date"] as? String ?? "",
                                 bookmark: data["float"] as? Int ?? 0,
                                 profileImageURL: nil,
+            
                                
-                                profile: nil // Assuming profile data is not included in watchHistory
+                                profile: nil,
+                                post_type: "",
+                                years_ago: nil,
+                                matchedUsers: nil,
+                                percentageWatched: nil,
+                                numberEpisodes: nil
                             )
                             recentWatches.append(post)
                         }

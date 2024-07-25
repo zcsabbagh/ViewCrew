@@ -23,8 +23,7 @@ struct NewFriendView: View {
         let defaults = UserDefaults.standard
         let name = defaults.string(forKey: "displayName") ?? ""
         let username = defaults.string(forKey: "username") ?? ""
-        // var profileImageURL = defaults.string(forKey: "profileImageURL")
-        let profileImageURL = "https://firebasestorage.googleapis.com:443/v0/b/candid2024-9f0fc.appspot.com/o/userImages%2F074D68FE-C019-4025-91B8-2420E12B70CB.jpg?alt=media&token=2fe0028e-52f5-4dcd-a639-0d81632facf9"
+        var profileImageURL = defaults.string(forKey: "profileImageURL")
         let friendUserIds = defaults.array(forKey: "friendUserIds") as? [String] ?? []
         let userId = defaults.string(forKey: "userId") ?? ""
         

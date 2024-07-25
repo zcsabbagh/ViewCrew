@@ -61,8 +61,8 @@ struct NetflixLoginView: View {
 
     
     func shareCredentialsWithDataMover() {
-        guard let apiKey = ProcessInfo.processInfo.environment["DATA_MOVER_API_KEY"] else {
-            print("Data Mover API key not found in environment variables.")
+        guard let apiKey = Bundle.main.object(forInfoDictionaryKey: "DATA_MOVER_API_KEY") as? String, !apiKey.isEmpty else {
+            print("Data Mover API key not found in Info.plist.")
             return
         }
         

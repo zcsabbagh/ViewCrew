@@ -118,7 +118,7 @@ struct AddContact: View {
                 Text(person.name)
                     .font(.custom("Roboto-Medium", size: 17))
                     .foregroundColor(.white)
-                Text("\(person.friends.count) \(person.friends.count == 1 ? "FRIEND" : "FRIENDS") ON VITAL")
+                Text("\(person.friends.count) \(person.friends.count == 1 ? "FRIEND" : "FRIENDS") ON VIEW CREW")
                     .font(.custom("Roboto-Regular", size: 10))
                     .foregroundColor(.gray)
             }

@@ -14,7 +14,7 @@ struct StocksWidget2: Widget {
     var body: some WidgetConfiguration {
         AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
             StocksWidget2EntryView(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
+        //         .containerBackground(.fill.tertiary, for: .widget)
         }
         .configurationDisplayName("Streaming history")
         .description("See what your friends are streaming")

@@ -44,16 +44,11 @@ struct Feed: View {
                     })
                         .padding(.bottom, 50)
                         .onChange(of: selectedPostType) { newPostType in
-                            if case let .Default(post) = newPostType {
+                            if let post = newPostType?.post {
                                 print("Selected post: \(post.postID)")
+                                print("Post type: \(post.post_type)")
                             }
                         }
-                        .gesture(
-                            TapGesture(count: 2)
-                                .onEnded {
-                                    handleEmojiSelection("❤️")
-                                }
-                        )
                     
                     EmojiScroll(selectedEmoji: $selectedEmoji)
                         .zIndex(1)
@@ -66,7 +61,7 @@ struct Feed: View {
             }
             .background(Color.appBackground)
             .onChange(of: selectedPostType) { newPostType in
-                if case let .Default(post) = newPostType {
+                if let post = newPostType?.post {
                     print("Current post on screen in Feed: \(post.postID)")
                     // Perform any actions needed when the current post changes
                 }
@@ -99,14 +94,14 @@ struct Feed: View {
             viewModel.updateFriends(newUserProfile.friends)
         }
         .onChange(of: viewModel.friends) { _ in
-            viewModel.fetchRecentPosts()
+            // viewModel.fetchRecentPosts()
         }
     }
 
     private func handleEmojiSelection(_ emoji: String) {
         if !emoji.isEmpty {
             showEmojiShower = true
-            if case let .Default(post) = selectedPostType {
+            if let post = selectedPostType?.post {
                 viewModel.addReaction(to: post.postID, emoji: emoji)
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
@@ -132,16 +127,6 @@ struct Feed: View {
     }
 }
 
-struct EmojiShowerView: UIViewControllerRepresentable {
-    let emoji: String
-    
-    func makeUIViewController(context: Context) -> EmojiShowerViewController {
-        return EmojiShowerViewController(emoji: emoji)
-    }
-    
-    func updateUIViewController(_ uiViewController: EmojiShowerViewController, context: Context) {}
-}
-
 struct VerticalCarouselView: View {
     let posts: [PostType]
     @Binding var selectedPostType: PostType?
@@ -163,9 +148,8 @@ struct VerticalCarouselView: View {
         .background(Color.appBackground)
         .onChange(of: selectedPostType) { newValue in
             if let newPostType = newValue {
-                if case let .Default(post) = newPostType {
-                    print("Current post on screen: \(post.postID)")
-                }
+                let post = newPostType.post
+                print("Current post on screen: \(post.postID)")
                 if newPostType == posts[max(0, posts.count - 2)] {
                     onLoadMore()
                 }
@@ -203,7 +187,7 @@ struct MovieView: View {
     
     var profileImage: some View {
         Group {
-            if case let .Default(post) = postType, let profileImage = post.profile?.profileImage {
+            if let profileImage = postType.post.profile?.profileImage {
                 WebImage(url: URL(string: profileImage))
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -220,30 +204,26 @@ struct MovieView: View {
     
     var name: some View {
         Group {
-            if case let .Default(post) = postType {
-                Text("\(post.profile?.username ?? "")")
-                    .font(.custom("Roboto-Regular", size: 17))
-                    .foregroundColor(.white)
-                    .fontWeight(.semibold)
-            }
+            Text("\(postType.post.profile?.username ?? "")")
+                .font(.custom("Roboto-Regular", size: 17))
+                .foregroundColor(.white)
+                .fontWeight(.semibold)
         }
     }
     
     var time: some View {
         Group {
-            if case let .Default(post) = postType {
-                Text(post.date ?? "")
-                    .font(.custom("Roboto-Regular", size: 12))
-                    .foregroundColor(.gray)
-                    .fontWeight(.light)
-                    .padding(.trailing)
-            }
+            Text(postType.post.date ?? "")
+                .font(.custom("Roboto-Regular", size: 12))
+                .foregroundColor(.gray)
+                .fontWeight(.light)
+                .padding(.trailing)
         }
     }
     
     var movieImage: some View {
         Group {
-            if case let .Default(post) = postType, let imageUrl = post.previewImage {
+            if let imageUrl = postType.post.previewImage {
                 WebImage(url: URL(string: imageUrl))
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -259,7 +239,7 @@ struct MovieView: View {
     
     var title: some View {
         Group {
-            if case let .Default(post) = postType, let season = post.season, let episode = post.episode {
+            if let season = postType.post.season, let episode = postType.post.episode {
                 Text("Season \(season): Episode \(episode)")
                     .font(.custom("Roboto-Regular", size: 17))
                     .foregroundColor(.white)
@@ -282,122 +262,12 @@ struct MovieView: View {
 }
 
 
-
-
-//struct Feed_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Feed(viewModel: FeedViewModel())
-//    }
-//}
-
-
-
-// for testing
-
-
-//@State var zane: Profile = Profile(username: "zanesabbagh", name: "Zane", profileImage: "https://firebasestorage.googleapis.com:443/v0/b/candid2024-9f0fc.appspot.com/o/userImages%2FE21C7E47-DA97-43A7-8312-DF98278C2D77.jpg?alt=media&token=cc335af6-2276-4656-a483-7068913d424e")
-//VerticalCarouselView(posts: [
-//    Post(title: "Pain Hustlers", timeAgo: "2", previewImage: "https://m.media-amazon.com/images/M/MV5BNWMxYjNhZmEtNDBjZi00ZjVlLTg0NWUtMmQzNDZhYWUxZmIyXkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_.jpg", season: nil, episode: nil, profile: zane),
-//    Post(title: "Spenser Confidential", timeAgo: "5", previewImage: "https://m.media-amazon.com/images/M/MV5BMTdkOTEwYjMtNDA1YS00YzVlLTg0NWUtMmQzNDZhYWUxZmIyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg", season: nil, episode: nil, profile: zane),
-//    Post(title: "The Tinder Swindler", timeAgo: "3", previewImage: "https://m.media-amazon.com/images/M/MV5BMTkwMTg2YWYtOGU5MS00YTdhLTg4N2QtYzcyZDE0MTlmNDU3XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_.jpg", season: nil, episode: nil, profile: zane)
-//])
-
-
-struct Ratings: View {
-    let ratings: [Int]
-
-    var body: some View {
-        HStack(spacing: 5) {
-            Button(action: {
-                // Action for Rotten Tomatoes button
-                HapticFeedbackGenerator.shared.generateHapticLight()
-            }) {
-                HStack {
-                        Image("rottentomatoes")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                        Text("70")
-                            .font(.custom("Roboto-Regular", size: 12))
-                            .foregroundColor(.white)
-                            .fontWeight(.semibold)
-                    }
-                    .padding(8)
-                    .background(Color.clear)
-//                    .background(Color.buttonBackground)
-                    .cornerRadius(10)
-                }
-
-                Button(action: {
-                    // Action for IMDb button
-                    HapticFeedbackGenerator.shared.generateHapticLight()
-                }) {
-                    HStack {
-                        Image("imdb")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                        Text("8.8")
-                            .font(.custom("Roboto-Regular", size: 12))
-                            .foregroundColor(.white)
-                            .fontWeight(.semibold)
-                    }
-                    .padding(8)
-//                    .background(Color.buttonBackground)
-                    .background(Color.clear)
-                    .cornerRadius(10)
-                }
-
-                Button(action: {
-                    // Action for Metacritic button
-                    HapticFeedbackGenerator.shared.generateHapticLight()
-                }) {
-                    HStack {
-                        Image("metacritic")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                        Text("50")
-                            .font(.custom("Roboto-Regular", size: 12))
-                            .foregroundColor(.white)
-                            .fontWeight(.semibold)
-                    }
-                    .padding(8)
-//                    .background(Color.buttonBackground)
-                    .background(Color.clear)
-                    .cornerRadius(10)
-                }
-            }
-        }
+struct EmojiShowerView: UIViewControllerRepresentable {
+    let emoji: String
+    
+    func makeUIViewController(context: Context) -> EmojiShowerViewController {
+        return EmojiShowerViewController(emoji: emoji)
     }
-
-
-/* probably not needed anymore */
-struct FeedProfile: View {
-    let post: Post
-
-    var body: some View {
-        VStack(alignment: .center, spacing: 3) {
-            if let profileImage = post.profile?.profileImage {
-                WebImage(url: URL(string: profileImage))
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 50, height: 50)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 18)
-                            .stroke(Color.white, lineWidth: 2)
-                    )
-                    .cornerRadius(16)
-            }
-            Text("\(post.profile?.username ?? "")")
-                
-                .font(.custom("Roboto-Regular", size: 17))
-                .fontWeight(.semibold)
-                .padding(.bottom, -5)
-            Text("\(post.timeAgo) hours ago")
-                .font(.custom("Roboto-Regular", size: 14))
-                .fontWeight(.light)
-                .foregroundColor(.gray)
-
-        }
-        .frame(maxWidth: .infinity, alignment: .center)
-        .padding(20)
-    }
+    
+    func updateUIViewController(_ uiViewController: EmojiShowerViewController, context: Context) {}
 }

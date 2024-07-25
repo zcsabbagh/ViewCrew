@@ -10,7 +10,7 @@ import SwiftUI
 
 
 struct ShareButtons: View {
-    @State private var shareLink = "tinyurl.com/joinroll"
+    @State private var shareLink = "https://apps.apple.com/us/app/view-crew-streaming-widget/id6569239199"
     var body: some View {
         
         VStack {

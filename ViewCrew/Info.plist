@@ -2,8 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>DATA_MOVER_API_KEY</key>
+	<string>51262ab7-428e-4473-aa6e-41993c9f99c3</string>
 	<key>NSUserNotificationsUsageDescription</key>
 	<string>ViewCrew needs access to notifications to show you what your friends are watching</string>
+	<key>PRELUDE_AUTH_UUID</key>
+	<string>3c90c3cc-0d44-4b50-8888-8dd25736052a</string>
+	<key>PRELUDE_CUSTOMER_UUID</key>
+	<string>8178c751-c838-42fd-b2c9-a86671fefe27</string>
+	<key>PRELUDE_X_API</key>
+	<string>Ta2lRo5C0K2JABXpMWJRi80LSOpGZcnW5QbxqJT2</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Roboto-Medium.ttf</string>

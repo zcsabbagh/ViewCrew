@@ -59,7 +59,7 @@ class NewNewFriendsViewModel: ObservableObject {
     
     init() {
         // Load friendUserIDs and friendDisplayNames from UserDefaults
-        self.sharedDefaults = UserDefaults(suiteName: "group.viewcrew.ShareDefaults")!
+        self.sharedDefaults = UserDefaults(suiteName: "group.zane.ShareDefaults")!
 
         // Load friendUserIDs and friendDisplayNames from sharedDefaults
         self.friendUserIDs = UserDefaults.standard.array(forKey: "friendUserIDs") as? [String] ?? []
@@ -97,7 +97,6 @@ class NewNewFriendsViewModel: ObservableObject {
         findBlockedUsers()
         findAllRequests()
         listenForFriendRequestsAndChanges()
-        
     }
 
     /* Saves images to Shared Defaults so we can access in Widget - NOT SURE IF WORKING */
@@ -144,7 +143,7 @@ class NewNewFriendsViewModel: ObservableObject {
     }
 
     func saveImageToSharedContainer(_ imageData: Data, filename: String) -> URL? {
-        guard let sharedContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.viewcrew.ShareDefaults") else {
+        guard let sharedContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.zane.ShareDefaults") else {
             print("Failed to get shared container URL")
             return nil
         }
@@ -511,10 +510,20 @@ class NewNewFriendsViewModel: ObservableObject {
     }
     
     func createUserFromUserID(_ userID: String, completion: @escaping (PersonToAdd?) -> Void) {
+        guard !userID.isEmpty else {
+            print("Error: userID is empty")
+            completion(nil)
+            return
+        }
+
         let db = Firestore.firestore()
-        db.collection("users").document(userID).getDocument { (document, error) in
+        let userDocument = db.collection("users").document(userID)
+        
+        print("Fetching document for userID: \(userID)")
+        
+        userDocument.getDocument { (document, error) in
             if let error = error {
-                print("Error getting document: \(error)")
+                print("Error getting document: \(error.localizedDescription)")
                 completion(nil)
             } else {
                 if let document = document, document.exists {
@@ -524,10 +533,12 @@ class NewNewFriendsViewModel: ObservableObject {
                         contactImageURL: data["profileImageURL"] as? String,
                         friends: data["friends"] as? [String] ?? [],
                         phoneNumber: data["phoneNumber"] as? String,
-                        userID: data["userID"] as? String
+                        userID: data["userID"] as? String,
+                        username: data["username"] as? String
                     )
                     completion(person)
                 } else {
+                    print("Document does not exist for userID: \(userID)")
                     self.friendsToRemove.append(userID)
                     completion(nil)
                 }
@@ -668,21 +679,26 @@ class NewNewFriendsViewModel: ObservableObject {
                     if let strippedNumber = strippedPhoneNumber {
                         // Check if phoneNumber exists in the "users" collection
                         let db = Firestore.firestore()
-                        db.collection("users").whereField("phoneNumber", isEqualTo: String(strippedNumber)).getDocuments { (querySnapshot, error) in
-                            if let error = error {
-                                print("Error checking phone number: \(error)")
-                            } else if querySnapshot!.documents.isEmpty {
-                                // If phoneNumber does not exist in the database, proceed to fetch friends
-                                self.fetchFriendsOnAppForContact(for: String(strippedNumber)) { fetchedFriends in
-                                    let personToAdd = PersonToAdd(name: fullName, contactImageURL: nil, contactImage: contactImage, friends: fetchedFriends, phoneNumber: String(strippedNumber), userID: nil)
-                                    DispatchQueue.main.async {
-                                        self.suggestionsFromContacts.append(personToAdd)
-                                        // Sort suggestionsFromContacts by the length of the friends array in descending order
-                                        self.suggestionsFromContacts.sort { $0.friends.count > $1.friends.count }
+                        db.collection("users")
+                            .whereFilter(Filter.orFilter([
+                                Filter.whereField("phoneNumber", isEqualTo: String(strippedNumber)),
+                                Filter.whereField("strippedPhoneNumber", isEqualTo: String(strippedNumber))
+                            ]))
+                            .getDocuments { (querySnapshot, error) in
+                                if let error = error {
+                                    print("Error checking phone number: \(error)")
+                                } else if querySnapshot!.documents.isEmpty {
+                                    // If phoneNumber does not exist in the database, proceed to fetch friends
+                                    self.fetchFriendsOnAppForContact(for: String(strippedNumber)) { fetchedFriends in
+                                        let personToAdd = PersonToAdd(name: fullName, contactImageURL: nil, contactImage: contactImage, friends: fetchedFriends, phoneNumber: String(strippedNumber), userID: nil)
+                                        DispatchQueue.main.async {
+                                            self.suggestionsFromContacts.append(personToAdd)
+                                            // Sort suggestionsFromContacts by the length of the friends array in descending order
+                                            self.suggestionsFromContacts.sort { $0.friends.count > $1.friends.count }
+                                        }
                                     }
                                 }
                             }
-                        }
                     }
                 }
             } catch {
@@ -722,21 +738,27 @@ class NewNewFriendsViewModel: ObservableObject {
                         if let strippedNumber = strippedPhoneNumber {
                             // Check if phoneNumber exists in the "users" collection
                             let db = Firestore.firestore()
-                            db.collection("users").whereField("phoneNumber", isEqualTo: String(strippedNumber)).getDocuments { (querySnapshot, error) in
-                                if let error = error {
-                                    print("Error checking phone number: \(error)")
-                                } else if querySnapshot!.documents.isEmpty {
-                                    // If phoneNumber does not exist in the database, proceed to fetch friends
-                                    self.fetchFriendsOnAppForContact(for: String(strippedNumber)) { fetchedFriends in
-                                        let personToAdd = PersonToAdd(name: fullName, contactImageURL: nil, contactImage: contactImage, friends: fetchedFriends, phoneNumber: String(strippedNumber), userID: nil)
-                                        DispatchQueue.main.async {
-                                            self.matchedContacts.append(personToAdd)
-                                            // Optionally sort matchedContacts by the length of the friends array in descending order
-                                            // self.matchedContacts.sort { $0.friends.count > $1.friends.count }
+                            db.collection("users")
+                                /* TO DO LATER: Correct this to use strippedPhoneNumber only */ 
+                                .whereFilter(Filter.orFilter([
+                                    Filter.whereField("phoneNumber", isEqualTo: String(strippedNumber)),
+                                    Filter.whereField("strippedPhoneNumber", isEqualTo: String(strippedNumber))
+                                ]))
+                                .getDocuments { (querySnapshot, error) in
+                                    if let error = error {
+                                        print("Error checking phone number: \(error)")
+                                    } else if querySnapshot!.documents.isEmpty {
+                                        // If phoneNumber does not exist in the database, proceed to fetch friends
+                                        self.fetchFriendsOnAppForContact(for: String(strippedNumber)) { fetchedFriends in
+                                            let personToAdd = PersonToAdd(name: fullName, contactImageURL: nil, contactImage: contactImage, friends: fetchedFriends, phoneNumber: String(strippedNumber), userID: nil)
+                                            DispatchQueue.main.async {
+                                                self.matchedContacts.append(personToAdd)
+                                                // Optionally sort matchedContacts by the length of the friends array in descending order
+                                                self.matchedContacts.sort { $0.friends.count > $1.friends.count }
+                                            }
                                         }
                                     }
                                 }
-                            }
                         }
                     }
                 }

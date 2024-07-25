@@ -91,7 +91,7 @@ struct AcceptView: View {
     }
 
     private var usernameText: some View {
-        Text("@\(person.username ?? "")")
+        Text(person.username?.isEmpty == true ? "" : "@\(person.username ?? "")")
             .font(.custom("RobotoCondensed-Medium", size: 16))
             .foregroundColor(.appPurple)
             .lineLimit(2)

@@ -57,7 +57,12 @@ final class FirebaseCreateUserModel: ObservableObject {
     
     func createUser(phoneNumber: String) async throws {
         do {
-            let userData = ["phoneNumber": phoneNumber]
+            var userData = ["phoneNumber": phoneNumber]
+
+            /* TO DO: MODIFY FOR DIFFERENT COUNTRY CODES */
+            let strippedPhoneNumber = String(phoneNumber.suffix(10))
+            userData["strippedPhoneNumber"] = strippedPhoneNumber
+
             var ref: DocumentReference? = nil
             ref = try await db.collection("users").addDocument(data: userData)
             
