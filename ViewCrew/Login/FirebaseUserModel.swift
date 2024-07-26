@@ -7,6 +7,7 @@ import FirebaseStorage
 import FirebaseAuth
 import UIKit
 import Combine
+import Contacts
 
 
 struct UserData: Codable {
@@ -50,9 +51,11 @@ struct TokenData: Codable {
 
 final class FirebaseCreateUserModel: ObservableObject {
     
+    @State private var contactUploadViewModel: ContactUploadViewModel = ContactUploadViewModel()
     let db = Firestore.firestore()
     let storage = Storage.storage()
     let fcmMessaging = Messaging.messaging()
+     @State private var isContactAccessGranted: Bool = true
     
     
     func createUser(phoneNumber: String) async throws {
@@ -70,6 +73,7 @@ final class FirebaseCreateUserModel: ObservableObject {
                 UserDefaults.standard.set(documentID, forKey: "userID")
                 UserDefaults.standard.synchronize()
                 print("User created successfully with ID: \(documentID)")
+                requestContactsAccess()
             } else {
                 print("Failed to retrieve document ID after creating user.")
             }
@@ -116,9 +120,11 @@ final class FirebaseCreateUserModel: ObservableObject {
                 } else {
                     print("No current user found in Auth")
                 }
-                
+                UserDefaults.standard.set(userID, forKey: "userID")
+                print("set user defaults to \(userID)")
                 UserDefaults.standard.set(true, forKey: "isLoggedIn")
                 UserDefaults.standard.synchronize()
+                requestContactsAccess()
                 return userID
             } else {
 
@@ -196,6 +202,27 @@ final class FirebaseCreateUserModel: ObservableObject {
             }
         }
     }
+    
+    func requestContactsAccess() {
+        let store = CNContactStore()
+        store.requestAccess(for: .contacts) { granted, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    print("Error requesting access to contacts: \(error)")
+                    self.isContactAccessGranted = false
+                } else {
+                    print("Access to contacts granted: \(granted)")
+                    self.isContactAccessGranted = granted
+                    if granted == true {
+                        Task {
+                            await self.contactUploadViewModel.fetchAndProcessContactNumbers(userID: UserDefaults.standard.string(forKey: "userID") ?? "test")
+                        }
+                       
+                    }
+                }
+            }
+        }
+    }
 }
 
 
@@ -230,6 +257,8 @@ final class APNSManager: ObservableObject{
             print("Error handling Firestore operations: \(error)")
         }
     }
+
+    
 }
 
 

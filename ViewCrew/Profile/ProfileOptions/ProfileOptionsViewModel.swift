@@ -56,6 +56,20 @@ class ProfileOptionsViewModel: ObservableObject {
                     }
                 }
                 
+                // Delete all documents in the "watchHistory" collection where the "userId" field equals userID
+                db.collection("watchHistory").whereField("userId", isEqualTo: userId).getDocuments { (querySnapshot, error) in
+                    if let error = error {
+                        print("Error getting watchHistory documents: \(error)")
+                    } else {
+                        for document in querySnapshot!.documents {
+                            document.reference.delete { error in
+                                if let error = error {
+                                    print("Error deleting watchHistory document: \(error)")
+                                }
+                            }
+                        }
+                    }
+                }
 
                 UserDefaults.standard.removeObject(forKey: "userID")
                 UserDefaults.standard.set(false, forKey: "isLoggedIn")

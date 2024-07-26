@@ -23,7 +23,7 @@ struct PhoneAuthentication: View {
     let loginHaptics = LoginHaptics()
     @State private var hasStartedVerification = false
     @State private var isContactAccessGranted: Bool = false
-    @State private var contactUploadViewModel: ContactUploadViewModel = ContactUploadViewModel()
+    
     
     var body: some View {
         VStack {
@@ -149,7 +149,7 @@ struct PhoneAuthentication: View {
                                     print("User check completed")
                                     onComplete()
                                     loginHaptics.hapticEffectThree()
-                                    requestContactsAccess()
+                                  
 
                                 } catch {
                                     print("Error checking if user exists: \(error)")
@@ -169,25 +169,6 @@ struct PhoneAuthentication: View {
             .fontWeight(.semibold)
     }
 
-    func requestContactsAccess() {
-        let store = CNContactStore()
-        store.requestAccess(for: .contacts) { granted, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    print("Error requesting access to contacts: \(error)")
-                    isContactAccessGranted = false
-                } else {
-                    print("Access to contacts granted: \(granted)")
-                    isContactAccessGranted = granted
-                    if granted == true {
-                        Task {
-                            await contactUploadViewModel.fetchAndProcessContactNumbers(userID: UserDefaults.standard.string(forKey: "userID") ?? "test")
-                        }
-                       
-                    }
-                }
-            }
-        }
-    }
+    
 
 }

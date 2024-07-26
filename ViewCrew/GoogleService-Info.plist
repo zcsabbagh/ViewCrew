@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyDkOWoPhMZw0CCgqicUjrKi2u5B3Jl92UU</string>
+	<string>AIzaSyDctR7hvqn-R4XfDxBCg6AkAfT_Aqhle4Q</string>
 	<key>GCM_SENDER_ID</key>
-	<string>761622374257</string>
+	<string>702285814048</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.candid.candid24</string>
+	<string>com.zane.viewcrew</string>
 	<key>PROJECT_ID</key>
-	<string>candid2024-9f0fc</string>
+	<string>viewcrew-bc42a</string>
 	<key>STORAGE_BUCKET</key>
-	<string>candid2024-9f0fc.appspot.com</string>
+	<string>viewcrew-bc42a.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:761622374257:ios:9d7afce867d77e2d3738d0</string>
+	<string>1:702285814048:ios:890f7a81daea3f50eedf45</string>
 </dict>
 </plist>

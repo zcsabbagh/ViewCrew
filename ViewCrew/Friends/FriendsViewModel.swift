@@ -344,6 +344,12 @@ class NewNewFriendsViewModel: ObservableObject {
                 }
             }
         }
+        // Remove the person from suggestionsOnApp
+        if let index = self.suggestionsOnApp.firstIndex(where: { $0.userID == from }) {
+            DispatchQueue.main.async {
+                self.suggestionsOnApp.remove(at: index)
+            }
+        }
     }
     
     /* Function to update the status of a friend request */
