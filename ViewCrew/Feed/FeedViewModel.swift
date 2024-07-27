@@ -26,7 +26,7 @@ class FeedViewModel: ObservableObject {
 
     init(friends: [String] = []) {
         self.friends = friends
-        fetchProfilePosts()
+        // fetchProfilePosts()
         fetchRecentPosts()
     }
     
@@ -178,7 +178,7 @@ class FeedViewModel: ObservableObject {
         let season = data["season"] as? String
         let episode = data["episode"] as? String
         let seriesTitle = data["seriesTitle"] as? String
-        let userId = data["userId"] as? String ?? ""
+        let userId = data["userId"] as? String ?? "test"
         let dateMilliseconds = data["date"] as? Double ?? 0
         let date = Date(timeIntervalSince1970: dateMilliseconds / 1000.0)
         let bookmark = data["bookmark"] as? Int ?? 0
@@ -210,6 +210,7 @@ class FeedViewModel: ObservableObject {
                     date: self.timeAgoSinceDate(date),
                     bookmark: bookmark,
                     profileImageURL: nil,
+                    userId: userId,
                     profile: profile,
                     post_type: post_type,
                     years_ago: years_ago,

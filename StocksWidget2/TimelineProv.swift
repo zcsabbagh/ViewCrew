@@ -103,9 +103,13 @@ struct Provider: AppIntentTimelineProvider {
     }
 
     func getPostData() async throws -> Post {
-        let url = URL(string: "https://us-west1-candid2024-9f0fc.cloudfunctions.net/widgetFunction")!
+        let url = URL(string: "https://us-central1-viewcrew-bc42a.cloudfunctions.net/widgetFunction")!
         
-        let friends = getFriends()
+        var friends = getFriends()
+        if let userID = UserDefaults(suiteName: "group.zane.ShareDefaults")?.string(forKey: "userID") {
+            friends.append(userID)
+        }
+        
         let requestBody = ["friends": friends]
         // let requestBody = ["friends": ["otzDXhl6qScZFZWGQVBW"]]
         
@@ -135,6 +139,7 @@ struct Provider: AppIntentTimelineProvider {
             date: postData.date,
             bookmark: postData.bookmark,
             profileImageURL: postData.profileImageURL,
+            userId: nil,
             profile: postData.profile.map { Profile(username: $0.username, name: $0.name, profileImage: $0.profileImage) },
             post_type: "default",
             years_ago: nil,

@@ -93,20 +93,42 @@ final class FirebaseNotificationGenerator{
     func sendReactPostNotification(fromUser: String, forPoster: String, emoji: String) async throws {
         print("Entering sendReactPostNotification")
         if fromUser != "" && forPoster != "" && emoji != "" {
-                
-            do
-            {
-                let _ = try await
-                functions.httpsCallable("sendReactPostNotification").call([
+            print("We made it here")
+            do {
+                let result = try await functions.httpsCallable("sendReactPostNotification").call([
                     "postRecipientId": forPoster,
                     "likeSenderId": fromUser,
                     "emoji": emoji,
                 ])
-                print("NotificaitonSuccessfully sent")
-            }
-            catch{
+                print("Notification successfully sent")
+                
+                if let data = result.data as? [String: Any] {
+                    print("Response data: \(data)")
+                    if let success = data["success"] as? Bool, let message = data["message"] as? String {
+                        if success {
+                            print("Notification sent successfully: \(message)")
+                        } else {
+                            print("Notification failed: \(message)")
+                        }
+                    } else {
+                        print("Unexpected response format")
+                    }
+                } else {
+                    print("No data in response")
+                }
+            } catch {
+                print("Error sending notification: \(error.localizedDescription)")
+                if let functionsError = error as? NSError {
+                    print("Error domain: \(functionsError.domain)")
+                    print("Error code: \(functionsError.code)")
+                    if let details = functionsError.userInfo["details"] as? String {
+                        print("Error details: \(details)")
+                    }
+                }
                 throw error
             }
+        } else {
+            print("Invalid input parameters")
         }
     }
 

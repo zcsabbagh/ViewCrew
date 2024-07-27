@@ -69,6 +69,7 @@ class NewNewFriendsViewModel: ObservableObject {
         // modify this next line in case it can't find auth
         // set self.userID to the userID value of userdefaults
         self.userID = UserDefaults.standard.string(forKey: "userID") ?? "XwpBrxfjzaksc6hUJZPz"
+        self.sharedDefaults.set(self.userID, forKey: "userID")
         createUserFromUserID(self.userID) { personToAdd in
             if let personToAdd = personToAdd {
                 self.userProfile = personToAdd
@@ -90,6 +91,7 @@ class NewNewFriendsViewModel: ObservableObject {
                     }
                     self.sharedDefaults.set(self.friendDisplayNames, forKey: "friendDisplayNames")
                     self.saveFriendProfileImages(friendProfiles)
+                    self.saveUserProfileImage()
                 }
             }
         }
@@ -138,6 +140,34 @@ class NewNewFriendsViewModel: ObservableObject {
         }
     }
 
+    func saveUserProfileImage() {
+        if let imageURL = self.userProfile.contactImageURL, let url = URL(string: imageURL) {
+            print("Attempting to save user profile image for URL: \(imageURL)")
+            URLSession.shared.dataTask(with: url) { data, response, error in
+                if let data = data, let image = UIImage(data: data) {
+                    let resizedImage = self.resizeImage(image, targetSize: CGSize(width: 100, height: 100))
+                    if let resizedData = resizedImage.pngData() {
+                        let filename = self.getFilenameFromURL(imageURL)
+                        if let savedURL = self.saveImageToSharedContainer(resizedData, filename: filename) {
+                            print("Successfully saved resized user profile image for URL: \(imageURL) at \(savedURL)")
+                        } else {
+                            print("Failed to save resized user profile image for URL: \(imageURL)")
+                        }
+                    } else {
+                        print("Failed to convert resized user profile image to PNG data for URL: \(imageURL)")
+                    }
+                } else {
+                    print("Failed to download or create user profile image from data for URL: \(imageURL)")
+                    if let error = error {
+                        print("Error: \(error.localizedDescription)")
+                    }
+                }
+            }.resume()
+        } else {
+            print("Invalid or missing image URL for user profile")
+        }
+    }
+
     func getFilenameFromURL(_ url: String) -> String {
         return (url as NSString).lastPathComponent
     }
@@ -181,6 +211,8 @@ class NewNewFriendsViewModel: ObservableObject {
         
         return newImage ?? image
     }
+
+// ... existing code ...
     
     /*
      CODE TO LISTEN FOR CHANGES IN FRIEND REQUESTS AND FRIENDS

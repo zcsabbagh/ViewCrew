@@ -47,6 +47,13 @@ struct Feed: View {
                             if let post = newPostType?.post {
                                 print("Selected post: \(post.postID)")
                                 print("Post type: \(post.post_type)")
+
+//                                Task {
+//                                    try await FirebaseNotificationGenerator.shared.sendContactJoinedNotification(fromUserDisplayName: "Boss", fromUserId: "shX0w5WsQ67eDhT0pib8", toUsers: ["shX0w5WsQ67eDhT0pib8"])
+//                                }
+//                                Task {
+//                                    try await FirebaseNotificationGenerator.shared.sendFriendRequestNotification(fromUser: "shX0w5WsQ67eDhT0pib8", toUser: "shX0w5WsQ67eDhT0pib8")
+//                                }
                             }
                         }
                     
@@ -103,6 +110,10 @@ struct Feed: View {
             showEmojiShower = true
             if let post = selectedPostType?.post {
                 viewModel.addReaction(to: post.postID, emoji: emoji)
+                let userID = UserDefaults.standard.string(forKey: "userID") ?? "test"
+                Task {
+                    try await FirebaseNotificationGenerator.shared.sendReactPostNotification(fromUser: userID, forPoster: post.userId ?? "test", emoji: emoji)
+                }
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
                 if let emojiShowerVC = (UIApplication.shared.windows.first?.rootViewController?.presentedViewController as? EmojiShowerViewController) {

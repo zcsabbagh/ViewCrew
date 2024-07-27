@@ -133,6 +133,7 @@ class ProfileViewModel: ObservableObject {
                                 date: data["date"] as? String ?? "",
                                 bookmark: data["float"] as? Int ?? 0,
                                 profileImageURL: nil,
+                                userId: nil,
             
                                
                                 profile: nil,

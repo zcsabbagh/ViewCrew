@@ -72,6 +72,7 @@ struct Post: Identifiable, Hashable, Equatable {
     let date: String?
     let bookmark: Int?
     let profileImageURL: String?
+    let userId: String?
     let profile: Profile?
     let post_type: String
 
