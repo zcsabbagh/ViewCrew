@@ -5,43 +5,48 @@
 //  Created by Zane Sabbagh on 7/18/24.
 //
 
-import Intents
 import WidgetKit
 import SwiftUI
 
 struct SimpleEntry: TimelineEntry {
     let date: Date
-    let configuration: ConfigurationAppIntent
     let post: Post?
     let previewImageData: Data?
     let profileImageData: Data?
 }
 
-
-struct Provider: AppIntentTimelineProvider {
+struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: ConfigurationAppIntent(), post: nil, previewImageData: nil, profileImageData: nil)
+        SimpleEntry(date: Date(), post: nil, previewImageData: nil, profileImageData: nil)
     }
 
-    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        do {
-            let (post, previewImageData, profileImageData) = try await getPostDataAndImages()
-            return SimpleEntry(date: Date(), configuration: configuration, post: post, previewImageData: previewImageData, profileImageData: profileImageData)
-        } catch {
-            print("Error fetching post data: \(error)")
-            return SimpleEntry(date: Date(), configuration: configuration, post: nil, previewImageData: nil, profileImageData: nil)
+    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
+        Task {
+            do {
+                let (post, previewImageData, profileImageData) = try await getPostDataAndImages()
+                let entry = SimpleEntry(date: Date(), post: post, previewImageData: previewImageData, profileImageData: profileImageData)
+                completion(entry)
+            } catch {
+                print("Error fetching post data: \(error)")
+                let entry = SimpleEntry(date: Date(), post: nil, previewImageData: nil, profileImageData: nil)
+                completion(entry)
+            }
         }
     }
     
-    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
-        do {
-            let (post, previewImageData, profileImageData) = try await getPostDataAndImages()
-            let entry = SimpleEntry(date: Date(), configuration: configuration, post: post, previewImageData: previewImageData, profileImageData: profileImageData)
-            return Timeline(entries: [entry], policy: .after(Date(timeIntervalSinceNow: 3600))) // Update every hour
-        } catch {
-            print("Error fetching post data: \(error)")
-            let entry = SimpleEntry(date: Date(), configuration: configuration, post: nil, previewImageData: nil, profileImageData: nil)
-            return Timeline(entries: [entry], policy: .after(Date(timeIntervalSinceNow: 3600)))
+    func getTimeline(in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> ()) {
+        Task {
+            do {
+                let (post, previewImageData, profileImageData) = try await getPostDataAndImages()
+                let entry = SimpleEntry(date: Date(), post: post, previewImageData: previewImageData, profileImageData: profileImageData)
+                let timeline = Timeline(entries: [entry], policy: .after(Date(timeIntervalSinceNow: 3600)))
+                completion(timeline)
+            } catch {
+                print("Error fetching post data: \(error)")
+                let entry = SimpleEntry(date: Date(), post: nil, previewImageData: nil, profileImageData: nil)
+                let timeline = Timeline(entries: [entry], policy: .after(Date(timeIntervalSinceNow: 3600)))
+                completion(timeline)
+            }
         }
     }
 
@@ -106,12 +111,10 @@ struct Provider: AppIntentTimelineProvider {
         let url = URL(string: "https://us-central1-viewcrew-bc42a.cloudfunctions.net/widgetFunction")!
         
         var friends = getFriends()
-        if let userID = UserDefaults(suiteName: "group.zane.ShareDefaults")?.string(forKey: "userID") {
+        if friends.isEmpty, let userID = UserDefaults(suiteName: "group.zane.ShareDefaults")?.string(forKey: "userID") {
             friends.append(userID)
         }
-        
         let requestBody = ["friends": friends]
-        // let requestBody = ["friends": ["otzDXhl6qScZFZWGQVBW"]]
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"

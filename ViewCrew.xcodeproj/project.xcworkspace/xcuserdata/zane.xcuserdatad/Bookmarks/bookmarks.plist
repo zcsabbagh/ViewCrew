@@ -12,13 +12,13 @@
 					<key>EndingColumnNumber</key>
 					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>18</string>
+					<string>14</string>
 					<key>StartingColumnNumber</key>
 					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>18</string>
+					<string>14</string>
 					<key>Timestamp</key>
-					<string>742988949.052676</string>
+					<string>743944668.815218</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -36,14 +36,11 @@
 				<key>focused</key>
 				<string></string>
 				<key>leading</key>
-				<string>
-    static var parameterSummary: some ParameterSummary {
-</string>
-				<key>trailing</key>
-				<string>        Summary("Show streaming history for \(\.$selectedFriend)")
-    }
+				<string>    static var description = "This is an example widget."
 }
 </string>
+				<key>trailing</key>
+				<string></string>
 			</dict>
 			<key>type</key>
 			<string>bookmark</string>
@@ -56,13 +53,13 @@
 					<key>EndingColumnNumber</key>
 					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>19</string>
+					<string>14</string>
 					<key>StartingColumnNumber</key>
-					<string>66</string>
+					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>18</string>
+					<string>14</string>
 					<key>Timestamp</key>
-					<string>742989445.443962</string>
+					<string>743944668.8152</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -78,17 +75,13 @@
 			<key>text-context</key>
 			<dict>
 				<key>focused</key>
-				<string>
-</string>
+				<string></string>
 				<key>leading</key>
-				<string>
-    static var parameterSummary: some ParameterSummary {
-        Summary("Show streaming history for \(\.$selectedFriend)")</string>
-				<key>trailing</key>
-				<string>    }
+				<string>    static var description = "This is an example widget."
 }
-
 </string>
+				<key>trailing</key>
+				<string></string>
 			</dict>
 			<key>type</key>
 			<string>bookmark</string>

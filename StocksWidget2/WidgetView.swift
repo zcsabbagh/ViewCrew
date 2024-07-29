@@ -91,6 +91,7 @@ struct StocksWidget2EntryView : View {
                     .font(.subheadline.weight(.medium))
                     .foregroundColor(.primary)
                     .scaleEffect(scaleFactor)
+                    .padding(.bottom, 3)
                 Text(entry.post?.title ?? "")
                     .font(.footnote.weight(.medium))
                     .foregroundColor(.primary.opacity(0.8))

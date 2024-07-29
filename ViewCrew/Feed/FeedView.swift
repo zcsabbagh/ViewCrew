@@ -51,12 +51,7 @@ struct Feed: View {
                                 print("Selected post: \(post.postID)")
                                 print("Post type: \(post.post_type)")
 
-                               Task {
-                                   try await FirebaseNotificationGenerator.shared.sendContactJoinedNotification(fromUserDisplayName: "Boss", fromUserId: "shX0w5WsQ67eDhT0pib8", toUsers: ["shX0w5WsQ67eDhT0pib8"])
-                               }
-                               Task {
-                                   try await FirebaseNotificationGenerator.shared.sendFriendRequestNotification(fromUser: "shX0w5WsQ67eDhT0pib8", toUser: "shX0w5WsQ67eDhT0pib8")
-                               }
+                               
                             }
                         }
                     
@@ -75,6 +70,7 @@ struct Feed: View {
             .onChange(of: selectedPostType) { newPostType in
                 if let post = newPostType?.post {
                     print("Current post on screen in Feed: \(post.postID)")
+                    print("Current user on Feed: \(post.userId)")
                     // Perform any actions needed when the current post changes
                 }
             }
@@ -114,22 +110,29 @@ struct Feed: View {
     }
 
     private func handleEmojiSelection(_ emoji: String) {
-        if !emoji.isEmpty {
-            showEmojiShower = true
-            if let post = selectedPostType?.post {
-                viewModel.addReaction(to: post.postID, emoji: emoji)
-                let userID = UserDefaults.standard.string(forKey: "userID") ?? "test"
-                Task {
-                    try await FirebaseNotificationGenerator.shared.sendReactPostNotification(fromUser: userID, forPoster: post.userId ?? "test", emoji: emoji)
-                }
+        guard !emoji.isEmpty, let post = selectedPostType?.post else {
+            print("Invalid emoji or post")
+            return
+        }
+        
+        showEmojiShower = true
+        viewModel.addReaction(to: post.postID, emoji: emoji)
+        
+        Task {
+            do {
+                try await FirebaseNotificationGenerator.shared.sendReactPostNotification(forPoster: post.userId ?? "test", emoji: emoji)
+            } catch {
+                print("Failed to send reaction notification: \(error.localizedDescription)")
+                // Handle the error appropriately, e.g., show an alert to the user
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                if let emojiShowerVC = (UIApplication.shared.windows.first?.rootViewController?.presentedViewController as? EmojiShowerViewController) {
-                    emojiShowerVC.fadeOutEmojiShower()
-                }
-                showEmojiShower = false
-                selectedEmoji = ""
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+            if let emojiShowerVC = (UIApplication.shared.windows.first?.rootViewController?.presentedViewController as? EmojiShowerViewController) {
+                emojiShowerVC.fadeOutEmojiShower()
             }
+            showEmojiShower = false
+            selectedEmoji = ""
         }
     }
 
@@ -224,7 +227,7 @@ struct AddWidgetView: View {
                         Text("Add Widget")
                             .font(.headline)
                             .foregroundColor(.white)
-                            .frame(width: 200, height: 50)
+                            .frame(width: 300, height: 50)
                             .background(
                                 LinearGradient(gradient: Gradient(colors: [.purple, .green]), startPoint: .topLeading, endPoint: .bottomTrailing)
                             )
@@ -509,3 +512,11 @@ struct EmojiShowerView: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: EmojiShowerViewController, context: Context) {}
 }
+
+
+//Task {
+//    try await FirebaseNotificationGenerator.shared.sendContactJoinedNotification(fromUserDisplayName: "Boss", fromUserId: "shX0w5WsQ67eDhT0pib8", toUsers: ["shX0w5WsQ67eDhT0pib8"])
+//}
+//Task {
+//    try await FirebaseNotificationGenerator.shared.sendFriendRequestNotification(fromUser: "shX0w5WsQ67eDhT0pib8", toUser: "shX0w5WsQ67eDhT0pib8")
+//}

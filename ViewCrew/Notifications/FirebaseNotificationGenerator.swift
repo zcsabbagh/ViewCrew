@@ -19,10 +19,11 @@ final class FirebaseNotificationGenerator{
 
     /* Notifications that are used are below */
     
-    func sendFriendRequestNotification(fromUser: String, toUser: String) async throws {
+    func sendFriendRequestNotification(toUser: String) async throws {
         do {
+            let userID = UserDefaults(suiteName: "group.zane.ShareDefaults")?.string(forKey: "userID")
             let _ = try await functions.httpsCallable("sendFriendRequestNotification").call([
-                "sendingUser": fromUser,
+                "sendingUser": userID,
                 "receivingUser": toUser
             ])
         } catch {
@@ -30,11 +31,13 @@ final class FirebaseNotificationGenerator{
         }
     }
     
-    func sendAcceptFriendRequestNotification(fromUser: String, toUser: String) async throws {
+    func sendAcceptFriendRequestNotification(toUser: String) async throws {
         do {
+
+            let userID = UserDefaults(suiteName: "group.zane.ShareDefaults")?.string(forKey: "userID")
             let result = try await functions.httpsCallable("acceptFriendRequestNotification").call([
                 "messageRecipientId": toUser,
-                "messageSenderId": fromUser
+                "messageSenderId": userID
             ])
             
             if let data = result.data as? [String: Any],
@@ -63,10 +66,11 @@ final class FirebaseNotificationGenerator{
 
     func sendContactJoinedNotification(fromUserDisplayName: String, fromUserId: String, toUsers: [String]) async throws {
         do {
+            let userID = UserDefaults(suiteName: "group.zane.ShareDefaults")?.string(forKey: "userID")
             let _ = try await
             functions.httpsCallable("sendContactJoinedNotification").call([
                 "joinedUserDisplayName": fromUserDisplayName,
-                "joinedUserId": fromUserId,
+                "joinedUserId": userID,
                 "messageRecipientIds": toUsers,
             ])
         }
@@ -90,45 +94,45 @@ final class FirebaseNotificationGenerator{
         }
     }
 
-    func sendReactPostNotification(fromUser: String, forPoster: String, emoji: String) async throws {
+    func sendReactPostNotification(forPoster: String, emoji: String) async throws {
         print("Entering sendReactPostNotification")
-        if fromUser != "" && forPoster != "" && emoji != "" {
-            print("We made it here")
-            do {
-                let result = try await functions.httpsCallable("sendReactPostNotification").call([
-                    "postRecipientId": forPoster,
-                    "likeSenderId": fromUser,
-                    "emoji": emoji,
-                ])
-                print("Notification successfully sent")
-                
-                if let data = result.data as? [String: Any] {
-                    print("Response data: \(data)")
-                    if let success = data["success"] as? Bool, let message = data["message"] as? String {
-                        if success {
-                            print("Notification sent successfully: \(message)")
-                        } else {
-                            print("Notification failed: \(message)")
-                        }
-                    } else {
-                        print("Unexpected response format")
-                    }
-                } else {
-                    print("No data in response")
-                }
-            } catch {
-                print("Error sending notification: \(error.localizedDescription)")
-                if let functionsError = error as? NSError {
-                    print("Error domain: \(functionsError.domain)")
-                    print("Error code: \(functionsError.code)")
-                    if let details = functionsError.userInfo["details"] as? String {
-                        print("Error details: \(details)")
-                    }
-                }
-                throw error
-            }
-        } else {
+        
+        guard !forPoster.isEmpty, !emoji.isEmpty else {
             print("Invalid input parameters")
+            throw NSError(domain: "FirebaseNotificationGenerator", code: 400, userInfo: [NSLocalizedDescriptionKey: "Invalid input parameters"])
+        }
+        
+        print("Sending reaction to \(forPoster)")
+        
+        do {
+
+
+            let userID = UserDefaults(suiteName: "group.zane.ShareDefaults")?.string(forKey: "userID")
+            let result = try await functions.httpsCallable("sendReactPostNotification").call([
+                "postRecipientId": forPoster,
+                "likeSenderId": userID,
+                "emoji": emoji
+            ])
+            
+            print("Raw response: \(result.data)")
+            
+            if let data = result.data as? [String: Any] {
+                print("Response data: \(data)")
+                // Handle the response as needed
+            } else {
+                print("No data in response or invalid data format")
+                throw NSError(domain: "FirebaseNotificationGenerator", code: 500, userInfo: [NSLocalizedDescriptionKey: "Invalid response data format"])
+            }
+        } catch {
+            print("Error sending notification: \(error.localizedDescription)")
+            if let functionsError = error as? NSError {
+                print("Error domain: \(functionsError.domain)")
+                print("Error code: \(functionsError.code)")
+                if let details = functionsError.userInfo["details"] as? String {
+                    print("Error details: \(details)")
+                }
+            }
+            throw error
         }
     }
 

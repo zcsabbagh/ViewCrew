@@ -381,7 +381,7 @@ class NewNewFriendsViewModel: ObservableObject {
             } else {
                 print("Document added with ID: \(to)")
                 Task {
-                    try await FirebaseNotificationGenerator.shared.sendFriendRequestNotification(fromUser: from, toUser: to)
+                    try await FirebaseNotificationGenerator.shared.sendFriendRequestNotification(toUser: to)
                 }
             }
         }
@@ -440,7 +440,7 @@ class NewNewFriendsViewModel: ObservableObject {
             }
         }
         Task {
-            try await FirebaseNotificationGenerator.shared.sendAcceptFriendRequestNotification(fromUser: from, toUser: to)
+            try await FirebaseNotificationGenerator.shared.sendAcceptFriendRequestNotification(toUser: to)
         }
     }
     
