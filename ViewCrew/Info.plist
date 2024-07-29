@@ -14,6 +14,7 @@
 	<string>Ta2lRo5C0K2JABXpMWJRi80LSOpGZcnW5QbxqJT2</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Bebas_Neue.ttf</string>
 		<string>Roboto-Medium.ttf</string>
 		<string>RobotoCondensed-Bold</string>
 		<string>RobotoCondensed-VariableFont_wght.ttf</string>

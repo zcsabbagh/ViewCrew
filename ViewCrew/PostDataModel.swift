@@ -71,6 +71,10 @@ struct Post: Identifiable, Hashable, Equatable {
     let episode: String?
     let date: String?
     let bookmark: Int?
+    let youtubeTrailerURL: String?
+    let tomatoMeterScore: String?
+    let imdbScore: String?
+    let metacriticRating: String?
     let profileImageURL: String?
     let userId: String?
     let profile: Profile?

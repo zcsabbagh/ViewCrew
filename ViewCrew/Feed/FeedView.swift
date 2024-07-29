@@ -64,7 +64,7 @@ struct Feed: View {
                             handleEmojiSelection(newEmoji)
                         }
                 }
-                .padding(.bottom, 50)
+                .padding(.bottom, 30)
             }
             .background(Color.appBackground)
             .onChange(of: selectedPostType) { newPostType in
@@ -174,25 +174,38 @@ struct MovieView: View {
     @Binding var showReportMenu: Bool
     
     var body: some View {
-        VStack(spacing: 2) {
-            ZStack {
+        VStack(spacing: 10) {
+            
+            ZStack(alignment: .top) { // Align content to the top
                 movieImage
+                    .padding(.top, 20) // Adjust padding to move the image down
                 HStack {
                     profileImage
                     name
-                    time
-                    reportButton
                     Spacer()
+                    reportButton
+                    time
                 }
+                .padding(.trailing, 43)
                 .padding(.leading, 40)
-                .padding(.bottom, 440)
+                .padding(.top, -45) // Adjust padding as needed
             }
-            HStack {
-                title
-                    .padding(.leading, 70)
-                    .padding(.top, -60)
+            
+            HStack (spacing: 15) {
+                Spacer()
+                imdb
+                .padding(.trailing, 5)
+                rottenTomatoes
+                .padding(.leading, 5)
                 Spacer()
             }
+            
+            HStack (spacing: 4) {
+                title
+                watchTrailer
+                Spacer()
+            }
+            .padding(.leading, 70)
         }
     }
     
@@ -202,13 +215,13 @@ struct MovieView: View {
                 WebImage(url: URL(string: profileImage))
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 60, height: 60)
+                    .frame(width: 70, height: 70)
                     .overlay(
-                        RoundedRectangle(cornerRadius: 16)
-                            .stroke(Color.white, lineWidth: 1)
+                        RoundedRectangle(cornerRadius: 19)
+                            .stroke(Color.white, lineWidth: 2)
                     )
                     .cornerRadius(16)
-                    .padding(.top, 40)
+                    .padding(.top, 30)
             }
         }
     }
@@ -231,6 +244,34 @@ struct MovieView: View {
                 .padding(.trailing)
         }
     }
+
+    @ViewBuilder
+    var rottenTomatoes: some View {
+        if let tomatometerScore = postType.post.tomatoMeterScore {
+            HStack (spacing: 5) {
+                Image("rottentomatoes")
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                Text("\(tomatometerScore)%")
+                    .font(.custom("Roboto-Regular", size: 14))
+                    .foregroundColor(.white.opacity(0.8))
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var imdb: some View {
+        if let imdbRating = postType.post.imdbScore {
+            HStack (spacing: 5) {
+                Image("imdb")
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                Text("\(imdbRating)/10")
+                    .font(.custom("Roboto-Regular", size: 14))
+                    .foregroundColor(.white.opacity(0.8))
+            }
+        }
+    }
     
     var movieImage: some View {
         Group {
@@ -243,7 +284,7 @@ struct MovieView: View {
                             .stroke(Color.buttonBackground, lineWidth: 3)
                     )
                     .cornerRadius(20)
-                    .frame(width: 300, height: 400)
+                    .frame(width: 320, height: 426)
             }
         }
     }
@@ -252,10 +293,34 @@ struct MovieView: View {
         Group {
             if let season = postType.post.season, let episode = postType.post.episode {
                 Text("Season \(season): Episode \(episode)")
-                    .font(.custom("Roboto-Regular", size: 17))
+                    .font(.custom("Roboto-Regular", size: 15))
                     .foregroundColor(.white)
                     .fontWeight(.semibold)
                     .padding(.trailing)
+            }
+        }
+    }
+
+    var watchTrailer: some View {
+        Group {
+            if let youtubeTrailerURL = postType.post.youtubeTrailerURL,
+               let url = URL(string: youtubeTrailerURL) {
+                Button(action: {
+                    UIApplication.shared.open(url)
+                }) {
+                    HStack (spacing: 2) {
+                        Image(systemName: "play.circle")
+                            .foregroundColor(.white)
+                            .font(.system(size: 14))
+                        Text("Watch Trailer")
+                            .font(.custom("Roboto-Regular", size: 14))
+                            .foregroundColor(.white)
+                            
+                    }
+                    .padding(4)
+                    .background(Color.buttonBackground)
+                    .cornerRadius(20)
+                }
             }
         }
     }

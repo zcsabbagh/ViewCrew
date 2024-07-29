@@ -23,6 +23,8 @@
 		2F016E8E2C3D353B00D55038 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F016E8D2C3D353B00D55038 /* FeedView.swift */; };
 		2F7A204D2C53EE35006E09CB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F7A204C2C53EE35006E09CB /* GoogleService-Info.plist */; };
 		2F7A204E2C53EE35006E09CB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F7A204C2C53EE35006E09CB /* GoogleService-Info.plist */; };
+		2F7A20522C54F07A006E09CB /* BebasNeue-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2F7A20502C54F07A006E09CB /* BebasNeue-Regular.ttf */; };
+		2F7A20532C54F07A006E09CB /* BebasNeue-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2F7A20502C54F07A006E09CB /* BebasNeue-Regular.ttf */; };
 		2F8BCD872C3DA59C004177B5 /* VTabView in Frameworks */ = {isa = PBXBuildFile; productRef = 2F8BCD862C3DA59C004177B5 /* VTabView */; };
 		2F8BCD892C3DA9BC004177B5 /* EmojiScroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8BCD882C3DA9BC004177B5 /* EmojiScroll.swift */; };
 		2F8BCD8B2C3DA9F0004177B5 /* HapticFeedbackGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8BCD8A2C3DA9F0004177B5 /* HapticFeedbackGenerator.swift */; };
@@ -146,6 +148,7 @@
 		2F016E7C2C3D27A200D55038 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		2F016E8D2C3D353B00D55038 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
 		2F7A204C2C53EE35006E09CB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2F7A20502C54F07A006E09CB /* BebasNeue-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BebasNeue-Regular.ttf"; sourceTree = "<group>"; };
 		2F8BCD882C3DA9BC004177B5 /* EmojiScroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiScroll.swift; sourceTree = "<group>"; };
 		2F8BCD8A2C3DA9F0004177B5 /* HapticFeedbackGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticFeedbackGenerator.swift; sourceTree = "<group>"; };
 		2F8BCD8C2C3FCF93004177B5 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
@@ -286,6 +289,7 @@
 			children = (
 				2F7A204C2C53EE35006E09CB /* GoogleService-Info.plist */,
 				2FBD80912C4BB0570031FF8E /* ViewCrew.entitlements */,
+				2F7A204F2C54F07A006E09CB /* Bebas_Neue */,
 				2FBD80052C4A72990031FF8E /* Roboto_Condensed */,
 				2FBD7FE42C4A65D30031FF8E /* Roboto */,
 				2FBD7FE32C4A65660031FF8E /* Info.plist */,
@@ -319,6 +323,14 @@
 				2F016E5C2C3D181500D55038 /* SwiftUI.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2F7A204F2C54F07A006E09CB /* Bebas_Neue */ = {
+			isa = PBXGroup;
+			children = (
+				2F7A20502C54F07A006E09CB /* BebasNeue-Regular.ttf */,
+			);
+			path = Bebas_Neue;
 			sourceTree = "<group>";
 		};
 		2F8BCD8E2C3FCFF7004177B5 /* UI-UX Components */ = {
@@ -648,6 +660,7 @@
 			files = (
 				2FBD80282C4A729A0031FF8E /* RobotoCondensed-Medium.ttf in Resources */,
 				2FBD80262C4A729A0031FF8E /* RobotoCondensed-BoldItalic.ttf in Resources */,
+				2F7A20522C54F07A006E09CB /* BebasNeue-Regular.ttf in Resources */,
 				2FBD801F2C4A729A0031FF8E /* RobotoCondensed-Bold.ttf in Resources */,
 				2FBD7FFC2C4A65D30031FF8E /* Roboto-Bold.ttf in Resources */,
 				2FBD7FFA2C4A65D30031FF8E /* LICENSE.txt in Resources */,
@@ -693,6 +706,7 @@
 			files = (
 				2FBD7FCD2C48D2620031FF8E /* Assets.xcassets in Resources */,
 				2F7A204E2C53EE35006E09CB /* GoogleService-Info.plist in Resources */,
+				2F7A20532C54F07A006E09CB /* BebasNeue-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -895,7 +909,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ViewCrew/ViewCrew.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"ViewCrew/Preview Content\"";
 				DEVELOPMENT_TEAM = A56PK9K878;
 				ENABLE_PREVIEWS = YES;
@@ -933,7 +947,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ViewCrew/ViewCrew.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"ViewCrew/Preview Content\"";
 				DEVELOPMENT_TEAM = A56PK9K878;
 				ENABLE_PREVIEWS = YES;

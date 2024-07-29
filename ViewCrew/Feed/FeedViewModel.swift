@@ -184,6 +184,12 @@ class FeedViewModel: ObservableObject {
         let bookmark = data["bookmark"] as? Int ?? 0
         let post_type = data["post_type"] as? String ?? ""
 
+        let youtubeTrailerURL = data["youtubeTrailerUrl"] as? String
+        print("youtubeTrailerURL", youtubeTrailerURL)
+        let tomatoMeterScore = data["tomatometerScore"] as? String
+        let imdbScore = data["imdbRating"] as? String
+        let metacriticRating = data["metacriticRating"] as? String
+
         /* additional params for the different post types */
         let years_ago = data["years_ago"] as? Int
         let matchedUsers = data["matchedUsers"] as? [String]
@@ -209,6 +215,10 @@ class FeedViewModel: ObservableObject {
                     episode: episode,
                     date: self.timeAgoSinceDate(date),
                     bookmark: bookmark,
+                    youtubeTrailerURL: youtubeTrailerURL,
+                    tomatoMeterScore: tomatoMeterScore,
+                    imdbScore: imdbScore,
+                    metacriticRating: nil,
                     profileImageURL: nil,
                     userId: userId,
                     profile: profile,

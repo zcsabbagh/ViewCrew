@@ -16,6 +16,7 @@ struct ProfileView: View {
             
             // Profile picture and username
             ProfileInformation(viewModel: viewModel)
+            .padding(.top, -30)
             
             // Recently watched
             RecentlyWatched(posts: viewModel.recentWatches)
@@ -85,30 +86,30 @@ struct ProfileInformation: View {
     @ObservedObject var viewModel: ProfileViewModel
 
     var body: some View {
-        VStack {
+        VStack (spacing: 5) {
         HStack (spacing: 10) {
             WebImage(url: URL(string: viewModel.profilePicture))
                 .resizable()
                 .indicator(.activity) // Show activity indicator while loading
                 .transition(.fade(duration: 0.5)) // Fade transition with duration
                 .scaledToFill()
-                .frame(width: 60, height: 60)
-                .cornerRadius(16)
+                .frame(width: 100, height: 100)
+                .cornerRadius(24)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(Color.white, lineWidth: 1)
+                    RoundedRectangle(cornerRadius: 24)
+                        .stroke(Color.white, lineWidth: 2)
                 )
             .padding(.leading, 5)
             
         }
         Text(viewModel.displayName)
-            .font(.custom("Roboto-Bold", size: 25))
+            .font(.custom("Roboto-Bold", size: 20))
             .fontWeight(.bold)
         Text("@\(viewModel.username)")
-            .foregroundColor(.gray)
-            .font(.custom("Roboto-Regular", size: 20))
+            .foregroundColor(.white.opacity(0.8))
+            .font(.custom("Roboto-Regular", size: 14))
     }
-        .padding()
+    .padding(.top, -10)
     }
 
 }
@@ -117,11 +118,16 @@ struct RecentlyWatched: View {
     var posts: [Post]
 
     var body: some View {
-        VStack (spacing: -13) {
-            Text("recently watched")
-                .font(.custom("Roboto-Bold", size: 45))
-                .foregroundColor(Color.red.opacity(0.8))
-                .fontWeight(.bold)
+        VStack (spacing: 3) {
+            HStack {
+                Image("Recently")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 48)
+                Spacer()
+            }
+            .padding(.horizontal)
+            .padding(.bottom, 5)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     ForEach(posts, id: \.self) { post in
@@ -131,7 +137,6 @@ struct RecentlyWatched: View {
                 
             }
         }
-        .padding()
     }
 }
 
@@ -153,6 +158,13 @@ struct ProfileMovie: View {
                     RoundedRectangle(cornerRadius: 25)
                         .stroke(Color.buttonBackground, lineWidth: 0.5)
                 )
+            Text(movie.title)
+                .font(.custom("Roboto-Bold", size: 16))
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .minimumScaleFactor(0.5)
+                .lineLimit(1)
+                .frame(width: 140)
         }
             
     }
@@ -165,17 +177,16 @@ struct LastWeek: View {
 
     var body: some View {
         VStack (spacing: 10) {
-            Text("LAST WEEK")
-                .font(.custom("Roboto-Bold", size: 25))
+            Text("This Week You Watched")
+                .font(.custom("Roboto-Bold", size: 20))
                 .foregroundColor(.gray)
                 .fontWeight(.bold)
             HStack {
-                ProfileStatsBox(title: "min watched", value: viewModel.lastWeekStats[0])
-                ProfileStatsBox(title: "episodes", value: viewModel.lastWeekStats[1])
-                ProfileStatsBox(title: "movies", value: viewModel.lastWeekStats[2])
+                ProfileStatsBox(title: "MINS", value: viewModel.lastWeekStats[0])
+                ProfileStatsBox(title: "EPISODES", value: viewModel.lastWeekStats[1])
+                ProfileStatsBox(title: "MOVIES", value: viewModel.lastWeekStats[2])
             }
         }
-        .padding()
     }
 }
 
@@ -187,19 +198,23 @@ struct ProfileStatsBox: View {
         VStack {
             Spacer()
             Text(String(format: "%.0f", Double(value)))
-                .font(.custom("Roboto-Bold", size: 40))
-                .fontWeight(.bold)
+                .font(.custom("Bebas_Neue", size: 60))
+                .fontWeight(.black)
                 .foregroundColor(.white)
                 .minimumScaleFactor(0.5)
                 .lineLimit(1)
             Text(title)
-                .font(.custom("Roboto-Regular", size: 13))
+                .font(.custom("Bebas_Neue", size: 12))
                 .foregroundColor(.white.opacity(0.8))
             Spacer()
         }
         .frame(width: UIScreen.main.bounds.width / 5, height: 80) // Fixed height
         .padding()
-        .background(Color.buttonBackground)
+        .background(
+            Image("StatsButton")
+                .resizable()
+                .scaledToFill()
+        )
         .cornerRadius(15)
     }
 

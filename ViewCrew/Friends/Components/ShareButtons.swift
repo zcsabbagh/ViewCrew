@@ -11,6 +11,9 @@ import SwiftUI
 
 struct ShareButtons: View {
     @State private var shareLink = "https://apps.apple.com/us/app/view-crew-streaming-widget/id6569239199"
+    @State private var showAlert = false
+    @State private var alertMessage = ""
+    
     var body: some View {
         
         VStack {
@@ -40,6 +43,9 @@ struct ShareButtons: View {
                 }
             }
         }
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("App Not Installed"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
         
     }
     
@@ -67,7 +73,12 @@ struct ShareButtons: View {
         HapticFeedbackGenerator.shared.generateHapticLight()
         let urlString = "whatsapp://send?text=\(shareLink)"
         if let url = URL(string: urlString) {
-            UIApplication.shared.open(url)
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+            } else {
+                alertMessage = "You need WhatsApp to share via WhatsApp"
+                showAlert = true
+            }
         }
     }
     
@@ -76,7 +87,12 @@ struct ShareButtons: View {
         HapticFeedbackGenerator.shared.generateHapticLight()
         let urlString = "fb-messenger://share/?link=\(shareLink)"
         if let url = URL(string: urlString) {
-            UIApplication.shared.open(url)
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+            } else {
+                alertMessage = "You need Messenger to share via Messenger"
+                showAlert = true
+            }
         }
     }
     
@@ -85,7 +101,12 @@ struct ShareButtons: View {
         HapticFeedbackGenerator.shared.generateHapticLight()
         let urlString = "sms:&body=\(shareLink)"
         if let url = URL(string: urlString) {
-            UIApplication.shared.open(url)
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+            } else {
+                alertMessage = "You need iMessage to share via iMessage"
+                showAlert = true
+            }
         }
     }
     
@@ -95,7 +116,12 @@ struct ShareButtons: View {
         let encodedLink = shareLink.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         let urlString = "tg://msg?text=\(encodedLink)"
         if let url = URL(string: urlString) {
-            UIApplication.shared.open(url)
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+            } else {
+                alertMessage = "You need Telegram to share via Telegram"
+                showAlert = true
+            }
         }
     }
     
@@ -106,9 +132,8 @@ struct ShareButtons: View {
         if let url = URL(string: urlString) {
             UIApplication.shared.open(url, options: [.universalLinksOnly: false]) { success in
                 if !success {
-                    // If Instagram App isn't installed, open a web page with the shared link
-                    let webURL = URL(string: "https://www.instagram.com/direct/inbox/")
-                    UIApplication.shared.open(webURL!)
+                    alertMessage = "You need Instagram to share via Instagram"
+                    showAlert = true
                 }
             }
         }
@@ -119,7 +144,12 @@ struct ShareButtons: View {
         HapticFeedbackGenerator.shared.generateHapticLight()
         let urlString = "snapchat://?attachText=\(shareLink)"
         if let url = URL(string: urlString) {
-            UIApplication.shared.open(url)
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+            } else {
+                alertMessage = "You need Snapchat to share via Snapchat"
+                showAlert = true
+            }
         }
     }
 }

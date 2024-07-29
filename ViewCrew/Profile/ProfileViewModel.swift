@@ -132,6 +132,10 @@ class ProfileViewModel: ObservableObject {
                                 episode: data["episode"] as? String,
                                 date: data["date"] as? String ?? "",
                                 bookmark: data["float"] as? Int ?? 0,
+                                youtubeTrailerURL: nil,
+                                tomatoMeterScore: nil,
+                                imdbScore: nil,
+                                metacriticRating: nil,
                                 profileImageURL: nil,
                                 userId: nil,
             
