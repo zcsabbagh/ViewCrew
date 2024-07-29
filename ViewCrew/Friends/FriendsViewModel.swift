@@ -19,7 +19,8 @@ TODO: REMOVE YOUR OWN USERNAME FROM THE let currentUserID = statements
 */
 
 
-struct PersonToAdd {
+struct PersonToAdd: Identifiable, Hashable {
+    let id = UUID()
     var name: String
     var contactImageURL: String?
     var contactImage: UIImage?
@@ -28,6 +29,14 @@ struct PersonToAdd {
     var userID: String?
     var username: String?
     var isFriend: Bool?
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: PersonToAdd, rhs: PersonToAdd) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
 
@@ -823,7 +832,6 @@ class NewNewFriendsViewModel: ObservableObject {
             }
         }
     }
-    
     
     
     

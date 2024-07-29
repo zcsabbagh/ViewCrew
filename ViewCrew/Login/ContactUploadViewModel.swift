@@ -167,8 +167,10 @@ class ContactUploadViewModel: ObservableObject {
         let db = Firestore.firestore()
         
         for number in numbers {
+            
+            let countryCodeNumber = "+1" + number
             do {
-                let querySnapshot = try await db.collection("contactNumbers").whereField("phoneNumber", isEqualTo: number).getDocuments()
+                let querySnapshot = try await db.collection("contactNumbers").whereField("phoneNumber", isEqualTo: countryCodeNumber).getDocuments()
                 
                 if querySnapshot.isEmpty {
                     let newDoc = try await db.collection("contactNumbers").addDocument(data: [
@@ -188,7 +190,7 @@ class ContactUploadViewModel: ObservableObject {
                     }
                     
                     DispatchQueue.main.async {
-                        self.strippedToFirebaseDict[number] = [document.documentID, contactsOnApp.count]
+                        self.strippedToFirebaseDict[countryCodeNumber] = [document.documentID, contactsOnApp.count]
                     }
                 }
             } catch {
@@ -201,8 +203,9 @@ class ContactUploadViewModel: ObservableObject {
         let db = Firestore.firestore()
         
         for number in numbers {
+            let countryCodeNumber = "+1" + number
             do {
-                let querySnapshot = try await db.collection("users").whereField("phoneNumber", isEqualTo: number).getDocuments()
+                let querySnapshot = try await db.collection("users").whereField("phoneNumber", isEqualTo: countryCodeNumber).getDocuments()
                 
                 if let documentID = querySnapshot.documents.first?.documentID {
                     DispatchQueue.main.async {

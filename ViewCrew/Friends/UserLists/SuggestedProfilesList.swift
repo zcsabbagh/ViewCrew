@@ -23,17 +23,17 @@ struct AddContactsListView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 5)
             if searchText != "" {
-                ForEach(viewModel.matchedContacts, id: \.name) { person in
+                ForEach(viewModel.matchedContacts, id: \.self) { person in
                     AddContact(person: person, viewModel: viewModel, messageViewShown: $isMessageComposerPresented, recepients: $messageRecepients)
                 }
-                ForEach(viewModel.searchResults, id: \.name) { person in
+                ForEach(viewModel.searchResults, id: \.self) { person in
                     AddContact(person: person, viewModel: viewModel, messageViewShown: $isMessageComposerPresented, recepients: $messageRecepients)
                 }
             } else {
-                ForEach(viewModel.suggestionsOnApp, id: \.name) { person in
+                ForEach(viewModel.suggestionsOnApp, id: \.self) { person in
                     AddContact(person: person, viewModel: viewModel, messageViewShown: $isMessageComposerPresented, recepients: $messageRecepients)
                 }
-                ForEach(viewModel.suggestionsFromContacts, id: \.name) { person in
+                ForEach(viewModel.suggestionsFromContacts, id: \.self) { person in
                     AddContact(person: person, viewModel: viewModel, messageViewShown: $isMessageComposerPresented, recepients: $messageRecepients)
                 }
             }

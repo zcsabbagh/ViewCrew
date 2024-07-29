@@ -44,7 +44,7 @@ struct ShareButtons: View {
             }
         }
         .alert(isPresented: $showAlert) {
-            Alert(title: Text("App Not Installed"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            Alert(title: Text("Sharing Failed"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
         
     }
@@ -70,85 +70,54 @@ struct ShareButtons: View {
     
     // WhatsApp Sharing
     private func shareOnWhatsApp() {
-        HapticFeedbackGenerator.shared.generateHapticLight()
-        let urlString = "whatsapp://send?text=\(shareLink)"
-        if let url = URL(string: urlString) {
-            if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url)
-            } else {
-                alertMessage = "You need WhatsApp to share via WhatsApp"
-                showAlert = true
-            }
-        }
+        shareViaApp(urlString: "whatsapp://send?text=\(shareLink)", appName: "WhatsApp")
     }
     
     // Messenger Sharing
     private func shareOnMessenger() {
-        HapticFeedbackGenerator.shared.generateHapticLight()
-        let urlString = "fb-messenger://share/?link=\(shareLink)"
-        if let url = URL(string: urlString) {
-            if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url)
-            } else {
-                alertMessage = "You need Messenger to share via Messenger"
-                showAlert = true
-            }
-        }
+        shareViaApp(urlString: "fb-messenger://share/?link=\(shareLink)", appName: "Messenger")
     }
     
     // iMessage Sharing
     private func shareOniMessage() {
-        HapticFeedbackGenerator.shared.generateHapticLight()
-        let urlString = "sms:&body=\(shareLink)"
-        if let url = URL(string: urlString) {
-            if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url)
-            } else {
-                alertMessage = "You need iMessage to share via iMessage"
-                showAlert = true
-            }
-        }
+        shareViaApp(urlString: "sms:&body=\(shareLink)", appName: "iMessage")
     }
     
     // Telegram Sharing
     private func shareOnTelegram() {
-        HapticFeedbackGenerator.shared.generateHapticLight()
         let encodedLink = shareLink.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        let urlString = "tg://msg?text=\(encodedLink)"
-        if let url = URL(string: urlString) {
-            if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url)
-            } else {
-                alertMessage = "You need Telegram to share via Telegram"
-                showAlert = true
-            }
-        }
+        shareViaApp(urlString: "tg://msg?text=\(encodedLink)", appName: "Telegram")
     }
     
     // Instagram Sharing
     private func shareOnInstagram() {
-        HapticFeedbackGenerator.shared.generateHapticLight()
-        let urlString = "instagram://app"
-        if let url = URL(string: urlString) {
-            UIApplication.shared.open(url, options: [.universalLinksOnly: false]) { success in
-                if !success {
-                    alertMessage = "You need Instagram to share via Instagram"
-                    showAlert = true
-                }
-            }
-        }
+        shareViaApp(urlString: "instagram://app", appName: "Instagram")
     }
     
     // Snapchat Sharing
     private func shareOnSnapchat() {
+        shareViaApp(urlString: "snapchat://?attachText=\(shareLink)", appName: "Snapchat")
+    }
+    
+    private func shareViaApp(urlString: String, appName: String) {
         HapticFeedbackGenerator.shared.generateHapticLight()
-        let urlString = "snapchat://?attachText=\(shareLink)"
-        if let url = URL(string: urlString) {
-            if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url)
-            } else {
-                alertMessage = "You need Snapchat to share via Snapchat"
-                showAlert = true
+        guard let url = URL(string: urlString) else {
+            alertMessage = "Invalid URL for \(appName)"
+            showAlert = true
+            return
+        }
+        
+        UIApplication.shared.open(url, options: [:]) { success in
+            if !success {
+                // Check if the app is installed
+                if UIApplication.shared.canOpenURL(url) {
+                    // The app is installed, but the user likely canceled the action
+                    // Do nothing in this case
+                } else {
+                    // The app is not installed
+                    alertMessage = "You need \(appName) to share via \(appName)"
+                    showAlert = true
+                }
             }
         }
     }

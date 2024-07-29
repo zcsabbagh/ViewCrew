@@ -21,6 +21,7 @@
 		2F016E8A2C3D295800D55038 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 2F016E892C3D295800D55038 /* FirebaseMessaging */; };
 		2F016E8C2C3D295800D55038 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 2F016E8B2C3D295800D55038 /* FirebaseStorage */; };
 		2F016E8E2C3D353B00D55038 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F016E8D2C3D353B00D55038 /* FeedView.swift */; };
+		2F5C5D7D2C57ADCD007EE7AB /* WidgetTutorial.MP4 in Resources */ = {isa = PBXBuildFile; fileRef = 2F5C5D7C2C57ADCD007EE7AB /* WidgetTutorial.MP4 */; };
 		2F7A204D2C53EE35006E09CB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F7A204C2C53EE35006E09CB /* GoogleService-Info.plist */; };
 		2F7A204E2C53EE35006E09CB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F7A204C2C53EE35006E09CB /* GoogleService-Info.plist */; };
 		2F7A20522C54F07A006E09CB /* BebasNeue-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2F7A20502C54F07A006E09CB /* BebasNeue-Regular.ttf */; };
@@ -61,7 +62,6 @@
 		2FBD7FCD2C48D2620031FF8E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FBD7FCC2C48D2620031FF8E /* Assets.xcassets */; };
 		2FBD7FD12C48D2620031FF8E /* HomeWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2FBD7FC22C48D2610031FF8E /* HomeWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2FBD7FD92C4920310031FF8E /* TimelineProv.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBD7FD82C4920310031FF8E /* TimelineProv.swift */; };
-		2FBD7FDB2C49205C0031FF8E /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBD7FDA2C49205C0031FF8E /* Entry.swift */; };
 		2FBD7FDD2C4920750031FF8E /* WidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBD7FDC2C4920740031FF8E /* WidgetView.swift */; };
 		2FBD7FDE2C4921BB0031FF8E /* PostDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBD7F872C4794980031FF8E /* PostDataModel.swift */; };
 		2FBD7FE02C492EA30031FF8E /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2FBD7FDF2C492EA30031FF8E /* SDWebImageSwiftUI */; };
@@ -147,6 +147,7 @@
 		2F016E5C2C3D181500D55038 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		2F016E7C2C3D27A200D55038 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		2F016E8D2C3D353B00D55038 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
+		2F5C5D7C2C57ADCD007EE7AB /* WidgetTutorial.MP4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = WidgetTutorial.MP4; sourceTree = "<group>"; };
 		2F7A204C2C53EE35006E09CB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2F7A20502C54F07A006E09CB /* BebasNeue-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BebasNeue-Regular.ttf"; sourceTree = "<group>"; };
 		2F8BCD882C3DA9BC004177B5 /* EmojiScroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiScroll.swift; sourceTree = "<group>"; };
@@ -183,7 +184,6 @@
 		2FBD7FCC2C48D2620031FF8E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2FBD7FCE2C48D2620031FF8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2FBD7FD82C4920310031FF8E /* TimelineProv.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineProv.swift; sourceTree = "<group>"; };
-		2FBD7FDA2C49205C0031FF8E /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
 		2FBD7FDC2C4920740031FF8E /* WidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetView.swift; sourceTree = "<group>"; };
 		2FBD7FE12C4A65090031FF8E /* FontExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontExtensions.swift; sourceTree = "<group>"; };
 		2FBD7FE32C4A65660031FF8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -287,6 +287,7 @@
 		2F016E402C3D17F900D55038 /* ViewCrew */ = {
 			isa = PBXGroup;
 			children = (
+				2F5C5D7C2C57ADCD007EE7AB /* WidgetTutorial.MP4 */,
 				2F7A204C2C53EE35006E09CB /* GoogleService-Info.plist */,
 				2FBD80912C4BB0570031FF8E /* ViewCrew.entitlements */,
 				2F7A204F2C54F07A006E09CB /* Bebas_Neue */,
@@ -468,7 +469,6 @@
 				2FBD7FC62C48D2610031FF8E /* WidgetBundle.swift */,
 				2FBD7FC82C48D2610031FF8E /* Widget.swift */,
 				2FBD7FD82C4920310031FF8E /* TimelineProv.swift */,
-				2FBD7FDA2C49205C0031FF8E /* Entry.swift */,
 				2FBD7FDC2C4920740031FF8E /* WidgetView.swift */,
 				2FBD7FCA2C48D2610031FF8E /* AppIntent.swift */,
 				2FBD7FCC2C48D2620031FF8E /* Assets.xcassets */,
@@ -683,6 +683,7 @@
 				2FBD80222C4A729A0031FF8E /* RobotoCondensed-ExtraBoldItalic.ttf in Resources */,
 				2FBD802F2C4A729A0031FF8E /* RobotoCondensed-BlackItalic.ttf in Resources */,
 				2FBD802A2C4A729A0031FF8E /* RobotoCondensed-Regular.ttf in Resources */,
+				2F5C5D7D2C57ADCD007EE7AB /* WidgetTutorial.MP4 in Resources */,
 				2FBD7FFD2C4A65D30031FF8E /* Roboto-Thin.ttf in Resources */,
 				2FBD7FF32C4A65D30031FF8E /* Roboto-Light.ttf in Resources */,
 				2FBD80202C4A729A0031FF8E /* RobotoCondensed-SemiBoldItalic.ttf in Resources */,
@@ -762,7 +763,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2FBD7FDD2C4920750031FF8E /* WidgetView.swift in Sources */,
-				2FBD7FDB2C49205C0031FF8E /* Entry.swift in Sources */,
 				2FBD7FC72C48D2610031FF8E /* WidgetBundle.swift in Sources */,
 				2FBD7FDE2C4921BB0031FF8E /* PostDataModel.swift in Sources */,
 				2FBD7FC92C48D2610031FF8E /* Widget.swift in Sources */,
@@ -909,7 +909,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ViewCrew/ViewCrew.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"ViewCrew/Preview Content\"";
 				DEVELOPMENT_TEAM = A56PK9K878;
 				ENABLE_PREVIEWS = YES;
@@ -947,7 +947,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ViewCrew/ViewCrew.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"ViewCrew/Preview Content\"";
 				DEVELOPMENT_TEAM = A56PK9K878;
 				ENABLE_PREVIEWS = YES;

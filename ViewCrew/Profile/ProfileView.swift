@@ -110,7 +110,9 @@ struct ProfileInformation: View {
             .font(.custom("Roboto-Regular", size: 14))
     }
     .padding(.top, -10)
+    .padding()
     }
+    
 
 }
 
@@ -118,7 +120,7 @@ struct RecentlyWatched: View {
     var posts: [Post]
 
     var body: some View {
-        VStack (spacing: 3) {
+        VStack (spacing: 8) {
             HStack {
                 Image("Recently")
                     .resizable()
@@ -127,9 +129,9 @@ struct RecentlyWatched: View {
                 Spacer()
             }
             .padding(.horizontal)
-            .padding(.bottom, 5)
+            
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
+                HStack (spacing: 6) {
                     ForEach(posts, id: \.self) { post in
                         ProfileMovie(movie: post)
                     }
@@ -160,11 +162,12 @@ struct ProfileMovie: View {
                 )
             Text(movie.title)
                 .font(.custom("Roboto-Bold", size: 16))
-                .fontWeight(.bold)
+                .fontWeight(.semibold)
                 .foregroundColor(.white)
-                .minimumScaleFactor(0.5)
                 .lineLimit(1)
-                .frame(width: 140)
+                .truncationMode(.tail)
+                .frame(width: 140, alignment: .leading)
+                .padding(.leading, 2)
         }
             
     }
@@ -187,6 +190,8 @@ struct LastWeek: View {
                 ProfileStatsBox(title: "MOVIES", value: viewModel.lastWeekStats[2])
             }
         }
+        .padding(10)
+
     }
 }
 
@@ -200,6 +205,7 @@ struct ProfileStatsBox: View {
             Text(String(format: "%.0f", Double(value)))
                 .font(.custom("Bebas_Neue", size: 60))
                 .fontWeight(.black)
+                .bold()
                 .foregroundColor(.white)
                 .minimumScaleFactor(0.5)
                 .lineLimit(1)
@@ -223,25 +229,33 @@ struct ProfileStatsBox: View {
 
 struct GenresScroll: View {
     @ObservedObject var viewModel: ProfileViewModel
+    
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            VStack {
-                GenresRow(viewModel: viewModel)
-                GenresRow(viewModel: viewModel)
-                    .padding(.leading, 15)
+        VStack(alignment: .center, spacing: 10) {
+            let shuffledGenres = viewModel.genres.shuffled()
+            let midpoint = shuffledGenres.count / 2
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                GenresRow(genres: Array(shuffledGenres[..<midpoint]))
             }
-
+            .padding(.horizontal)
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                GenresRow(genres: Array(shuffledGenres[midpoint...]))
+            }
+            .padding(.horizontal)
         }
-        .padding()
+        .padding(.vertical)
     }
 }
 
 struct GenresRow: View {
-    @ObservedObject var viewModel: ProfileViewModel
+    let genres: [String]
 
     var body: some View {
-        HStack(spacing: 3) {
-            ForEach(viewModel.genres.shuffled(), id: \.self) { genre in
+        HStack {
+            Spacer(minLength: 0)
+            ForEach(genres, id: \.self) { genre in
                 Text(genre)
                     .font(.system(size: 14, weight: .bold))
                     .foregroundColor(.brightWhiteText)
@@ -249,6 +263,7 @@ struct GenresRow: View {
                     .background(Color.buttonBackground)
                     .cornerRadius(25)
             }
+            Spacer(minLength: 0)
         }
     }
 }
