@@ -150,7 +150,7 @@ struct Feed: View {
 }
 
 struct WidgetButton: View {
-    @Binding var showAddWidgetSheet: Bool
+@Binding var showAddWidgetSheet: Bool
    @AppStorage("hasWidgetBeenPressed") private var hasWidgetBeenPressed = false
 
     @State private var isAnimating = false
@@ -220,20 +220,20 @@ struct AddWidgetView: View {
                                    height: min(geometry.size.width * 0.8 * 2.1641025641, geometry.size.height * 0.7))
                     }
 
-                    Button(action: {
-                        UIApplication.shared.perform(#selector(NSXPCConnection.suspend))
-                        HapticFeedbackGenerator.shared.generateHapticLight()
-                    }) {
-                        Text("Add Widget")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(width: 300, height: 50)
-                            .background(
-                                LinearGradient(gradient: Gradient(colors: [.purple, .green]), startPoint: .topLeading, endPoint: .bottomTrailing)
-                            )
-                            .cornerRadius(15)
-                    }
-                    .padding(.top, 20)
+                    // Button(action: {
+                    //     UIApplication.shared.perform(#selector(NSXPCConnection.suspend))
+                    //     HapticFeedbackGenerator.shared.generateHapticLight()
+                    // }) {
+                    //     Text("Add Widget")
+                    //         .font(.headline)
+                    //         .foregroundColor(.white)
+                    //         .frame(width: 300, height: 50)
+                    //         .background(
+                    //             LinearGradient(gradient: Gradient(colors: [.purple, .green]), startPoint: .topLeading, endPoint: .bottomTrailing)
+                    //         )
+                    //         .cornerRadius(15)
+                    // }
+                    // .padding(.top, 20)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color.appBackground)
